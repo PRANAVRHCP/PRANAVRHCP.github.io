@@ -1,7 +1,7 @@
 (function () {
     let tmpl = document.createElement('template');
     tmpl.innerHTML = 
-    `<button type="button" id="myBtn" onclick="clear()"> Perf. Help </button>    
+    `<button type="button" id="myBtn" onclick="funcclear()"> Perf. Help </button>    
     <script>    
     function myFunction() {
       window.alert("here i am clicked");
@@ -14,7 +14,14 @@
         }
 
         init() {            
-               this.appendChild(tmpl.content.cloneNode(true)); 
+              
+            let shadowRoot = this.attachShadow({mode: "open"});
+            shadowRoot.appendChild(tmpl.content.cloneNode(true));
+            this.addEventListener("click", event => {
+            var event = new Event("onClick");
+            this.dispatchEvent(event);
+            });
+            this.appendChild(tmpl.content.cloneNode(true)); 
             //const element = this.document.getElementById("myBtn");
             //element.addEventListener("click", handleButtonClick).bind(this);
            // this.buttonBoundListener = this.handleButtonClick.bind(this);
@@ -28,7 +35,7 @@
         console.log('Here');
     }
 
-        clear() {
+        funcclear() {
             console.log("here");
         }       
     }
