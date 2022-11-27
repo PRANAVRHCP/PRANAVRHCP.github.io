@@ -20,11 +20,7 @@
             this.addEventListener("click", event => {
             var event = new Event("onClick");
             this.dispatchEvent(event);
-            });
-            this.appendChild(tmpl.content.cloneNode(true)); 
-            //const element = this.document.getElementById("myBtn");
-            //element.addEventListener("click", handleButtonClick).bind(this);
-           // this.buttonBoundListener = this.handleButtonClick.bind(this);
+            });           
         }
 
         fireChanged() {
