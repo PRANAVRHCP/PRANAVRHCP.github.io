@@ -19,6 +19,8 @@
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
             this.addEventListener("click", event => {
             var event = new Event("onClick");
+            this.fireChanged();
+            console-log('Event Trigger Completed');
             this.dispatchEvent(event);
             });           
         }
