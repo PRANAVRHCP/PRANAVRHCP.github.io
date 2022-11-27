@@ -1,11 +1,10 @@
 (function () {
     let tmpl = document.createElement('template');
     tmpl.innerHTML = 
-    `<button type="button" id="myBtn"> Perf. Help </button>    
-    <script>
-    document.getElementById("myBtn").onclick = function() {myFunction()};
+    `<button type="button" id="myBtn" onclick="myFunction()"> Perf. Help </button>    
+    <script>    
     function myFunction() {
-      console.log("here");
+      window.alert("here i am clicked");
     </script>`;
    
     class PerformanceHelp extends HTMLElement {
