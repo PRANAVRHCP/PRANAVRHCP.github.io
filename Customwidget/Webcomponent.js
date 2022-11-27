@@ -1,7 +1,7 @@
 (function () {
     let tmpl = document.createElement('template');
     tmpl.innerHTML = 
-    `<button type="button" id="myBtn" onclick="myFunction()"> Perf. Help </button>    
+    `<button type="button" id="myBtn" onclick="clear()"> Perf. Help </button>    
     <script>    
     function myFunction() {
       window.alert("here i am clicked");
@@ -29,7 +29,7 @@
     }
 
         clear() {
-            console.log("");
+            console.log("here");
         }       
     }
 
