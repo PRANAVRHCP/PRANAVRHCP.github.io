@@ -3,7 +3,7 @@
     tmpl.innerHTML = 
     `<button type="button" id="myBtn"> Perf. Help </button>    
     <script>
-    document.getElementById("id").onclick = function() {myFunction()};
+    document.getElementById("myBtn").onclick = function() {myFunction()};
     function myFunction() {
       console.log("here");
     </script>`;
