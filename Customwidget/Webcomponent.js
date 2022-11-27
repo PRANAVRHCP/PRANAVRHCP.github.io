@@ -19,14 +19,15 @@
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
             this.addEventListener("click", event => {
             var event = new Event("onClick");
-            this.fireChanged();
-            console-log('Event Trigger Completed');
+            this.fireChanged();           
             this.dispatchEvent(event);
             });           
         }
 
         fireChanged() {
-            console.log("OnClick Triggered");            
+            console.log("OnClick Triggered");      
+            measures = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure')            ;
+            console.log(measures);
         }
         
         handleButtonClick() {        
