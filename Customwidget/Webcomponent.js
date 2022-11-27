@@ -5,7 +5,7 @@
     <script>
     document.getElementById("id").onclick = function() {myFunction()};
     function myFunction() {
-      document.getElementById("demo").innerHTML = "YOU CLICKED ME!";}
+      console.log("here");
     </script>`;
    
     class PerformanceHelp extends HTMLElement {
