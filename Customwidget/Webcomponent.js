@@ -22,7 +22,7 @@
 
         fireChanged() {
             console.log("OnClick Triggered");      
-            measures = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure')            ;
+            var measures = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure')            ;
             console.log(measures);
         }        
         
