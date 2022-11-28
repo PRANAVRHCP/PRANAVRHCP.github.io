@@ -23,7 +23,7 @@
         fireChanged() {
             console.log("OnClick Triggered");      
             var measures = window.sap.raptr.getEntries();
-            var exportName = 'RaptrMeasures.json';
+            var exportName = 'RaptrMeasures_' +  Date.now().toString() + '.json';
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(measures));
             var downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href", dataStr);
