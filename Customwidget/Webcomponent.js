@@ -1,11 +1,7 @@
 (function () {
     let tmpl = document.createElement('template');
     tmpl.innerHTML = 
-    `<button type="button" id="myBtn" onclick="funcclear()"> Perf. Help </button>    
-    <script>    
-    function myFunction() {
-      window.alert("here i am clicked");
-    </script>`;
+    `<button type="button" id="myBtn"> Perf. Help </button> ;   
    
     class PerformanceHelp extends HTMLElement {
         constructor() {
@@ -28,15 +24,8 @@
             console.log("OnClick Triggered");      
             measures = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure')            ;
             console.log(measures);
-        }
+        }        
         
-        handleButtonClick() {        
-        console.log('Here');
-    }
-
-        funcclear() {
-            console.log("here");
-        }       
     }
 
     customElements.define('pka-button', PerformanceHelp);
