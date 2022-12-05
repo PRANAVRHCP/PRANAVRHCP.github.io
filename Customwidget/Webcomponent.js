@@ -87,8 +87,36 @@
                 stepDuration = stepEndTime - stepStartTime;           
                 x.push({StepNo:stepNo , stepduration:stepDuration.toFixed(2) , LogStepID: 0 , stepdetail : 'Init'});  
             }
-            console.log(x);
+              // Convert Object to JSON
+            var jsonObject = JSON.stringify(x);
+            var csv = this.JSON2CSV(jsonObject);
+            var downloadLink = document.createElement("a");
+            var blob = new Blob(["\ufeff", csv]);
+            var url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.download =  'StepWiseBreakdown_' +  Date.now().toString() + '.csv';;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
+
+        JSON2CSV(objArray) {
+            var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+          var str = 'StepNo,Stepduration,LogStepRefID,StepDetail\r\n';
+        
+          for (var i = 0; i < array.length; i++) {
+            var line = '';
+            for (var index in array[i]) {
+              if (line != '') line += ','
+        
+              line += array[i][index];
+            }
+        
+            str += line + '\r\n';
+          }
+        
+          return str;
+        }   
     }
 
     customElements.define('pka-button', PerformanceHelp);
