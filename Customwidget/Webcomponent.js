@@ -21,20 +21,74 @@
         }
 
         fireChanged() {
-            console.log("OnClick Triggered");      
-            var measures = window.sap.raptr.getEntries();
+            
+            //Retrieve the Log            
+            let result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
+            //Sort
+            result = result.sort(function(a, b){
+                if(a.startTime < b.startTime) { return -1; }
+                if(a.startTime > b.startTime) { return 1; }
+                return 0;
+            });            
+            
             var exportName = 'RaptrMeasures_' +  Date.now().toString() + '.json';
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(measures));
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result));            
             var downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href", dataStr);
             downloadAnchorNode.setAttribute("download", exportName);
             document.body.appendChild(downloadAnchorNode); // required for firefox
             downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+            downloadAnchorNode.remove();            
+            //Retreive the step wise approach
+            
+            let stepStartTime = 0;
+            let stepEndTime = 0;
+            let maxEndTime = 0;
+            let endTime = 0;
+            let stepNo = 1;
+            let prev_stepid = 1;
+            let stepDuration = 0;
+            let x = [];
+            
+            for (let i = 0 ; i< result.length ; i++)
+              {
+                if (result[i].startTime > maxEndTime + 800 && maxEndTime!= 0 ) {
+                    // This is a new step!!!       
 
-            console.log(measures);
-        }        
-        
+                   if (stepNo == 1)
+                   {
+                     stepEndTime = maxEndTime;
+                     stepDuration = stepEndTime - stepStartTime;           
+                    x.push({StepNo:stepNo , stepduration:stepDuration.toFixed(2) , LogStepID:0 , stepdetail : 'Initialization'});  
+                   }
+                   stepStartTime = result[i].startTime;
+                   maxEndTime = 0;
+                   stepNo++;
+
+                }
+              if(result[i].startTime>0)  
+              { endTime = result[i].startTime + result[i].duration;
+                if (endTime > maxEndTime){      
+                  maxEndTime = endTime;
+                }
+              }
+
+               if (stepNo > 1 && prev_stepid != stepNo)
+                      {
+                       stepEndTime = maxEndTime;
+                       stepDuration = stepEndTime - stepStartTime;           
+                        x.push({StepNo:stepNo , stepduration:stepDuration.toFixed(2) , LogStepID:i });  
+                         prev_stepid =  prev_stepid + 1;
+                        // Store the information (start Time, max Endtime) of the previous step somewhere (e.g. a array used for CSV export)
+                    }
+            };
+            if (x.length === 0) {
+               stepEndTime = maxEndTime;
+                stepDuration = stepEndTime - stepStartTime;           
+                x.push({StepNo:stepNo , stepduration:stepDuration.toFixed(2) , LogStepID: 0 , stepdetail : 'Init'});  
+            }
+            console.log(x);
+        }
     }
 
     customElements.define('pka-button', PerformanceHelp);
