@@ -11,11 +11,11 @@
 
         init() {            
             
-            $(document).ready(function(){          
-            $('html').click(function(event){
-                console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
-            });           
-        });
+           // $(document).ready(function(){          
+           // $('html').click(function(event){
+           //     console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
+           //});           
+           // });
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
             this.addEventListener("click", event => {
@@ -42,8 +42,8 @@
             downloadAnchorNode.setAttribute("href", dataStr);
             downloadAnchorNode.setAttribute("download", exportName);
             document.body.appendChild(downloadAnchorNode); // required for firefox
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();            
+            //downloadAnchorNode.click();
+            //downloadAnchorNode.remove();            
             //Retreive the step wise approach
             
             let stepStartTime = 0;
@@ -101,8 +101,10 @@
             downloadLink.href = url;
             downloadLink.download =  'StepWiseBreakdown_' +  Date.now().toString() + '.csv';;
             document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            console.log(result);
+            console.log(x);
+            //downloadLink.click();
+            //document.body.removeChild(downloadLink);
         }
 
         JSON2CSV(objArray) {
