@@ -10,7 +10,12 @@
         }
 
         init() {            
-              
+            
+            $(document).ready(function(){          
+            $('html').click(function(event){
+                console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
+            });           
+        });
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
             this.addEventListener("click", event => {
