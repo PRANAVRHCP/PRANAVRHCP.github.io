@@ -17,8 +17,7 @@
          $(document).ready(function(){          
           $('html').click(function(event){
               //if(window.y===0)
-              //{
-              console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length)
+              //{              
               y.push( window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length) ; //};
          });              
          });            
