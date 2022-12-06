@@ -6,6 +6,7 @@
     class PerformanceHelp extends HTMLElement {
         constructor() {
             super();
+            var y = 0;
             this.init();           
         }
 
@@ -13,7 +14,9 @@
             
            $(document).ready(function(){          
             $('html').click(function(event){
-                console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length);
+                if(y===0)
+                {console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length)
+                y = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length };
            });              
            });            
 
@@ -29,7 +32,8 @@
 
         fireChanged() {
             
-            //Retrieve the Log            
+            //Retrieve the Log  
+            console.log(y);
             let result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
             //Sort
             result = result.sort(function(a, b){
