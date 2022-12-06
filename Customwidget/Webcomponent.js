@@ -47,7 +47,7 @@
           //download the log files 
           //downloadlog(result);          
           //generate the init step 
-          generateinitstep(result);
+          this.generateinitstep(result);
           console.log(x);
           console.log(result);
 
