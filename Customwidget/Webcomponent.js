@@ -6,7 +6,7 @@
     class PerformanceHelp extends HTMLElement {
         constructor() {
             super();
-            var window.y = 0;
+            window.y = 0;
             this.init();           
         }
 
