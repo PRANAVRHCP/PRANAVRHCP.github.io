@@ -17,9 +17,10 @@
            //});           
            // });
             
-            window.onload = function(){
-                       console.log("load completed");
-                                    };
+           $(window).load(
+               function()
+               {console.log('here');
+               });
             
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
