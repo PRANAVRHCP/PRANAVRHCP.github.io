@@ -6,7 +6,7 @@
     class PerformanceHelp extends HTMLElement {
         constructor() {
             super();
-            var y = 0;
+            var window.y = 0;
             this.init();           
         }
 
@@ -14,7 +14,7 @@
             
            $(document).ready(function(){          
             $('html').click(function(event){
-                if(y===0)
+                if(window.y===0)
                 {console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length)
                 y = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length };
            });              
