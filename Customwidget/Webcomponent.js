@@ -96,7 +96,7 @@
         var endTime = 0;
         var maxstepid = 0;
         
-        if(y.length === undefined)
+        if(y.length === 0)
         {
           y.push(result.length);
         }
