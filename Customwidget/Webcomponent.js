@@ -19,7 +19,7 @@
 
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
-             window.addEventListener('load', (event) => {
+             window.addEventListener('DOMContentLoaded', (event) => {
               console.log('page is fully loaded');
             });
             
