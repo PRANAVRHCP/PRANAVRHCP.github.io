@@ -93,16 +93,18 @@
       { 
         var maxEndTime = 0;
         var endTime = 0;
+        var maxstepid = 0;
 
         for (var i = 0 ; i< y ; i++)
         {
           endTime = result[i].startTime + result[i].duration;
           if (endTime > maxEndTime){      
-            maxEndTime = endTime;}
+            maxEndTime = endTime;
+            maxstepid = i;}
         }
         //  stepDuration = stepEndTime - stepStartTime , Since our start of step is the beginning of the webpage it will be 0 
         var stepDuration = maxEndTime - 0;      
-        x.push({StepNo:1 , stepduration:stepDuration.toFixed(2) , LogStepID:0 , stepdetail : 'Initialization'});  
+        x.push({StepNo:1 , StepDuration:stepDuration.toFixed(2) , LogStepStartID:0 , LogMaxStepID : maxstepid , StepDetail : 'Initialization'});  
       }
   }
 
