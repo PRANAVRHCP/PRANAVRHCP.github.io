@@ -48,7 +48,9 @@
           //download the log files 
           //downloadlog(result);          
           //generate the init step 
-          this.generateinitstep(result);
+          y = y.filter((i,idx) => input[idx-1] !== i);
+          if(x.length === 0 )
+          { this.generateinitstep(result); }
           console.log(x);
           console.log(result);
 
