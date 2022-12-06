@@ -16,6 +16,11 @@
            //     console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
            //});           
            // });
+            
+            window.onload = function(){
+                       console.log("load completed");
+                                    };
+            
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
             this.addEventListener("click", event => {
