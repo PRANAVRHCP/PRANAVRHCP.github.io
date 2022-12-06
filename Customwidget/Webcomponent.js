@@ -15,14 +15,14 @@
            // $('html').click(function(event){
            //     console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
            //});           
-           // });
-            
-    window.addEventListener('load', (event) => {
+           // });            
+
+            let shadowRoot = this.attachShadow({mode: "open"});
+            shadowRoot.appendChild(tmpl.content.cloneNode(true));
+             window.addEventListener('load', (event) => {
               console.log('page is fully loaded');
             });
             
-            let shadowRoot = this.attachShadow({mode: "open"});
-            shadowRoot.appendChild(tmpl.content.cloneNode(true));
             this.addEventListener("click", event => {
             var event = new Event("onClick");
             this.fireChanged();           
