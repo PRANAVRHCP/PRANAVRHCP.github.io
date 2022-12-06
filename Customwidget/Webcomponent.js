@@ -7,7 +7,7 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.y = 0;
+          window.y = [];
           window.x = [];
           this.init();           
       }
@@ -16,9 +16,10 @@
           
          $(document).ready(function(){          
           $('html').click(function(event){
-              if(window.y===0)
-              {console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length)
-              y = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length };
+              //if(window.y===0)
+              //{
+              console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length)
+              y.push( window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length) ; //};
          });              
          });            
 
@@ -94,8 +95,13 @@
         var maxEndTime = 0;
         var endTime = 0;
         var maxstepid = 0;
+        
+        if(y.length === undefined)
+        {
+          y.push(result.length);
+        }
 
-        for (var i = 0 ; i< y ; i++)
+        for (var i = 0 ; i< y[0] ; i++)
         {
           endTime = result[i].startTime + result[i].duration;
           if (endTime > maxEndTime){      
