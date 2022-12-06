@@ -15,14 +15,16 @@
            // $('html').click(function(event){
            //     console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
            //});           
-          console.log('page is fully loaded');
+               
+               $('html').load(function(event){
+             console.log("Buoyistriggered");
+           });           
+          
+           console.log('page is fully loaded');
            });            
 
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
-             this.addEventListener('load', (event) => {
-              console.log('page is fully loaded');
-            });
             
             this.addEventListener("click", event => {
             var event = new Event("onClick");
