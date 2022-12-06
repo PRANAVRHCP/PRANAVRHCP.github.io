@@ -12,15 +12,9 @@
         init() {            
             
            $(document).ready(function(){          
-           // $('html').click(function(event){
-           //     console.log("mouse click X:"+event.pageX+" Y:"+event.pageY);
-           //});           
-               
-               $('html').load(function(event){
-             console.log("Buoyistriggered");
-           });           
-          
-           console.log('page is fully loaded');
+            $('html').click(function(event){
+                console.log(window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length);
+           });              
            });            
 
             let shadowRoot = this.attachShadow({mode: "open"});
