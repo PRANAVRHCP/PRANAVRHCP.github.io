@@ -45,25 +45,24 @@
           });           
           
           //download the log files 
-          //downloadlog(result);          
+           this.downloadlog(result);          
           //generate the init step 
-           if(y.length !== 0 ) {y = y.filter((i,idx) => y[idx-1] !== i)};
+          if(y.length !== 0 ) {y = y.filter((i,idx) => y[idx-1] !== i)};
           if(x.length === 0 )
-          { this.generateinitstep(result); }
-          console.log(x);
-          console.log(result);
+          { this.generateinitstep(result); }         
           //generate steps after initalization          
            this.generatenextstep(result);        
-
+           console.log(x);
+           console.log(result);
           //download the log file
-
+          this.downloadstepbreakdown();     
           //open custom url
           
       }
 
       JSON2CSV(objArray) {
           var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-        var str = 'StepNo,Stepduration,LogStepRefID,StepDetail\r\n';
+        var str = 'StepNo,Stepduration,LogStepStartID,LogMaxStepID,StepDetail\r\n';
       
         for (var i = 0; i < array.length; i++) {
           var line = '';
@@ -90,7 +89,23 @@
         downloadAnchorNode.click();
         downloadAnchorNode.remove();            
       }
-
+        
+      downloadstepbreakdown()
+       {
+       
+           // Convert Object to JSON
+            var jsonObject = JSON.stringify(x);
+            var csv = this.JSON2CSV(jsonObject);
+            var downloadLink = document.createElement("a");
+            var blob = new Blob(["\ufeff", csv]);
+            var url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.download =  'StepWiseBreakdown_' +  Date.now().toString() + '.csv';;
+            document.body.appendChild(downloadLink);            
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+       
+       }
       generateinitstep(result)
       { 
         var maxEndTime = 0;
