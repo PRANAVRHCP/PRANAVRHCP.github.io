@@ -48,8 +48,8 @@
            this.downloadlog(result);          
           //generate the init step 
           if(y.length !== 0 ) {y = y.filter((i,idx) => y[idx-1] !== i)};
-          if(x.length === 0 )
-          { this.generateinitstep(result); }         
+           x = [];
+           this.generateinitstep(result);       
           //generate steps after initalization          
            this.generatenextstep(result);        
            console.log(x);
@@ -57,8 +57,12 @@
           //download the log file
           this.downloadstepbreakdown();     
           //open custom url
+          this.openconfluence();
           
       }
+    
+    openconfluence()
+    {window.open('https://atc.bmwgroup.net/confluence/display/FINRA/2.0.1+Create+a+defect+regarding+Reporting+Performance');}
 
       JSON2CSV(objArray) {
           var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
