@@ -169,7 +169,7 @@
       maxstepid = i;
       if(stepNo != 1)
          { 
-           x[stepNo-1].stepduration = (maxEndTime - stepStartTime).toFixed(2);
+           x[stepNo-1].StepDuration = (maxEndTime - stepStartTime).toFixed(2);
            x[stepNo-1].LogMaxStepID = maxstepid;
          };
       
