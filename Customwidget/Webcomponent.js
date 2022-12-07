@@ -118,7 +118,7 @@
       {
         let stepStartTime = 0;
         let stepEndTime = 0;
-        let maxEndTime = x[0].stepDuration;
+        let maxEndTime = x[0].StepDuration;
         let endTime = 0;
         let stepNo = 1;
         var maxstepid = 0;
