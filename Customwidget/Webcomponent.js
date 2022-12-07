@@ -52,8 +52,8 @@
           { this.generateinitstep(result); }
           console.log(x);
           console.log(result);
-
-          //generate steps after initalization
+          //generate steps after initalization          
+           this.generatenextstep(result);        
 
           //download the log file
 
@@ -113,6 +113,68 @@
         var stepDuration = maxEndTime - 0;      
         x.push({StepNo:1 , StepDuration:stepDuration.toFixed(2) , LogStepStartID:0 , LogMaxStepID : maxstepid , StepDetail : 'Initialization'});  
       }
+
+      generatenextstep(result)
+      {
+        let stepStartTime = 0;
+        let stepEndTime = 0;
+        let maxEndTime = 0;
+        let endTime = 0;
+        let stepNo = 1;
+        var maxstepid = 0;
+        let prev_stepid = 1;
+        let stepDuration = 0;
+        let logstepid = 0;
+        let set_maxendtimezero = false ;
+
+        for (let i = y[0]  ; i< result.length ; i++)
+  {
+    if (result[i].startTime > maxEndTime + 1000 && maxEndTime!= 0 ) {
+        // This is a new step!!!       
+     console.log(i) ;     
+
+      if (result[i].source === 'external' )
+      {
+        maxEndTime = 0;      
+        set_maxendtimezero = true;
+      }
+      else
+      {              
+       stepStartTime = result[i].startTime;
+        maxEndTime = 0;
+        stepNo++;
+        logstepid = i;
+      }
+      
+    }
+    
+   if (stepNo > 1 && prev_stepid != stepNo)
+          {
+           stepEndTime = maxEndTime;
+           stepDuration = stepEndTime - stepStartTime;     
+           x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: logstepid , LogMaxStepID : maxstepid , StepDetail : result[i].name });  
+             prev_stepid =  prev_stepid + 1;           
+        }
+    
+    if(result[i].startTime>0)  
+  { 
+    endTime = result[i].startTime + result[i].duration;
+    if (set_maxendtimezero === true) {
+      endTime = 1 ;
+      maxEndTime = 1;
+      set_maxendtimezero = false ;
+    }
+    if (endTime > maxEndTime){      
+      maxEndTime = endTime;
+      maxstepid = i;
+      if(stepNo != 1)
+         { 
+           x[stepNo-1].stepduration = (maxEndTime - stepStartTime).toFixed(2);
+           x[stepNo-1].LogMaxStepID = maxstepid;
+         };
+      
+  }}
+}     }
   }
 
   customElements.define('pka-button', PerformanceHelp);
