@@ -18,8 +18,7 @@
           $('html').click(function(event){
               if(window.y===0)
               {              
-              y =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;   
-              $('html').unbind('click');
+              y =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;               
               };
          }); 
            
