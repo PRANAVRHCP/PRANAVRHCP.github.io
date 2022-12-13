@@ -7,7 +7,7 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.y = [];
+          window.y = 0;
           window.x = [];
           this.init();           
       }
@@ -18,11 +18,11 @@
           $('html').click(function(event){
               if(window.y===0)
               {              
-              y.push( window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length) ; 
-              
+              y =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;               
               };
          }); 
-           $('html').unbind('click');
+          if(window.y!=0)
+          {$('html').unbind('click');}
          });            
 
           let shadowRoot = this.attachShadow({mode: "open"});
