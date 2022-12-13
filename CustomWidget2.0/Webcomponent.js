@@ -18,9 +18,10 @@
           $('html').click(function(event){
               if(window.y===0)
               {              
-              y =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;               
+              y =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;    
+              $('html').unbind('click.mynamespace');  
               };
-         }); 
+         }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
