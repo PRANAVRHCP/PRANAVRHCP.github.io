@@ -16,10 +16,13 @@
           
          $(document).ready(function(){          
           $('html').click(function(event){
-              //if(window.y===0)
-              //{              
-              y.push( window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length) ; //};
-         });              
+              if(window.y===0)
+              {              
+              y.push( window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length) ; 
+              
+              };
+         }); 
+           $('html').unbind('click');
          });            
 
           let shadowRoot = this.attachShadow({mode: "open"});
