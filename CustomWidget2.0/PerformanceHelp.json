@@ -1,0 +1,45 @@
+{
+	"name": "PerformanceHelper",
+	"description": "Help you get a better life with Performance issues of SAC.",
+	"newInstancePrefix": "PerformanceHelper",
+	"eula": "",
+	"vendor": "PranavKandpal-Deloitte",
+	"license": "",
+	"id": "PerformanceHelper",
+	"version": "1.0.11",
+	"icon": "",
+	"webcomponents": [
+		{
+			"kind": "main",
+			"tag": "pka-button",
+			"url": "https://pranavrhcp.github.io/Customwidget/Webcomponent.js",
+			"integrity": "",
+			"ignoreIntegrity": true		
+		}		
+	],
+	"properties": {
+		"format": {
+			"type": "string",
+			"description": "date format",
+			"default": ""
+		},
+		"width": {
+			"type": "integer",
+			"default": 192
+		},
+		"height": {
+			"type": "integer",
+			"default": 32
+		}
+	},
+	"methods": {
+		"clear": {
+			"description": "unset the selected date value"
+		}
+	},
+	"events": {
+		"onClick": {
+			"description": "Called when the user clicks the button."
+		}
+	}
+}
