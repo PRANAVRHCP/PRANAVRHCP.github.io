@@ -7,7 +7,7 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.y = 0;
+          window.initval = 0;
           window.x = [];
           this.init();           
       }
@@ -18,7 +18,7 @@
           $('html').click(function(event){
               if(window.y===0)
               {              
-              y =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;    
+              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;    
               $('html').unbind('click.mynamespace');  
               };
          }); });
@@ -33,7 +33,73 @@
           });           
       }
 
-      fireChanged() {}}
+      fireChanged() 
+    {
+      //Logic for step derivation
+      result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
+      result = result.sort(function(a, b){
+          if(a.startTime < b.startTime) { return -1; }
+          if(a.startTime > b.startTime) { return 1; }
+          return 0;
+      });
+      var z = [0];
+      var x = [];
+      var currentStepTime;
+      var previousStepTime;
+      previousStepTime = result[24].startTime;
+      //Generate list of steps
+      for (var i = initval ; i< result.length ; i++)
+              {
+                 currentStepTime = result[i].startTime ;           
+                 var diff = currentStepTime - previousStepTime;   
+                  previousStepTime = currentStepTime ;          
+
+          if(diff > 1000 && result[i].source !== 'external' )
+          { 
+             z.push(i);
+          }
+          else if(diff > 1000 && result[i].source === 'external' )
+                  {
+                       previousStepTime = 0 ; 
+                  }
+              }
+
+      z.push(result.length);{
+
+      }
+
+      let stepNo = 1;
+      let stepDuration = 0;
+      let maxstepid = 0 ;
+
+      for (var y = 1 ; y < z.length ; y++)
+          {
+              let maxEndTime = 0;
+              for (var i = z[y-1] ; i < z[y] ; i++ )
+                  {
+                       endTime = result[i].startTime + result[i].duration;
+                         if (endTime > maxEndTime)
+                         {      
+                            maxEndTime = endTime ;
+                             maxstepid = i ;
+                         }  
+                  }
+              var lv_startid = z[y-1] ; 
+              stepDuration = maxEndTime -  result[lv_startid].startTime;   
+              if( y == 1)
+              {
+                 x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: lv_startid , LogMaxStepID : maxstepid  , StepDetail : 'Initialization'})
+
+              }
+              else
+              {
+                  x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: lv_startid , LogMaxStepID : maxstepid  , StepDetail : result[lv_startid].name })
+
+              }
+                     stepNo = stepNo + 1;
+          }
+    }  
+  }
 
     
   customElements.define('pka-button02', PerformanceHelper);
