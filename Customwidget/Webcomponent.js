@@ -7,7 +7,7 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.y = [];
+         window.initval = 0;;
           window.x = [];
           this.init();           
       }
@@ -16,12 +16,12 @@
           
          $(document).ready(function(){          
           $('html').click(function(event){
-              //if(window.y===0)
-              //{              
-              y.push( window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length) ; //};
-         });              
-         });            
-
+              if(window.initval===0)
+              {              
+              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
+              $('html').unbind('click');  
+              };
+         }); });
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
           
@@ -36,7 +36,7 @@
           
           //Retrieve the Log  for all the steps
           
-          let result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
+          let result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
           //Sort
           result = result.sort(function(a, b){
               if(a.startTime < b.startTime) { return -1; }
@@ -45,9 +45,9 @@
           });           
           
           //download the log files 
-           this.downloadlog(result);          
+          // this.downloadlog(result);          
           //generate the init step 
-          if(y.length !== 0 ) {y = y.filter((i,idx) => y[idx-1] !== i)};
+         /* if(y.length !== 0 ) {y = y.filter((i,idx) => y[idx-1] !== i)}; */
            x = [];
            this.generateinitstep(result);       
           //generate steps after initalization          
@@ -55,9 +55,9 @@
            console.log(x);
            console.log(result);
           //download the log file
-          this.downloadstepbreakdown();     
+          //this.downloadstepbreakdown();     
           //open custom url
-          this.openconfluence();
+          //this.openconfluence();
           
       }
     
@@ -116,12 +116,12 @@
         var endTime = 0;
         var maxstepid = 0;
         
-        if(y.length === 0)
+        if(y === 0)
         {
-          y.push(result.length);
+          y = result.length;
         }
 
-        for (var i = 0 ; i< y[0] ; i++)
+        for (var i = 0 ; i< y ; i++)
         {
           endTime = result[i].startTime + result[i].duration;
           if (endTime > maxEndTime){      
@@ -146,24 +146,24 @@
         let logstepid = 0;
         let set_maxendtimezero = false ;
 
-        for (let i = y[0]  ; i< result.length ; i++)
+        for (let i = y  ; i< result.length ; i++)
   {
     if (result[i].startTime > maxEndTime + 1000 && maxEndTime!= 0 ) {
         // This is a new step!!!       
      console.log(i) ;     
 
-      if (result[i].source === 'external' )
+     /* if (result[i].source === 'external' )
       {
         maxEndTime = 0;      
         set_maxendtimezero = true;
       }
       else
-      {              
-       stepStartTime = result[i].startTime;
+      {   */           
+        stepStartTime = result[i].startTime;
         maxEndTime = 0;
         stepNo++;
         logstepid = i;
-      }
+      //}
       
     }
     
@@ -172,17 +172,17 @@
            stepEndTime = maxEndTime;
            stepDuration = stepEndTime - stepStartTime;     
            x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: logstepid , LogMaxStepID : maxstepid , StepDetail : result[i].name });  
-             prev_stepid =  prev_stepid + 1;           
+           prev_stepid =  prev_stepid + 1;           
         }
     
     if(result[i].startTime>0)  
   { 
     endTime = result[i].startTime + result[i].duration;
-    if (set_maxendtimezero === true) {
+    /*if (set_maxendtimezero === true) {
       endTime = 1 ;
       maxEndTime = 1;
       set_maxendtimezero = false ;
-    }
+    }*/
     if (endTime > maxEndTime){      
       maxEndTime = endTime;
       maxstepid = i;
