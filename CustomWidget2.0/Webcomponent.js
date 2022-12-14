@@ -71,6 +71,7 @@
       let stepNo = 1;
       let stepDuration = 0;
       let maxstepid = 0 ;
+      let endTime = 0;
 
       for (var y = 1 ; y < z.length ; y++)
           {
