@@ -19,7 +19,7 @@
               if(window.initval===0)
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;    
-              $('html').unbind('click.mynamespace');  
+              $('html').unbind('click');  
               };
          }); });
            
