@@ -18,7 +18,7 @@
           $('html').click(function(event){
               if(window.initval===0)
               {              
-              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;    
+              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
               $('html').unbind('click');  
               };
          }); });
@@ -36,7 +36,7 @@
       fireChanged() 
     {
       //Logic for step derivation
-      var result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
+      result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
       result = result.sort(function(a, b){
           if(a.startTime < b.startTime) { return -1; }
           if(a.startTime > b.startTime) { return 1; }
