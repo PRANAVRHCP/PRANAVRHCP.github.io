@@ -46,7 +46,7 @@
       var x = [];
       var currentStepTime = 0;
       var previousStepTime = 0;
-      previousStepTime = result[result.length-1].startTime;
+      previousStepTime = result[initval-1].startTime;
       //Generate list of steps
       for (var i = initval ; i< result.length ; i++)
               {
