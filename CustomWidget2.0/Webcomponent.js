@@ -36,7 +36,7 @@
       fireChanged() 
     {
       //Logic for step derivation
-      result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
+      var result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure');
       result = result.sort(function(a, b){
           if(a.startTime < b.startTime) { return -1; }
           if(a.startTime > b.startTime) { return 1; }
@@ -99,6 +99,8 @@
                      stepNo = stepNo + 1;
           }
     }  
+    console.log(result);
+    console.log(x);
   }
 
     
