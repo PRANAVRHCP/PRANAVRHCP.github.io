@@ -116,12 +116,12 @@
         var endTime = 0;
         var maxstepid = 0;
         
-        if(y === 0)
+        if(initval === 0)
         {
-          y = result.length;
+          initval = result.length;
         }
 
-        for (var i = 0 ; i< y ; i++)
+        for (var i = 0 ; i< initval ; i++)
         {
           endTime = result[i].startTime + result[i].duration;
           if (endTime > maxEndTime){      
@@ -146,7 +146,7 @@
         let logstepid = 0;
         let set_maxendtimezero = false ;
 
-        for (let i = y  ; i< result.length ; i++)
+        for (let i = initval  ; i< result.length ; i++)
   {
     if (result[i].startTime > maxEndTime + 1000 && maxEndTime!= 0 ) {
         // This is a new step!!!       
