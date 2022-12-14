@@ -16,7 +16,7 @@
           
          $(document).ready(function(){          
           $('html').click(function(event){
-              if(window.y===0)
+              if(window.initval===0)
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure').length ;    
               $('html').unbind('click.mynamespace');  
