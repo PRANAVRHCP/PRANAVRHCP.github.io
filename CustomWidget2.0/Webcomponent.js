@@ -98,9 +98,9 @@
               }
                      stepNo = stepNo + 1;
           }
+        console.log(result);
+        console.log(x);
     }  
-    console.log(result);
-    console.log(x);
   }
 
     
