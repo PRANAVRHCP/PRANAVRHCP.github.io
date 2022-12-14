@@ -79,7 +79,7 @@
               for (var i = z[y-1] ; i < z[y] ; i++ )
                   {
                        endTime = result[i].startTime + result[i].duration;
-                         if (endTime > maxEndTime)
+                         if (endTime > maxEndTime &&  result[i].source !== 'external')
                          {      
                             maxEndTime = endTime ;
                              maxstepid = i ;
