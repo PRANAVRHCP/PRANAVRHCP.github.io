@@ -60,7 +60,20 @@
           if(a.startTime > b.startTime) { return 1; }
           return 0;
       });
-      var z = [0];
+      
+      //add the last step
+      let reslen = lv_result.length ;
+            if(psNo!==reslen)
+            {
+            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result})
+            psNo = reslen ;
+            sNo = sNo + 1; 
+          }             
+           console.log(steplog)   ;
+          
+          }
+      
+    /*var z = [0];
       var x = [];
       var currentStepTime = 0;
       var previousStepTime = 0;
@@ -119,7 +132,7 @@
           }
         console.log(result);
         console.log(x);
-    }  
+    }  */
   }
 
     
