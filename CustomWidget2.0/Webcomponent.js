@@ -30,7 +30,7 @@
             steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: lv_result.length - 1 , steplog:lv_result.slice(psNo, lv_result.length)})
             psNo = lv_result.length;
             sNo = sNo + 1;              
-              }, 1);
+              }, 10);
               if(window.initval===0)
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
