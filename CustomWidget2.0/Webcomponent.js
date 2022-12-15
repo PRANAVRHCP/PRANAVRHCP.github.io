@@ -53,8 +53,9 @@
 
       fireChanged() 
     {
+         console.log(steplog)   ; 
       //Logic for step derivation
-      result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+      /*result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
       result = result.sort(function(a, b){
           if(a.startTime < b.startTime) { return -1; }
           if(a.startTime > b.startTime) { return 1; }
@@ -68,9 +69,8 @@
             steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result})
             psNo = reslen ;
             sNo = sNo + 1; 
-          }             
-           console.log(steplog)   ;
-          
+          }*/             
+                 
           }
       
     /*var z = [0];
