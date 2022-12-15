@@ -26,11 +26,11 @@
                 if(a.startTime > b.startTime) { return 1; }
                 return 0;
             });
-              let reslen = lv_result.length - 1;
-            if(psNo!=reslen)
+              let reslen = lv_result.length ;
+            if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen , steplog:lv_result})
-            psNo = reslen + 1;
+            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result})
+            psNo = reslen ;
             sNo = sNo + 1; }             
               }, 10);
               if(window.initval===0)
