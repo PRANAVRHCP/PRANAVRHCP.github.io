@@ -26,7 +26,7 @@
                 return 0;
             });
 
-            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: lv_result.length - 1 , StepDetail : result[lv_startid].name , steplog:lv_result})
+            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: lv_result.length - 1 , steplog:lv_result})
             psNo = lv_result.length;
             sNo = sNo + 1;              
             await 1;
