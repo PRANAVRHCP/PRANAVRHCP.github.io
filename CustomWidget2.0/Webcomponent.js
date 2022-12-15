@@ -16,11 +16,16 @@
           
          $(document).ready(function(){          
           $('html').click(async function(event){
+            //do a delay   
+            setTimeout(function() {
+               console.log('delay done,did it impact the exec?');
+              }, 10000);
               if(window.initval===0)
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
              //  $('html').unbind('click');  
               };
+              await 1;
          }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
