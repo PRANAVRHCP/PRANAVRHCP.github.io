@@ -14,13 +14,19 @@
 
       init() {            
           
-        $(document).ready(function(){          
-          $('html').click(function(event){
+         $(document).ready(function(){          
+          $('html').click(async function(event){
             //do a delay   
-           
-              this.test();
-             
-         }); });        
+            setTimeout(function() {
+               console.log('delay done,did it impact the exec?');
+              }, 10000);
+              if(window.initval===0)
+              {              
+              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
+             //  $('html').unbind('click');  
+              };
+             await 1;
+         }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
@@ -31,15 +37,7 @@
           this.dispatchEvent(event);
           });           
       }
-      async  test()
-      {
-                     if(window.initval===0)
-              {              
-              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
-             //  $('html').unbind('click');  }
-      await 1;
-              }
-    }
+
       fireChanged() 
     {
       //Logic for step derivation
@@ -109,6 +107,8 @@
         console.log(result);
         console.log(x);
     }  
-  }    
+  }
+
+    
   customElements.define('pka-button02', PerformanceHelper);
 })();
