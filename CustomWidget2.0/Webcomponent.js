@@ -26,10 +26,10 @@
                 return 0;
             });
 
-            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: lv_result.length - 1 , steplog:lv_result})
+            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: lv_result.length - 1 , steplog:lv_result.slice(psNo, lv_result.length)})
             psNo = lv_result.length;
             sNo = sNo + 1;              
-            await 1;
+            //await 1;
          }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
