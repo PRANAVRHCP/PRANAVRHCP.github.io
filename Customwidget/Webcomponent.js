@@ -19,7 +19,7 @@
               if(window.initval===0)
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
-              $('html').unbind('click');  
+              //$('html').unbind('click');  
               };
          }); });
           let shadowRoot = this.attachShadow({mode: "open"});
