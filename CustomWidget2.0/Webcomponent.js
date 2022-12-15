@@ -18,8 +18,8 @@
           $('html').click(function(event){
             //do a delay   
            
-              
-              //await 1;
+              this.test();
+             
          }); });        
            
           let shadowRoot = this.attachShadow({mode: "open"});
@@ -37,7 +37,8 @@
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
              //  $('html').unbind('click');  }
-      }
+      await 1;
+              }
     }
       fireChanged() 
     {
