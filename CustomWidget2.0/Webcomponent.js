@@ -7,7 +7,9 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.initval = 0;
+          window.steplog = [];
+          window.sNo = 1;
+          window.psNo = 0;
           window.x = [];
           this.init();           
       }
@@ -15,17 +17,19 @@
       init() {            
           
          $(document).ready(function(){          
-          $('html').click(async function(event){
-            //do a delay   
-            setTimeout(function() {
-               console.log('delay done,did it impact the exec?');
-              }, 10000);
-              if(window.initval===0)
-              {              
-              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
-             //  $('html').unbind('click');  
-              };
-             await 1;
+          $('html').click(async function(event){            
+           
+            let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+            lv_result = lv_result.sort(function(a, b){
+                if(a.startTime < b.startTime) { return -1; }
+                if(a.startTime > b.startTime) { return 1; }
+                return 0;
+            });
+
+            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: lv_result.length - 1 , StepDetail : result[lv_startid].name , steplog:lv_result})
+            psNo = lv_result.length;
+            sNo = sNo + 1;              
+            await 1;
          }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
