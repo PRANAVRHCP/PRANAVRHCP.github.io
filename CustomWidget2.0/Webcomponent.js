@@ -15,7 +15,7 @@
       init() {            
           
          $(document).ready(function(){          
-          $('html').click(async function(event){
+          $('html').click(function(event){
             //do a delay   
             setTimeout(function() {
                console.log('delay done,did it impact the exec?');
@@ -25,7 +25,7 @@
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
              //  $('html').unbind('click');  
               };
-              await 1;
+              //await 1;
          }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
