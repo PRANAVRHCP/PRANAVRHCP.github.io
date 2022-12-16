@@ -29,7 +29,7 @@
               let reslen = lv_result.length ;
             if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result , stepsnapshot:lv_result.slice(psNo,reslen)})
+            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result })
             psNo = reslen ;
             sNo = sNo + 1; }             
               }, 10);
@@ -53,86 +53,20 @@
 
       fireChanged() 
     {
-         console.log(steplog)   ; 
-      //Logic for step derivation
-      /*result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
-      result = result.sort(function(a, b){
-          if(a.startTime < b.startTime) { return -1; }
-          if(a.startTime > b.startTime) { return 1; }
-          return 0;
-      });
+      //Logic for widget derivation
       
-      //add the last step
-      let reslen = lv_result.length ;
-            if(psNo!==reslen)
-            {
-            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result})
-            psNo = reslen ;
-            sNo = sNo + 1; 
-          }*/             
-                 
-          }
-      
-    /*var z = [0];
-      var x = [];
-      var currentStepTime = 0;
-      var previousStepTime = 0;
-      previousStepTime = result[initval-1].startTime;
-      //Generate list of steps
-      for (var i = initval ; i< result.length ; i++)
-              {
-                 currentStepTime = result[i].startTime ;           
-                 var diff = currentStepTime - previousStepTime;   
-                  previousStepTime = currentStepTime ;          
-
-          if(diff > 1000 && result[i].source !== 'external' )
-          { 
-             z.push(i);
-          }
-          else if(diff > 1000 && result[i].source === 'external' )
-                  {
-                       previousStepTime = 0 ; 
-                  }
-              }
-
-      z.push(result.length);{
-
-      }
-
-      let stepNo = 1;
-      let stepDuration = 0;
-      let maxstepid = 0 ;
-      let endTime = 0;
-
-      for (var y = 1 ; y < z.length ; y++)
-          {
-              let maxEndTime = 0;
-              for (var i = z[y-1] ; i < z[y] ; i++ )
-                  {
-                       endTime = result[i].startTime + result[i].duration;
-                         if (endTime > maxEndTime &&  result[i].source !== 'external')
-                         {      
-                            maxEndTime = endTime ;
-                             maxstepid = i ;
-                         }  
-                  }
-              var lv_startid = z[y-1] ; 
-              stepDuration = maxEndTime -  result[lv_startid].startTime;   
-              if( y == 1)
-              {
-                 x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: lv_startid , LogMaxStepID : maxstepid  , StepDetail : 'Initialization'})
-
-              }
-              else
-              {
-                  x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: lv_startid , LogMaxStepID : maxstepid  , StepDetail : result[lv_startid].name })
-
-              }
-                     stepNo = stepNo + 1;
-          }
-        console.log(result);
-        console.log(x);
-    }  */
+      for(var i = 0 ; i< steplog.length ; i++)
+    {   
+        //Create list of Ina Calls  
+        steplog[i].InaCall = steplog[i].stepsnapshot.filter(e => e.source == "external");
+        //Create list of Render widget based on identifiers
+        let st = steplog[i].stepsnapshot.filter(e => e.identifier != null && e.identifier !== '');
+        st = st.filter(e => e.identifier.includes("render")); 
+        //Append list of Render widget based on identifiers 
+        steplog[i].Widgetinfo = st;        
+    }
+       console.log(steplog)   ; 
+        }
   }
 
     
