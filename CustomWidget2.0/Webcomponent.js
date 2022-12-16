@@ -29,7 +29,7 @@
               let reslen = lv_result.length ;
             if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result})
+            steplog.push({StepNo:sNo , StepStartID: psNo ,StependID: reslen-1 , steplog:lv_result , stepsnapshot:lv_result.slice(psNo,reslen)})
             psNo = reslen ;
             sNo = sNo + 1; }             
               }, 10);
