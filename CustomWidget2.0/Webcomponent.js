@@ -58,9 +58,9 @@
       for(var i = 0 ; i< steplog.length ; i++)
     {   
         //Create list of Ina Calls  
-        steplog[i].InaCall = steplog[i].stepsnapshot.filter(e => e.source == "external");
+        steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
         //Create list of Render widget based on identifiers
-        let st = steplog[i].stepsnapshot.filter(e => e.identifier != null && e.identifier !== '');
+        let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
         st = st.filter(e => e.identifier.includes("render")); 
         //Append list of Render widget based on identifiers 
         steplog[i].Widgetinfo = st;        
