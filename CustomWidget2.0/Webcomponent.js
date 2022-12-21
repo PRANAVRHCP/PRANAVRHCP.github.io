@@ -7,10 +7,12 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-         window.steplog = [];
+          window.steplog = [];
           window.sNo = 1;
           window.psNo = 0;
           window.x = [];
+          window.clickprocessing = '';
+           //T-> Triggered , A -> Adding Entries , X -> Done Processing , P -> Performance Button Clicked
           this.init();           
       }
 
@@ -18,8 +20,10 @@
           
          $(document).ready(function(){          
           $('html').click(async function(event){
+            window.clickprocessing = 'T';
             //logic for step derivation 
             setTimeout(function() {
+              window.clickprocessing = 'A';
               let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
               lv_result = lv_result.sort(function(a, b){
                 if(a.startTime < b.startTime) { return -1; }
@@ -32,12 +36,13 @@
             steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result })
             psNo = reslen ;
             sNo = sNo + 1; }             
-              }, 10);
-              if(window.initval===0)
+            window.clickprocessing = 'X';
+             }, 10);
+             /* if(window.initval===0)
               {              
               initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
              //  $('html').unbind('click');  
-              };
+              };*/
              await 1;
          }); });
            
@@ -53,6 +58,12 @@
 
       fireChanged() 
     {
+      // Add a delay of .5 Seconds and proceeed only when the entries are added
+      setTimeout(function() {},50);
+      while(window.clickprocessing !== 'X')
+      {
+        window.clickprocessing = 'P'
+      }
       //Logic for widget derivation
       
       for(var i = 0 ; i< steplog.length ; i++)
