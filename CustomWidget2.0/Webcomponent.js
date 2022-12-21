@@ -10,20 +10,20 @@
           window.steplog = [];
           window.sNo = 1;
           window.psNo = 0;
-          window.x = [];
-          window.clickprocessing = '';
-           //T-> Triggered , A -> Adding Entries , X -> Done Processing , P -> Performance Button Clicked
+          window.x = [];         
           this.init();           
       }
 
       init() {            
           
          $(document).ready(function(){          
-          $('html').click(async function(event){
-            window.clickprocessing = 'T';
+          $('html').click(async function(event){           
+            
             //logic for step derivation 
             setTimeout(function() {
-              window.clickprocessing = 'A';
+              
+             if(event.target.tagName !== 'PKA-BUTTON02')
+             {
               let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
               lv_result = lv_result.sort(function(a, b){
                 if(a.startTime < b.startTime) { return -1; }
@@ -35,14 +35,9 @@
             {
             steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result })
             psNo = reslen ;
-            sNo = sNo + 1; }             
-            window.clickprocessing = 'X';
+            sNo = sNo + 1; } }
              }, 10);
-             /* if(window.initval===0)
-              {              
-              initval =  window.sap.raptr.getEntries().filter(e => e.entryType === 'measure'  && e.name !=="(Table) Rendering").length ;    
-             //  $('html').unbind('click');  
-              };*/
+            
              await 1;
          }); });
            
@@ -58,12 +53,10 @@
 
       fireChanged() 
     {
-      // Add a delay of .5 Seconds and proceeed only when the entries are added
-      setTimeout(function() {},50);
-      while(window.clickprocessing !== 'X')
-      {
-        window.clickprocessing = 'P'
-      }
+      // Add the last step 
+      
+      this.addstep();
+     
       //Logic for widget derivation
       
       for(var i = 0 ; i< steplog.length ; i++)
@@ -78,6 +71,22 @@
     }
        console.log(steplog)   ; 
         }
+    
+    addstep()
+    {
+         let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+         lv_result = lv_result.sort(function(a, b){
+                if(a.startTime < b.startTime) { return -1; }
+                if(a.startTime > b.startTime) { return 1; }
+                return 0;
+            });
+          let reslen = lv_result.length ;
+            if(psNo!==reslen)
+            {
+            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result })
+            psNo = reslen ;
+            sNo = sNo + 1; } 
+    }
   }
 
     
