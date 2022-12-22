@@ -8,6 +8,8 @@
           super();
           // declare global variables to be used across the whole scope of this code
           window.steplog = [];
+          window.dom_click = [];
+          window.dom_content = [];
           window.sNo = 1;
           window.psNo = 0;
           window.x = [];         
@@ -24,6 +26,8 @@
               
              if(event.target.tagName !== 'PKA-BUTTON02')
              {
+              dom_click.push(event.target.parentNode.classList[0]);
+              dom_content.push((event.target.parentElement).textContent);
               let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
               lv_result = lv_result.sort(function(a, b){
                 if(a.startTime < b.startTime) { return -1; }
