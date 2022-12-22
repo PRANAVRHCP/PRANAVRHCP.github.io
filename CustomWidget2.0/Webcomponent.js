@@ -26,7 +26,7 @@
               
              if(event.target.tagName !== 'PKA-BUTTON02')
              {
-              dom_click.push(event.target.parentNode.classList[0]);
+              //dom_click.push(event.target.parentNode.classList[0]);
               dom_content.push((event.target.parentElement).textContent);
               let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
               lv_result = lv_result.sort(function(a, b){
