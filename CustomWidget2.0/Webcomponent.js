@@ -19,9 +19,24 @@
           
          $(document).ready(function(){          
           $('html').click(async function(event){
-            //add the details about the event click trigger text            
-            //logic for step derivation 
-            setTimeout(function() {              
+            //add the details about the event click trigger text 
+
+            //logic for step derivation -> For initial step only ..
+            if(sNo == 1)  {
+            let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                lv_result = lv_result.sort(function(a, b){
+                  if(a.startTime < b.startTime) { return -1; }
+                  if(a.startTime > b.startTime) { return 1; }
+                  return 0;
+              });
+                let reslen = lv_result.length ;
+              if(psNo!==reslen)
+              {
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : 'Initalization'  })
+              psNo = reslen ;
+              sNo = sNo + 1; } }
+
+              setTimeout(function() {              
              if(event.target.tagName !== 'PKA-BUTTON02')
              {
               //dom_click.push(event.target.parentNode.classList[0]);
@@ -35,10 +50,10 @@
               let reslen = lv_result.length ;
             if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : dom_content[dom_content.length-2]  })
+            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : (event.target.parentElement).textContent  })
             psNo = reslen ;
             sNo = sNo + 1; } }
-             }, 10);
+             }, 20000);
             
              await 1;
          }); });
