@@ -8,8 +8,7 @@
           super();
           // declare global variables to be used across the whole scope of this code
           window.steplog = [];
-          window.dom_click = [];
-          window.dom_content = [];
+          window.dom_content = ['Initialization'];
           window.sNo = 1;
           window.psNo = 0;
           window.x = [];         
@@ -19,15 +18,14 @@
       init() {            
           
          $(document).ready(function(){          
-          $('html').click(async function(event){           
-            
+          $('html').click(async function(event){
+            //add the details about the event click trigger text            
             //logic for step derivation 
-            setTimeout(function() {
-              
+            setTimeout(function() {              
              if(event.target.tagName !== 'PKA-BUTTON02')
              {
               //dom_click.push(event.target.parentNode.classList[0]);
-              dom_content.push((event.target.parentElement).textContent);
+               dom_content.push((event.target.parentElement).textContent);
               let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
               lv_result = lv_result.sort(function(a, b){
                 if(a.startTime < b.startTime) { return -1; }
@@ -37,7 +35,7 @@
               let reslen = lv_result.length ;
             if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result })
+            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : dom_content[dom_content.length-2]  })
             psNo = reslen ;
             sNo = sNo + 1; } }
              }, 10);
@@ -78,7 +76,8 @@
     
     addstep()
     {
-         let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+        dom_content.push('Click Performance Widget');   
+        let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
          lv_result = lv_result.sort(function(a, b){
                 if(a.startTime < b.startTime) { return -1; }
                 if(a.startTime > b.startTime) { return 1; }
@@ -87,7 +86,7 @@
           let reslen = lv_result.length ;
             if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result })
+            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : dom_content[dom_content.length-2] })
             psNo = reslen ;
             sNo = sNo + 1; } 
     }
