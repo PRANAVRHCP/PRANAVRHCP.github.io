@@ -7,8 +7,7 @@
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.steplog = [];
-          window.dom_content = ['Initialization'];
+          window.steplog = [];      
           window.sNo = 1;
           window.psNo = 0;
           window.x = [];         
@@ -23,38 +22,37 @@
 
             //logic for step derivation -> For initial step only ..
             if(sNo == 1)  {
-            let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
-                lv_result = lv_result.sort(function(a, b){
-                  if(a.startTime < b.startTime) { return -1; }
-                  if(a.startTime > b.startTime) { return 1; }
-                  return 0;
+                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                      lv_result = lv_result.sort(function(a, b){
+                        if(a.startTime < b.startTime) { return -1; }
+                        if(a.startTime > b.startTime) { return 1; }
+                        return 0;
               });
                 let reslen = lv_result.length ;
               if(psNo!==reslen)
               {
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : 'Initalization'  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               psNo = reslen ;
               sNo = sNo + 1; } }
 
-              setTimeout(function() {              
-             if(event.target.tagName !== 'PKA-BUTTON02')
-             {
-              //dom_click.push(event.target.parentNode.classList[0]);
-               dom_content.push((event.target.parentElement).textContent);
-              let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
-              lv_result = lv_result.sort(function(a, b){
-                if(a.startTime < b.startTime) { return -1; }
-                if(a.startTime > b.startTime) { return 1; }
-                return 0;
-            });
-              let reslen = lv_result.length ;
-            if(psNo!==reslen)
-            {
-            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : (event.target.parentElement).textContent  })
-            psNo = reslen ;
-            sNo = sNo + 1; } }
-             }, 20000);
-            
+              setTimeout(function() 
+              {              
+                  if(event.target.tagName !== 'PKA-BUTTON02')
+                  {              
+                    let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                    lv_result = lv_result.sort(function(a, b){
+                      if(a.startTime < b.startTime) { return -1; }
+                      if(a.startTime > b.startTime) { return 1; }
+                      return 0;
+                  });
+                    let reslen = lv_result.length ;
+                  if(psNo!==reslen)
+                  {
+                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                  psNo = reslen ;
+                  sNo = sNo + 1;             
+                  } }
+             }, 20000);            
              await 1;
          }); });
            
@@ -72,7 +70,7 @@
     {
       // Add the last step 
       
-      this.addstep();
+      setTimeout(function() { this.addstep() }, 20000);
      
       //Logic for widget derivation
       
@@ -91,8 +89,7 @@
     
     addstep()
     {
-        dom_content.push('Click Performance Widget');   
-        let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+         let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
          lv_result = lv_result.sort(function(a, b){
                 if(a.startTime < b.startTime) { return -1; }
                 if(a.startTime > b.startTime) { return 1; }
@@ -101,7 +98,7 @@
           let reslen = lv_result.length ;
             if(psNo!==reslen)
             {
-            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result , StepUserClick : dom_content[dom_content.length-2] })
+            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
             psNo = reslen ;
             sNo = sNo + 1; } 
     }
