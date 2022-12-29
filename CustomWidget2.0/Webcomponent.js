@@ -10,7 +10,8 @@
           window.steplog = [];      
           window.sNo = 1;
           window.psNo = 0;
-          window.x = [];         
+          window.ppsNo = 0;
+          //window.x = [];         
           this.init();           
       }
 
@@ -34,9 +35,32 @@
               steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               psNo = reslen ;
               sNo = sNo + 1; } }
-            
-              // This is the usual flow for collecting steps -
-              // there will be a delay in collecting for roughly 10 seconds
+
+               // This is the usual flow for collecting steps - Check if entries are generated immediately when a click is made 
+
+               setTimeout(function() 
+               {              
+                  // It will not be triggered when the user clicks the Performance Helper Button
+                   if(event.target.tagName !== 'PKA-BUTTON02')
+                   {              
+                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                     lv_result = lv_result.sort(function(a, b){
+                       if(a.startTime < b.startTime) { return -1; }
+                       if(a.startTime > b.startTime) { return 1; }
+                       return 0;
+                   });
+                   
+                   let reslen = lv_result.length ;
+                   if(psNo!==reslen)
+                   {
+                   steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                   ppsNo = psNo;
+                   psNo = reslen ;
+                   sNo = sNo + 1;             
+                   } }
+              }, 100); 
+                
+              // Collect steps , sometimes the entries are generated late and need to be collected once again , there is a delay added to capture this
 
               setTimeout(function() 
               {              
@@ -51,11 +75,32 @@
                   });
                   
                   let reslen = lv_result.length ;
+                  //If there are new entries -> the below logic will be entered
                   if(psNo!==reslen)
                   {
-                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                  psNo = reslen ;
-                  sNo = sNo + 1;             
+                  // If new entries are present , compare the last entry of the previous step in step log
+                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
+                  //Previous step Start + End time 
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration   
+                 
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 
+                  var diff_time = lv_result[psNo].startTime - pstep_time
+
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  {
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;       
+                  }
+                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
+
+                  {
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(ppsNo,reslen);
+                    steplog[sNo-2].RaptrSnapshot = lv_result;
+                    steplog[sNo-2].StepEndId = reslen-1 ;
+                  }
+                        
                   } }
              }, 10000);            
              await 1;
@@ -115,6 +160,3 @@
     
   customElements.define('pka-button02', PerformanceHelper);
 })();
-
-
-
