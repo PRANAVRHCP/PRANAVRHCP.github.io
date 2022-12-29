@@ -133,7 +133,7 @@
       fireChanged() 
     {
       // Add the last step 
-      
+      window.sap.m.MessageBox.information('Performance Analysis Triggered.Info will be downloaded soon');
       setTimeout(function()       
       { 
       
@@ -177,7 +177,7 @@
             }
           }
           steplog[i].StepDuration =  maxstepduration;
-          steplog[i].StepWithMaxDuration =  maxstepduration;
+          steplog[i].StepSIDWithMaxDuration =  maxstepid;
       }
          console.log(steplog)   ; 
 
