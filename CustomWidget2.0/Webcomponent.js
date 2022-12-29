@@ -9,8 +9,7 @@
           // declare global variables to be used across the whole scope of this code
           window.steplog = [];      
           window.sNo = 1;
-          window.psNo = 0;
-          window.ppsNo = 0;
+          window.psNo = 0;        
           //window.x = [];         
           this.init();           
       }
@@ -53,10 +52,25 @@
                    let reslen = lv_result.length ;
                    if(psNo!==reslen)
                    {
-                   steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                   ppsNo = psNo;
-                   psNo = reslen ;
-                   sNo = sNo + 1;             
+                  // If new entries are present , compare the last entry of the previous step in step log
+                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
+                  //Previous step Start + End time 
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 var diff_time = lv_result[psNo].startTime - pstep_time
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  {
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;       
+                  }
+                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
+
+                  {
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
+                    steplog[sNo-2].RaptrSnapshot = lv_result;
+                    steplog[sNo-2].StepEndId = reslen-1 ;
+                  }                           
                    } }
               }, 100); 
                 
@@ -81,7 +95,7 @@
                   // If new entries are present , compare the last entry of the previous step in step log
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
                   //Previous step Start + End time 
-                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration   
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
                  
                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
                  
@@ -96,7 +110,7 @@
                   else // This is the case when the step is the same but some entries were added which needs to be incorporated here
 
                   {
-                    steplog[sNo-2].StepSnapshot = lv_result.slice(ppsNo,reslen);
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
                   }
