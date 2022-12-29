@@ -20,7 +20,7 @@
           $('html').click(async function(event){
             //add the details about the event click trigger text 
 
-            //logic for step derivation -> For initial step only ..
+            //logic for step derivation -> For initial step only , will run only once
             if(sNo == 1)  {
                   let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
                       lv_result = lv_result.sort(function(a, b){
@@ -34,9 +34,13 @@
               steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               psNo = reslen ;
               sNo = sNo + 1; } }
+            
+              // This is the usual flow for collecting steps -
+              // there will be a delay in collecting for roughly 10 seconds
 
               setTimeout(function() 
               {              
+                 // It will not be triggered when the user clicks the Performance Helper Button
                   if(event.target.tagName !== 'PKA-BUTTON02')
                   {              
                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
@@ -45,14 +49,15 @@
                       if(a.startTime > b.startTime) { return 1; }
                       return 0;
                   });
-                    let reslen = lv_result.length ;
+                  
+                  let reslen = lv_result.length ;
                   if(psNo!==reslen)
                   {
                   steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                   psNo = reslen ;
                   sNo = sNo + 1;             
                   } }
-             }, 20000);            
+             }, 10000);            
              await 1;
          }); });
            
@@ -70,38 +75,41 @@
     {
       // Add the last step 
       
-      setTimeout(function() { this.addstep() }, 20000);
-     
+      setTimeout(function()       
+      { 
+      
+      //Check incase there are any new entries (most likely not)
+
+      let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+      lv_result = lv_result.sort(function(a, b){
+             if(a.startTime < b.startTime) { return -1; }
+             if(a.startTime > b.startTime) { return 1; }
+             return 0;
+         });
+       let reslen = lv_result.length ;
+         if(psNo!==reslen)
+         {
+         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
+         psNo = reslen ;
+         sNo = sNo + 1; } 
+      
       //Logic for widget derivation
       
       for(var i = 0 ; i< steplog.length ; i++)
-    {   
-        //Create list of Ina Calls  
-        steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
-        //Create list of Render widget based on identifiers
-        let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
-        st = st.filter(e => e.identifier.includes("render")); 
-        //Append list of Render widget based on identifiers 
-        steplog[i].Widgetinfo = st;        
-    }
-       console.log(steplog)   ; 
-        }
-    
-    addstep()
-    {
-         let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
-         lv_result = lv_result.sort(function(a, b){
-                if(a.startTime < b.startTime) { return -1; }
-                if(a.startTime > b.startTime) { return 1; }
-                return 0;
-            });
-          let reslen = lv_result.length ;
-            if(psNo!==reslen)
-            {
-            steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
-            psNo = reslen ;
-            sNo = sNo + 1; } 
-    }
+      {   
+          //Create list of Ina Calls  
+          steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
+          //Create list of Render widget based on identifiers
+          let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
+          st = st.filter(e => e.identifier.includes("render")); 
+          //Append list of Render widget based on identifiers 
+          steplog[i].Widgetinfo = st;        
+      }
+         console.log(steplog)   ; 
+
+      }, 10000);
+   
+    } // End of Fire Changed
   }
 
     
