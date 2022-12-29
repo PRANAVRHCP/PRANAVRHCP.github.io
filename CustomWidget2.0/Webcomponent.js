@@ -31,7 +31,7 @@
                 let reslen = lv_result.length ;
               if(psNo!==reslen)
               {
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepText : 'Initalization', StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               psNo = reslen ;
               sNo = sNo + 1; } }
 
@@ -60,7 +60,7 @@
                  var diff_time = lv_result[psNo].startTime - pstep_time
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({StepNo:sNo , StepStartId: psNo , StepEndId: reslen-1 , StepText : (event.target.parentElement).textContent , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -70,7 +70,6 @@
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
-                    psNo = reslen ;
                   }                           
                    } }
               }, 100); 
@@ -104,7 +103,7 @@
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({StepNo:sNo , StepStartId: psNo , StepEndId: reslen-1 , StepText : (event.target.parentElement).textContent , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -114,7 +113,6 @@
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
-                    psNo = reslen ;
                   }
                         
                   } }
@@ -164,7 +162,20 @@
           let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
           st = st.filter(e => e.identifier.includes("render")); 
           //Append list of Render widget based on identifiers 
-          steplog[i].Widgetinfo = st;        
+          steplog[i].Widgetinfo = st;
+          // Max Runtime derivation logic
+          var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
+          var maxstepduration = 0;
+          for(var y = 0 ; y < st.length ; y++)     
+          {
+
+            var stepduration = st[y].startTime + st[y].duration - stepstarttime ;
+            if(stepduration > maxstepduration ) 
+            {
+              maxstepduration = stepduration ;
+            }
+          }
+          steplog[i].StepDuration =  maxstepduration;
       }
          console.log(steplog)   ; 
 
