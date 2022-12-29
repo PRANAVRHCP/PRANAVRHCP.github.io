@@ -70,6 +70,7 @@
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
+                    psNo = reslen ;
                   }                           
                    } }
               }, 100); 
@@ -113,6 +114,7 @@
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
+                    psNo = reslen ;
                   }
                         
                   } }
