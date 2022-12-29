@@ -31,7 +31,7 @@
                 let reslen = lv_result.length ;
               if(psNo!==reslen)
               {
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepText : 'Initalization', StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               psNo = reslen ;
               sNo = sNo + 1; } }
 
@@ -60,7 +60,7 @@
                  var diff_time = lv_result[psNo].startTime - pstep_time
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo , StepEndId: reslen-1 , StepText : (event.target.parentElement).textContent , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -104,7 +104,7 @@
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo , StepEndId: reslen-1 , StepText : (event.target.parentElement).textContent , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
