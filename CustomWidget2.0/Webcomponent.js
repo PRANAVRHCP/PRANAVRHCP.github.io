@@ -166,16 +166,18 @@
           // Max Runtime derivation logic
           var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
           var maxstepduration = 0;
-          for(var y = 0 ; y < st.length ; y++)     
+          for(var y = 0 ; y < steplog[i].StepSnapshot.length ; y++)     
           {
 
-            var stepduration = st[y].startTime + st[y].duration - stepstarttime ;
+            var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration - stepstarttime ;
             if(stepduration > maxstepduration ) 
             {
               maxstepduration = stepduration ;
+              var maxstepid = y + 1;
             }
           }
           steplog[i].StepDuration =  maxstepduration;
+          steplog[i].StepWithMaxDuration =  maxstepduration;
       }
          console.log(steplog)   ; 
 
