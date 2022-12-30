@@ -117,7 +117,7 @@
                      psNo = reslen ;
                   }                        
                   } }
-             }, 15000);            
+             }, 10000);            
              await 1;
          }); });
            
@@ -181,7 +181,7 @@
       }
          console.log(steplog)   ; 
 
-      }, 15000);
+      }, 10000);
    
     } // End of Fire Changed
   }
