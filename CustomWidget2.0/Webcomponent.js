@@ -70,6 +70,7 @@
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
+                     psNo = reslen ;
                   }                           
                    } }
               }, 100); 
@@ -113,10 +114,10 @@
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
                     steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
-                  }
-                        
+                     psNo = reslen ;
+                  }                        
                   } }
-             }, 10000);            
+             }, 15000);            
              await 1;
          }); });
            
@@ -181,7 +182,7 @@
       }
          console.log(steplog)   ; 
 
-      }, 10000);
+      }, 15000);
    
     } // End of Fire Changed
   }
