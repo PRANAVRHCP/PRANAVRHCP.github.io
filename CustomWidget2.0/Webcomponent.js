@@ -22,7 +22,7 @@
 
             //logic for step derivation -> For initial step only , will run only once
             if(sNo == 1)  {
-                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" && e.name !=="(Table) React-table-rendering" );
                       lv_result = lv_result.sort(function(a, b){
                         if(a.startTime < b.startTime) { return -1; }
                         if(a.startTime > b.startTime) { return 1; }
@@ -42,7 +42,7 @@
                   // It will not be triggered when the user clicks the Performance Helper Button
                    if(event.target.tagName !== 'PKA-BUTTON02')
                    {              
-                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"  );
                      lv_result = lv_result.sort(function(a, b){
                        if(a.startTime < b.startTime) { return -1; }
                        if(a.startTime > b.startTime) { return 1; }
@@ -82,7 +82,7 @@
                  // It will not be triggered when the user clicks the Performance Helper Button
                   if(event.target.tagName !== 'PKA-BUTTON02')
                   {              
-                    let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+                    let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"  );
                     lv_result = lv_result.sort(function(a, b){
                       if(a.startTime < b.startTime) { return -1; }
                       if(a.startTime > b.startTime) { return 1; }
@@ -139,8 +139,7 @@
       { 
       
       //Check incase there are any new entries (most likely not)
-
-      let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+      let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering" );
       lv_result = lv_result.sort(function(a, b){
              if(a.startTime < b.startTime) { return -1; }
              if(a.startTime > b.startTime) { return 1; }
