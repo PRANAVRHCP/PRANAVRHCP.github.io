@@ -40,7 +40,7 @@
       });
       }
     
-      function interceptNetworkRequests(ee) {
+      interceptNetworkRequests(ee) {
         const open = XMLHttpRequest.prototype.open;
         const send = XMLHttpRequest.prototype.send;
     
