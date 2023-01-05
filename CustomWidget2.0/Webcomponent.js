@@ -19,7 +19,7 @@
          $(document).ready(function(){          
           $('html').click(async function(event){
             //add the details about the event click trigger text 
-
+              console.log(result_xhr);      
             //logic for step derivation -> For initial step only , will run only once
             if(sNo == 1)  {
                   let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" && e.name !=="(Table) React-table-rendering"  && e.name !=="(Table) onQueryExecuted" );
