@@ -18,8 +18,7 @@
           
          $(document).ready(function(){          
           $('html').click(async function(event){
-            //add the details about the event click trigger text 
-              console.log(result_xhr);      
+            //add the details about the event click trigger text              
             //logic for step derivation -> For initial step only , will run only once
             if(sNo == 1)  {
                   let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" && e.name !=="(Table) React-table-rendering"  && e.name !=="(Table) onQueryExecuted" );
@@ -180,10 +179,23 @@
           steplog[i].StepSIDWithMaxDuration =  maxstepid;
       }
          console.log(steplog)   ; 
+         this.downloadnetworklog(result_xhr);
 
       }, 10000);
    
     } // End of Fire Changed
+
+    downloadnetworklog(result)
+      {
+        var exportName = 'NetworkCalls_' +  Date.now().toString() + '.json';
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result));            
+        var downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", exportName);
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();            
+      }
   }
 
     
