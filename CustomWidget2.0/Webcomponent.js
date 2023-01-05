@@ -187,11 +187,8 @@
           }
           steplog[i].StepDuration =  maxstepduration;
           steplog[i].StepSIDWithMaxDuration =  maxstepid;
-        //create a local copy for download which is not soo detailed 
-          local_log[i].push({StepNo : steplog[i].StepNo})  ;
-          local_log[i].push({StepDuration : steplog[i].StepDuration })  ;
-          local_log[i].push({InaCount : steplog[i].InaCall.length })  ;
-          local_log[i].push({WidgetCount : steplog[i].Widgetinfo.length }) ;
+        //create a local copy for download which is not soo detailed  
+         local_log.push({StepNo : steplog[i].StepNo, StepDuration : steplog[i].StepDuration,InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
       }
          console.log(steplog) ; 
          
