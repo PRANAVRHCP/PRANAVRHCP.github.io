@@ -188,10 +188,10 @@
           steplog[i].StepDuration =  maxstepduration;
           steplog[i].StepSIDWithMaxDuration =  maxstepid;
         //create a local copy for download which is not soo detailed 
-          local_log.push({StepNo : steplog[i].StepNo})  ;
-          local_log.push({StepDuration : steplog[i].StepDuration })  ;
-          local_log.push({InaCount : steplog[i].InaCall.length })  ;
-          local_log.push({WidgetCount : steplog[i].Widgetinfo.length }) ;
+          local_log[i].push({StepNo : steplog[i].StepNo})  ;
+          local_log[i].push({StepDuration : steplog[i].StepDuration })  ;
+          local_log[i].push({InaCount : steplog[i].InaCall.length })  ;
+          local_log[i].push({WidgetCount : steplog[i].Widgetinfo.length }) ;
       }
          console.log(steplog) ; 
          
