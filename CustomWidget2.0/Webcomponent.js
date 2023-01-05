@@ -178,8 +178,8 @@
           steplog[i].StepDuration =  maxstepduration;
           steplog[i].StepSIDWithMaxDuration =  maxstepid;
       }
-         console.log(steplog)   ; 
-         this.downloadnetworklog(result_xhr);
+         console.log(steplog) ; 
+         downloadnetworklog(result_xhr);
 
       }, 10000);
    
