@@ -1,193 +1,88 @@
 (function () {
   let tmpl = document.createElement('template');
   tmpl.innerHTML = 
-  `<button type="button" id="newBTN"> Perf Helper </button>` ;   
+  `<button type="button" id="myBtn"> Capture </button>` ;   
  
-  class PerformanceHelper extends HTMLElement {
+  class PerformanceHelp extends HTMLElement {
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
-          window.steplog = [];      
-          window.sNo = 1;
-          window.psNo = 0;        
-          //window.x = [];         
-          this.init();           
+         window.initval = 0;
+         window.result_xhr = [];
+         window.x = [];
+         this.init();           
       }
 
       init() {            
           
-         $(document).ready(function(){          
-          $('html').click(async function(event){
-            //add the details about the event click trigger text              
-            //logic for step derivation -> For initial step only , will run only once
-            if(sNo == 1)  {
-                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" && e.name !=="(Table) React-table-rendering"  && e.name !=="(Table) onQueryExecuted" );
-                      lv_result = lv_result.sort(function(a, b){
-                        if(a.startTime < b.startTime) { return -1; }
-                        if(a.startTime > b.startTime) { return 1; }
-                        return 0;
-              });
-                let reslen = lv_result.length ;
-              if(psNo!==reslen)
-              {
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-              psNo = reslen ;
-              sNo = sNo + 1; } }
-
-               // This is the usual flow for collecting steps - Check if entries are generated immediately when a click is made 
-
-               setTimeout(function() 
-               {              
-                  // It will not be triggered when the user clicks the Performance Helper Button
-                   if(event.target.tagName !== 'PKA-BUTTON02')
-                   {              
-                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted"  );
-                     lv_result = lv_result.sort(function(a, b){
-                       if(a.startTime < b.startTime) { return -1; }
-                       if(a.startTime > b.startTime) { return 1; }
-                       return 0;
-                   });
-                   
-                   let reslen = lv_result.length ;
-                   if(psNo!==reslen)
-                   {
-                  // If new entries are present , compare the last entry of the previous step in step log
-                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
-                  //Previous step Start + End time 
-                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
-                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
-                 var diff_time = lv_result[psNo].startTime - pstep_time
-                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
-                  {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    psNo = reslen ;
-                    sNo = sNo + 1;       
-                  }
-                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
-
-                  {
-                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
-                    steplog[sNo-2].RaptrSnapshot = lv_result;
-                    steplog[sNo-2].StepEndId = reslen-1 ;
-                     psNo = reslen ;
-                  }                           
-                   } }
-              }, 100); 
-                
-              // Collect steps , sometimes the entries are generated late and need to be collected once again , there is a delay added to capture this
-
-              setTimeout(function() 
-              {              
-                 // It will not be triggered when the user clicks the Performance Helper Button
-                  if(event.target.tagName !== 'PKA-BUTTON02')
-                  {              
-                    let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" );
-                    lv_result = lv_result.sort(function(a, b){
-                      if(a.startTime < b.startTime) { return -1; }
-                      if(a.startTime > b.startTime) { return 1; }
-                      return 0;
-                  });
-                  
-                  let reslen = lv_result.length ;
-                  //If there are new entries -> the below logic will be entered
-                  if(psNo!==reslen)
-                  {
-                  // If new entries are present , compare the last entry of the previous step in step log
-                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
-                  //Previous step Start + End time 
-                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
-                 
-                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
-                 
-                  var diff_time = lv_result[psNo].startTime - pstep_time
-
-                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
-                  {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    psNo = reslen ;
-                    sNo = sNo + 1;       
-                  }
-                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
-
-                  {
-                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
-                    steplog[sNo-2].RaptrSnapshot = lv_result;
-                    steplog[sNo-2].StepEndId = reslen-1 ;
-                     psNo = reslen ;
-                  }                        
-                  } }
-             }, 10000);            
-             await 1;
-         }); });
-           
+      
           let shadowRoot = this.attachShadow({mode: "open"});
-          shadowRoot.appendChild(tmpl.content.cloneNode(true));
-          
+          shadowRoot.appendChild(tmpl.content.cloneNode(true));  
           this.addEventListener("click", event => {
           var event = new Event("onClick");
-          this.fireChanged();           
+          this.capturechange();
+         //this.fireChanged();           
           this.dispatchEvent(event);
           });           
       }
 
-      fireChanged() 
+    capturechange()
     {
-      // Add the last step 
-      window.sap.m.MessageBox.information('Performance Analysis Triggered.Info will be downloaded soon');
-      setTimeout(function()       
-      { 
-      
-      //Check incase there are any new entries (most likely not)
-      let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted" );
-      lv_result = lv_result.sort(function(a, b){
-             if(a.startTime < b.startTime) { return -1; }
-             if(a.startTime > b.startTime) { return 1; }
-             return 0;
-         });
-       let reslen = lv_result.length ;
-         if(psNo!==reslen)
-         {
-         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
-         psNo = reslen ;
-         sNo = sNo + 1; } 
-      
-      //Logic for widget derivation
-      
-      for(var i = 0 ; i< steplog.length ; i++)
-      {   
-          //Create list of Ina Calls  
-          steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
-          //Create list of Render widget based on identifiers
-          let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
-          st = st.filter(e => e.identifier.includes("render")); 
-          //Append list of Render widget based on identifiers 
-          steplog[i].Widgetinfo = st;
-          // Max Runtime derivation logic
-          var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
-          var maxstepduration = 0;
-          for(var y = 0 ; y < steplog[i].StepSnapshot.length ; y++)     
-          {
-
-            var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration - stepstarttime ;
-            if(stepduration > maxstepduration ) 
-            {
-              maxstepduration = stepduration ;
-              var maxstepid = y + 1;
-            }
-          }
-          steplog[i].StepDuration =  maxstepduration;
-          steplog[i].StepSIDWithMaxDuration =  maxstepid;
+      console.log(result_xhr);
+    }
+    fireChanged() {
+          
+          //Retrieve the Log  for all the steps
+          
+          let result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" );
+          //Sort
+          result = result.sort(function(a, b){
+              if(a.startTime < b.startTime) { return -1; }
+              if(a.startTime > b.startTime) { return 1; }
+              return 0;
+          });           
+          
+          //download the log files 
+          // this.downloadlog(result);          
+          //generate the init step 
+         /* if(y.length !== 0 ) {y = y.filter((i,idx) => y[idx-1] !== i)}; */
+           x = [];
+           this.generateinitstep(result);       
+          //generate steps after initalization          
+           this.generatenextstep(result);        
+           console.log(x);
+           console.log(result);
+          //download the log file
+          //this.downloadstepbreakdown();     
+          //open custom url
+          //this.openconfluence();
+          
       }
-         console.log(steplog)   ; 
-         this.downloadnetworklog(result_xhr);
+    
+    openconfluence()
+    {window.open('https://atc.bmwgroup.net/confluence/display/FINRA/2.0.1+Create+a+defect+regarding+Reporting+Performance');}
 
-      }, 10000);
-   
-    } // End of Fire Changed
+      JSON2CSV(objArray) {
+          var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+        var str = 'StepNo,Stepduration,LogStepStartID,LogMaxStepID,StepDetail\r\n';
+      
+        for (var i = 0; i < array.length; i++) {
+          var line = '';
+          for (var index in array[i]) {
+            if (line != '') line += ','
+      
+            line += array[i][index];
+          }
+      
+          str += line + '\r\n';
+        }
+      
+        return str;
+      }   
 
-    downloadnetworklog(result)
+      downloadlog(result)
       {
-        var exportName = 'NetworkCalls_' +  Date.now().toString() + '.json';
+        var exportName = 'RaptrMeasures_' +  Date.now().toString() + '.json';
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result));            
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
@@ -196,8 +91,144 @@
         downloadAnchorNode.click();
         downloadAnchorNode.remove();            
       }
+        
+      downloadstepbreakdown()
+       {
+       
+           // Convert Object to JSON
+            var jsonObject = JSON.stringify(x);
+            var csv = this.JSON2CSV(jsonObject);
+            var downloadLink = document.createElement("a");
+            var blob = new Blob(["\ufeff", csv]);
+            var url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.download =  'StepWiseBreakdown_' +  Date.now().toString() + '.csv';;
+            document.body.appendChild(downloadLink);            
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+       
+       }
+      generateinitstep(result)
+      { 
+        var maxEndTime = 0;
+        var endTime = 0;
+        var maxstepid = 0;
+        
+        if(initval === 0)
+        {
+          initval = result.length;
+        }
+
+        for (var i = 0 ; i< initval ; i++)
+        {
+          endTime = result[i].startTime + result[i].duration;
+          if (endTime > maxEndTime){      
+            maxEndTime = endTime;
+            maxstepid = i;}
+        }
+        //  stepDuration = stepEndTime - stepStartTime , Since our start of step is the beginning of the webpage it will be 0 
+        var stepDuration = maxEndTime - 0;      
+        x.push({StepNo:1 , StepDuration:stepDuration.toFixed(2) , LogStepStartID:0 , LogMaxStepID : maxstepid , StepDetail : 'Initialization'});  
+      }
+
+      generatenextstep(result)
+      {
+        let stepStartTime = 0;
+        let stepEndTime = 0;
+        let maxEndTime = x[0].StepDuration;
+        let endTime = 0;
+        let stepNo = 1;
+        var maxstepid = 0;
+        let prev_stepid = 1;
+        let stepDuration = 0;
+        let logstepid = 0;
+        let set_maxendtimezero = false ;
+
+        for (let i = initval  ; i< result.length ; i++)
+  {
+    if (result[i].startTime > maxEndTime + 1000 && maxEndTime!= 0 ) {
+        // This is a new step!!!       
+     console.log(i) ;     
+
+     /* if (result[i].source === 'external' )
+      {
+        maxEndTime = 0;      
+        set_maxendtimezero = true;
+      }
+      else
+      {   */           
+        stepStartTime = result[i].startTime;
+        maxEndTime = 0;
+        stepNo++;
+        logstepid = i;
+      //}
+      
+    }
+    
+   if (stepNo > 1 && prev_stepid != stepNo)
+          {
+           stepEndTime = maxEndTime;
+           stepDuration = stepEndTime - stepStartTime;     
+           x.push({StepNo:stepNo , StepDuration:stepDuration.toFixed(2) , LogStepStartID: logstepid , LogMaxStepID : maxstepid , StepDetail : result[i].name });  
+           prev_stepid =  prev_stepid + 1;           
+        }
+    
+    if(result[i].startTime>0)  
+  { 
+    endTime = result[i].startTime + result[i].duration;
+    /*if (set_maxendtimezero === true) {
+      endTime = 1 ;
+      maxEndTime = 1;
+      set_maxendtimezero = false ;
+    }*/
+    if (endTime > maxEndTime){      
+      maxEndTime = endTime;
+      maxstepid = i;
+      if(stepNo != 1)
+         { 
+           x[stepNo-1].StepDuration = (maxEndTime - stepStartTime).toFixed(2);
+           x[stepNo-1].LogMaxStepID = maxstepid;
+         };
+      
+  }}
+}     }
   }
 
-    
-  customElements.define('pka-button02', PerformanceHelper);
+  customElements.define('pka-button', PerformanceHelp);
+  // This is only good for logging.
+function addXMLRequestCallback(callback){
+  let oldSend;
+  let i;
+  if( XMLHttpRequest.callbacks ) {
+      // we've already overridden send() so just add the callback
+      XMLHttpRequest.callbacks.push( callback );
+  } else {
+      // create a callback queue
+      XMLHttpRequest.callbacks = [callback];
+      // store the native send()
+      oldSend = XMLHttpRequest.prototype.send;
+      // override the native send()
+      XMLHttpRequest.prototype.send = function(){         
+          for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
+              XMLHttpRequest.callbacks[i]( this );
+          }
+          // call the native send()
+          oldSend.apply(this, arguments);
+      }
+  }
+}
+
+        // e.g.
+        addXMLRequestCallback( xhr => {
+         // console.log( xhr.responseText ); // (an empty string)
+         if(xhr.responseText !== '' || xhr.responseText !== undefined )
+         {
+         // console.log(xhr.responseText)
+         }
+        });
+        addXMLRequestCallback( xhr => {
+        //  console.dir( xhr ); // have a look if there is anything useful here
+        result_xhr.push(xhr);
+        });
+
 })();
