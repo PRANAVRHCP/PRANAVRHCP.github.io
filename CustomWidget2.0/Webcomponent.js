@@ -133,8 +133,18 @@
       fireChanged() 
     {
       // Add the last step 
+      //define a local this which can be used to call other methods later
+      var local_this = this;
+     
       window.sap.m.MessageBox.information('Performance Analysis Triggered.Info will be downloaded soon');
-      setTimeout(function()       
+      //Create a timeout to capture all the events
+      this.calladdstep(local_this);
+   
+    } // End of Fire Changed
+
+    calladdstep(local_this)
+    {
+            setTimeout(function()       
       { 
       
       //Check incase there are any new entries (most likely not)
@@ -179,12 +189,13 @@
           steplog[i].StepSIDWithMaxDuration =  maxstepid;
       }
          console.log(steplog) ; 
-         downloadnetworklog(result_xhr);
+         
+         //Download the network log
+         local_this.downloadnetworklog(result_xhr);
 
       }, 10000);
-   
-    } // End of Fire Changed
-
+    }
+    
     downloadnetworklog(result)
       {
         var exportName = 'NetworkCalls_' +  Date.now().toString() + '.json';
