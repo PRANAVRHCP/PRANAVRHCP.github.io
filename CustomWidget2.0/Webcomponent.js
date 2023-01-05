@@ -187,6 +187,11 @@
           }
           steplog[i].StepDuration =  maxstepduration;
           steplog[i].StepSIDWithMaxDuration =  maxstepid;
+        //create a local copy for download which is not soo detailed 
+          local_log[i].StepNo =  steplog[i].StepNo;
+          local_log[i].StepDuration = steplog[i].StepDuration 
+          local_log[i].InaCount = steplog[0].InaCall.length;
+          local_log[i].WidgetCount = steplog[0].Widgetinfo.length
       }
          console.log(steplog) ; 
          
