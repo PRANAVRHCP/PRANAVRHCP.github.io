@@ -162,7 +162,7 @@
          sNo = sNo + 1; } 
       
       //Logic for widget derivation
-      
+      var local_log = [];
       for(var i = 0 ; i< steplog.length ; i++)
       {   
           //Create list of Ina Calls  
