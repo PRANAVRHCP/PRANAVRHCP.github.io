@@ -191,7 +191,7 @@
           local_log.push({StepNo : steplog[i].StepNo})  ;
           local_log.push({StepDuration : steplog[i].StepDuration })  ;
           local_log.push({InaCount : steplog[i].InaCall.length })  ;
-          local_log.push({WidgetCount : steplog[i].Widgetinfo.length })  :
+          local_log.push({WidgetCount : steplog[i].Widgetinfo.length }) ;
       }
          console.log(steplog) ; 
          
