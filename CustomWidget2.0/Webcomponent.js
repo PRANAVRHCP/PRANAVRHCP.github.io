@@ -31,7 +31,8 @@
                 let reslen = lv_result.length ;
               if(psNo!==reslen)
               {
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+              //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
               psNo = reslen ;
               sNo = sNo + 1; } }
 
@@ -60,7 +61,8 @@
                  var diff_time = lv_result[psNo].startTime - pstep_time
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -104,7 +106,8 @@
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -158,7 +161,8 @@
        let reslen = lv_result.length ;
          if(psNo!==reslen)
          {
-         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
+         //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
+         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) })
          psNo = reslen ;
          sNo = sNo + 1; } 
       
@@ -193,15 +197,17 @@
       }
          console.log(steplog) ; 
          
-         //Download the network log
-         local_this.downloadnetworklog(result_xhr);
+         //Download the Network log
+         local_this.downloadlog(result_xhr , 'NetworkCalls');
+          //Download the Step log
+         local_this.downloadlog(steplog , 'StepLog');
 
       }, 10000);
     }
     
-    downloadnetworklog(result)
+    downloadlog(result , fname)
       {
-        var exportName = 'NetworkCalls_' +  Date.now().toString() + '.json';
+        var exportName = fname + '_' +  Date.now().toString() + '.json';
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result));            
         var downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
