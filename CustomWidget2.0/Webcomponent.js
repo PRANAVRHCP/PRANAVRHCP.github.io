@@ -238,7 +238,7 @@
 
       JSON2CSV(objArray) {
         var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-      var str = 'StepNo,Stepduration,LogStepStartID,LogMaxStepID,StepDetail\r\n';
+      var str = 'StepNo,Stepduration,InaCount,WidgetCount\r\n';
     
       for (var i = 0; i < array.length; i++) {
         var line = '';
