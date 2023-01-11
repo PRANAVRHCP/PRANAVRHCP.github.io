@@ -70,7 +70,7 @@
 
                   {
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
-                    steplog[sNo-2].RaptrSnapshot = lv_result;
+                    //steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
                      psNo = reslen ;
                   }                           
@@ -115,7 +115,7 @@
 
                   {
                     steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
-                    steplog[sNo-2].RaptrSnapshot = lv_result;
+                   // steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
                      psNo = reslen ;
                   }                        
@@ -195,7 +195,6 @@
         //create a local copy for download which is not soo detailed  
          local_log.push({StepNo : steplog[i].StepNo, StepDuration : parseInt(steplog[i].StepDuration) ,InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
       }
-         console.log(steplog) ; 
          
          //Download the Network log
          local_this.downloadlog(result_xhr , 'NetworkCalls');
