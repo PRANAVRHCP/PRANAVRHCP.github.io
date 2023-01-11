@@ -8,6 +8,7 @@
           super();
           // declare global variables to be used across the whole scope of this code
           window.steplog = [];      
+          window.result_xhr = [];
           window.sNo = 1;
           window.psNo = 0;        
           //window.x = [];         
@@ -213,4 +214,39 @@
 
     
   customElements.define('pka-button02', PerformanceHelper);
+  
+  function addXMLRequestCallback(callback){
+  let oldSend;
+  let i;
+  if( XMLHttpRequest.callbacks ) {
+      // we've already overridden send() so just add the callback
+      XMLHttpRequest.callbacks.push( callback );
+  } else {
+      // create a callback queue
+      XMLHttpRequest.callbacks = [callback];
+      // store the native send()
+      oldSend = XMLHttpRequest.prototype.send;
+      // override the native send()
+      XMLHttpRequest.prototype.send = function(){         
+          for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
+              XMLHttpRequest.callbacks[i]( this );
+          }
+          // call the native send()
+          oldSend.apply(this, arguments);
+      }
+  }
+}
+      
+        addXMLRequestCallback( xhr => {
+         //(an empty string)
+         if(xhr.responseText !== '' || xhr.responseText !== undefined )
+         {
+         // console.log(xhr.responseText)
+         }
+        });
+        addXMLRequestCallback( xhr => {
+      // We receive the resultset here with finished responses
+        result_xhr.push(xhr);
+        });
+  
 })();
