@@ -199,8 +199,10 @@
          
          //Download the Network log
          local_this.downloadlog(result_xhr , 'NetworkCalls');
-          //Download the Step log
+         //Download the Step log
          local_this.downloadlog(steplog , 'StepLog');
+         //Download Local Log 
+          local_this.downloadstepbreakdown(local_this , local_log);
 
       }, 10000);
     }
