@@ -8,8 +8,8 @@
           super();
           // declare global variables to be used across the whole scope of this code
           window.steplog = [];      
-          window.result_xhr = [];
-           window.result_xhr_all = [];
+          window.xhr_log = [];
+          window.xhr_np = [];
           window.sNo = 1;
           window.psNo = 0;        
           //window.x = [];         
@@ -343,7 +343,16 @@
             var timestamp = new Date();   
             if(xhr.status !== undefined)          
             
-            {window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status }); }
+            {   var grid = JSON.parse(result_xhr[0].xhr._responseFormatted).Grids  ;
+                if(grid !== undefined || grid !== null)
+                {
+                    var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
+                }
+                
+                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData 
+                 }) ; }
             else
             {
               trimresponsewithdelay(xhr);
@@ -361,9 +370,23 @@
         {
           setTimeout(function()
           {   
-            //add another delay of 2 seconds  
-            var timestamp = new Date();  
-            window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });
+            //add another delay of 2 seconds             
+            if(xhr.status !== undefined)          
+            
+            {   var grid = JSON.parse(result_xhr[0].xhr._responseFormatted).Grids  ;
+                if(grid !== undefined || grid !== null)
+                {
+                    var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
+                }
+                
+                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData 
+                 }) ; }
+            else {
+              var timestamp = new Date();  
+              window.xhr_np.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });
+            }
             },2000)
             await 1;
         }
