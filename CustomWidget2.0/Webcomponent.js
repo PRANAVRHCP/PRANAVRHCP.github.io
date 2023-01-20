@@ -330,22 +330,21 @@
 }      
          
         addXMLRequestCallback( xhr => {
-          // processxhr(xhr);
+           processXhrResults(xhr);         
+           });     
+           
+        async function processXhrResults()
+        {
           if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
              {
-             window.result_xhr.push(xhr);   
+              var timestamp = new Date();
+              /*var hours = timestamp.getHours().toString().padStart(2, '0');
+              var minutes = timestamp.getMinutes().toString().padStart(2, '0');
+              var seconds = timestamp.getSeconds().toString().padStart(2, '0');
+              var ns = timestamp.getMilliseconds().toString().padStart(2,0) ;let hhmmss = hours + minutes + seconds + ns ;*/
+             window.result_xhr.push( { xhr :  xhr , timestamp : timestamp  });   
               }
-           });
-       
-          /* processXhrResults();
-        
-        async function processXhrResults()
-        {  while( window.result_xhr == null)
-          {   
-            // wait until the first entry for xhr arrives
-          }
-          console.log(result_xhr)  ;
-        } */
+        }
 
 
 })();
