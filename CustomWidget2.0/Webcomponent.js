@@ -333,7 +333,7 @@
            processXhrResults(xhr);         
            });     
            
-        async function processXhrResults()
+        async function processXhrResults(xhr)
         {
           if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
              {
