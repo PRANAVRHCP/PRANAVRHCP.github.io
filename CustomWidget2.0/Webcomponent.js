@@ -340,20 +340,30 @@
           //Continue the execution of the callback to avoid any delay in processing
           setTimeout(function()
           {   
-            var timestamp = new Date();             
-            while(xhr.status === undefined )
-             {
-            //waiting for the stauts to change..
-             }
+            var timestamp = new Date();   
+            if(xhr.status !== undefined)          
             
-            window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });  
-            
+            {window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status }); }
+            else
+            {
+              trimresponsewithdelay(xhr);
+            }
              /*var hours = timestamp.getHours().toString().padStart(2, '0');
               var minutes = timestamp.getMinutes().toString().padStart(2, '0');
               var seconds = timestamp.getSeconds().toString().padStart(2, '0');
               var ns = timestamp.getMilliseconds().toString().padStart(2,0) ;let hhmmss = hours + minutes + seconds + ns ;*/
               
-            },1000)
+            },2000)
+            await 1;
+        }
+
+        async function trimresponsewithdelay(xhr)
+        {
+          setTimeout(function()
+          {   
+            //add another delay of 2 seconds                  
+            window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });
+            },2000)
             await 1;
         }
 
