@@ -331,6 +331,21 @@
          
         addXMLRequestCallback( xhr => {
           // processxhr(xhr);
+          if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
+             {
              window.result_xhr.push(xhr);   
+              }
            });
+       
+           processXhrResults();
+        
+        async function processXhrResults()
+        {  while( window.result_xhr == null)
+          {   
+            // wait until the first entry for xhr arrives
+          }
+          console.log(result_xhr)  ;
+        }
+
+
 })();
