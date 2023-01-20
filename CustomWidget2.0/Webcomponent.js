@@ -330,23 +330,29 @@
 }      
          
         addXMLRequestCallback( xhr => {
-           processXhrResults(xhr);         
+            if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
+             { 
+          processXhrResults(xhr);         }
            });     
            
         async function processXhrResults(xhr)
         {
           //Continue the execution of the callback to avoid any delay in processing
           setTimeout(function()
-          {          
-          if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
+          {   
+            var timestamp = new Date();             
+            while(xhr.status === undefined )
              {
-              var timestamp = new Date();
-              /*var hours = timestamp.getHours().toString().padStart(2, '0');
+            //waiting for the stauts to change..
+             }
+            
+            window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });  
+            
+             /*var hours = timestamp.getHours().toString().padStart(2, '0');
               var minutes = timestamp.getMinutes().toString().padStart(2, '0');
               var seconds = timestamp.getSeconds().toString().padStart(2, '0');
               var ns = timestamp.getMilliseconds().toString().padStart(2,0) ;let hhmmss = hours + minutes + seconds + ns ;*/
-             window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });   
-              }
+              
             },1000)
             await 1;
         }
