@@ -361,7 +361,8 @@
         {
           setTimeout(function()
           {   
-            //add another delay of 2 seconds                  
+            //add another delay of 2 seconds  
+            var timestamp = new Date();  
             window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });
             },2000)
             await 1;
