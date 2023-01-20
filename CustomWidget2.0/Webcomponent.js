@@ -337,7 +337,7 @@
               }
            });
        
-           processXhrResults();
+          /* processXhrResults();
         
         async function processXhrResults()
         {  while( window.result_xhr == null)
@@ -345,7 +345,7 @@
             // wait until the first entry for xhr arrives
           }
           console.log(result_xhr)  ;
-        }
+        } */
 
 
 })();
