@@ -335,6 +335,9 @@
            
         async function processXhrResults(xhr)
         {
+          //Continue the execution of the callback to avoid any delay in processing
+          setTimeout(function()
+          {          
           if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
              {
               var timestamp = new Date();
@@ -344,6 +347,8 @@
               var ns = timestamp.getMilliseconds().toString().padStart(2,0) ;let hhmmss = hours + minutes + seconds + ns ;*/
              window.result_xhr.push( { xhr :  xhr , timestamp : timestamp  });   
               }
+            },5000)
+            await 1;
         }
 
 
