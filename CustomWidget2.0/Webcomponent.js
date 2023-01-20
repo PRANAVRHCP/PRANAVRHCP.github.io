@@ -345,9 +345,9 @@
               var minutes = timestamp.getMinutes().toString().padStart(2, '0');
               var seconds = timestamp.getSeconds().toString().padStart(2, '0');
               var ns = timestamp.getMilliseconds().toString().padStart(2,0) ;let hhmmss = hours + minutes + seconds + ns ;*/
-             window.result_xhr.push( { xhr :  xhr , timestamp : timestamp  });   
+             window.result_xhr.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });   
               }
-            },5000)
+            },1000)
             await 1;
         }
 
