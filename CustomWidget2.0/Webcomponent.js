@@ -343,8 +343,8 @@
             var timestamp = new Date();   
             if(xhr.status !== undefined)          
             
-            {   var grid = JSON.parse(xhr._responseFormatted).Grids  ;
-                if(grid !== undefined || grid !== null)
+            {   var response = JSON.parse(result_xhr[0].xhr._responseFormatted)  ;
+                if(response.grid !== undefined && response.grid !== null)
                 {
                     var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
                 }
@@ -373,8 +373,8 @@
             //add another delay of 2 seconds             
             if(xhr.status !== undefined)          
             
-            {   var grid = JSON.parse(xhr._responseFormatted).Grids  ;
-                if(grid !== undefined || grid !== null)
+            {   var response = JSON.parse(result_xhr[0].xhr._responseFormatted)  ;
+                if(response.grid !== undefined && response.grid !== null)
                 {
                     var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
                 }
