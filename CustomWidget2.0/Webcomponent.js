@@ -341,9 +341,9 @@
           setTimeout(function()
           {   
             var timestamp = new Date();   
-            if(xhr.status !== undefined)          
+            if(xhr.status == 200)          
             
-            {   var response = JSON.parse(result_xhr[0].xhr._responseFormatted)  ;
+            {   var response = JSON.parse(xhr._responseFormatted)  ;
                 if(response.grid !== undefined && response.grid !== null)
                 {
                     var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
@@ -351,7 +351,8 @@
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData 
+                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData ,
+                readstate : xhr.readyState
                  }) ; }
             else
             {
@@ -371,9 +372,9 @@
           setTimeout(function()
           {   
             //add another delay of 2 seconds             
-            if(xhr.status !== undefined)          
+            if(xhr.status == 200)          
             
-            {   var response = JSON.parse(result_xhr[0].xhr._responseFormatted)  ;
+            {   var response = JSON.parse(xhr._responseFormatted)  ;
                 if(response.grid !== undefined && response.grid !== null)
                 {
                     var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
@@ -381,7 +382,8 @@
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData 
+                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData ,
+                readstate : xhr.readyState
                  }) ; }
             else {
               var timestamp = new Date();  
