@@ -332,6 +332,7 @@
         addXMLRequestCallback( xhr => {
             if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
              { 
+              window.result_xhr.push(xhr);
           processXhrResults(xhr);         }
            });     
            
@@ -344,10 +345,13 @@
             if(xhr.status == 200)          
             
             {   var response = JSON.parse(xhr._responseFormatted)  ;
-                if(response.grid !== undefined && response.grid !== null)
+              if(response !==null)
+              {  
+              if(response.grid !== undefined && response.grid !== null)
                 {
                     var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
                 }
+              }
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
@@ -375,10 +379,13 @@
             if(xhr.status == 200)          
             
             {   var response = JSON.parse(xhr._responseFormatted)  ;
-                if(response.grid !== undefined && response.grid !== null)
+              if(response !==null)
+              {  
+              if(response.grid !== undefined && response.grid !== null)
                 {
                     var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
                 }
+              }
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
