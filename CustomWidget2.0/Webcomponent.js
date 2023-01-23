@@ -142,9 +142,8 @@
                       readstate : xhr_queue[o].xhr.readyState
                        }) ; 
                        xhr_queue[o].processed = 'x';
-                      }
-
-                }
+                      } }
+                      xhr_queue =  xhr_queue.filter( e => e.processed == '')
 
                 }                
              }, 10000);            
