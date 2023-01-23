@@ -347,7 +347,7 @@
              hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
             PreviousEndtime = parseInt(hhmmss);
           }
-          var xhr_log_filter = xhr_log.filter( e => e.StartTime > CurrentEndtime &&   e.StartTime <= PreviousEndtime );
+          var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
           xhr_log_filter .forEach(function(filteredElement, index) {
             xhr_log[xhr_log.indexOf(filteredElement)].stepid = steplog[i].StepNo;
         });
