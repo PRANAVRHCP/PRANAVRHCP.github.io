@@ -53,11 +53,20 @@
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       }
                     }                
-                      window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                      
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+
+                        window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                         xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                        readstate : xhr_queue[o].xhr.readyState , 
-                        xhr : xhr
+                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+                        readstate : xhr_queue[o].xhr.readyState                        
                        }) ; 
                        xhr_queue[o].processed = 'x';
                     } 
@@ -170,12 +179,21 @@
                       {
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       }
-                    }                
+                    }     
+                       
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                    
                       window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                         xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                      readstate : xhr_queue[o].xhr.readyState,
-                      xhr : xhr
+                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData , TBT : tbt,
+                      readstate : xhr_queue[o].xhr.readyState
                        }) ; 
                        xhr_queue[o].processed = 'x';
                       } 
@@ -245,11 +263,20 @@
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
               }                
+                 
+              if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+              {
+               var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+              }              
+              else
+               {
+                 var tbt = 0;
+               }    
+              
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                   xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                  xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                readstate : xhr_queue[o].xhr.readyState ,
-                xhr : xhr 
+                  xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData , TBT : tbt ,
+                readstate : xhr_queue[o].xhr.readyState 
                  }) ; 
                  xhr_queue[o].processed = 'x';
                 } 
@@ -450,12 +477,22 @@
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
               }
+
+              if(xhr._networkInfo !== null && xhr._networkInfo !== undefined )
+               {
+                var tbt = xhr._networkInfo.transferSize;
                 
+               }
+               
+               else
+                {
+                  var tbt = 0;
+                }
+             
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData ,
-                readstate : xhr.readyState , 
-                xhr : xhr
+                xhr._timestamp , UserfriendlyInfo: xhr._userFriendlyPerfData , TBT : tbt,
+                readstate : xhr.readyState                 
                  }) ; }
             else
             {
@@ -484,13 +521,22 @@
                 {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
-              }                
-                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData ,
-                readstate : xhr.readyState ,
-                xhr : xhr
-                 }) ; }
+              }   
+
+              if(xhr._networkInfo !== null && xhr._networkInfo !== undefined )
+              {
+               var tbt = xhr._networkInfo.transferSize;
+               
+              }              
+              else
+               {
+                 var tbt = 0;
+               }            
+               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+               xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+               xhr._timestamp , UserfriendlyInfo: xhr._userFriendlyPerfData , TBT : tbt,
+               readstate : xhr.readyState                 
+              }) ; }
             else {
               var timestamp = new Date();  
               window.xhr_queue.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status , processed : ''});
