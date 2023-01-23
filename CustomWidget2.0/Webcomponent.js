@@ -23,7 +23,8 @@
           $('html').click(async function(event){
             //add the details about the event click trigger text              
             //logic for step derivation -> For initial step only , will run only once
-            if(sNo == 1)  {
+            if(sNo == 1)  
+            {
                   let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" && e.name !=="(Table) React-table-rendering"  && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
                       lv_result = lv_result.sort(function(a, b){
                         if(a.startTime < b.startTime) { return -1; }
@@ -36,7 +37,39 @@
               //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
               psNo = reslen ;
-              sNo = sNo + 1; } }
+              sNo = sNo + 1; 
+               } 
+                //process the unprocessed records in the XHR log Queue
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null)
+                      {
+                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      }
+                    }                
+                      window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                        xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                      readstate : xhr_queue[o].xhr.readyState
+                       }) ; 
+                       xhr_queue[o].processed = 'x';
+                    } 
+
+                    else if(xhr_queue[o].xhr.status === 0)
+                    {
+                      xhr_queue[o].processed = 'x';
+                    }
+                    }
+                      xhr_queue =  xhr_queue.filter( e => e.processed == '');            
+
+              
+            }
 
                // This is the usual flow for collecting steps - Check if entries are generated immediately when a click is made 
 
@@ -122,7 +155,8 @@
                      psNo = reslen ;
                   }                        
                   } 
-                //process the unprocessed records
+
+                //process the unprocessed records in the XHR log Queue
                 for(var o = 0 ; o < xhr_queue.length ; o++) 
                 {
 
@@ -142,8 +176,9 @@
                       readstate : xhr_queue[o].xhr.readyState
                        }) ; 
                        xhr_queue[o].processed = 'x';
-                      } }
-                      xhr_queue =  xhr_queue.filter( e => e.processed == '')
+                      } 
+                    }
+                      xhr_queue =  xhr_queue.filter( e => e.processed == '');
 
                 }                
              }, 10000);            
@@ -193,6 +228,30 @@
          steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) })
          psNo = reslen ;
          sNo = sNo + 1; } 
+
+          //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
+          for(var o = 0 ; o < xhr_queue.length ; o++) 
+          {
+
+            if(xhr_queue[o].xhr.status == 200)          
+      
+            {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+              if(response !==null)
+              {  
+                if(response.Grids!== undefined && response.Grids !== null)
+                {
+                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                }
+              }                
+                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                  xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                  xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                readstate : xhr_queue[o].xhr.readyState
+                 }) ; 
+                 xhr_queue[o].processed = 'x';
+                } 
+              }
+             xhr_queue =  xhr_queue.filter( e => e.processed == '');
       
       //Logic for widget derivation
       var local_log = [];
@@ -426,6 +485,5 @@
             },2000)
             await 1;
         }
-
 
 })();
