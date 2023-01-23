@@ -286,15 +286,13 @@
           steplog[i].StepStartDate = local_this.setDate(timeOrigin);
          //create a local copy for download which is not soo detailed          
          local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepDuration : parseInt(steplog[i].StepDuration) , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
-      }
-         
+      }         
          //Download the Network log
-        // local_this.downloadlog(result_xhr , 'NetworkCalls');
+         local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
-        // local_this.downloadlog(steplog , 'StepLog');
+         local_this.downloadlog(steplog , 'StepLog');
          //Download Local Log 
-         //local_this.downloadstepbreakdown(local_this , local_log);
-
+         local_this.downloadstepbreakdown(local_this , local_log);
       }, 10000);
     }
 
