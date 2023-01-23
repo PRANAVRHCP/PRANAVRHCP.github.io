@@ -131,9 +131,9 @@
                   {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                     if(response !==null)
                     {  
-                    if(response.grid !== undefined && response.grid !== null)
+                      if(response.Grids!== undefined && response.Grids !== null)
                       {
-                          var CellArraySize = response.grid[0].CellArraySizes[0] * response.grid[0].CellArraySizes[1];
+                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       }
                     }                
                       window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
@@ -376,9 +376,9 @@
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
               {  
-              if(response.grid !== undefined && response.grid !== null)
+              if(response.Grids!== undefined && response.Grids !== null)
                 {
-                    var CellArraySize = response.grid[0].CellArraySizes[0] * response.grid[0].CellArraySizes[1];
+                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
               }
                 
@@ -410,9 +410,9 @@
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
               {  
-              if(response.grid !== undefined && response.grid !== null)
+                if(response.Grids!== undefined && response.Grids !== null)
                 {
-                    var CellArraySize = response.grid[0].CellArraySizes[0] * response.grid[0].CellArraySizes[1];
+                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
               }                
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
