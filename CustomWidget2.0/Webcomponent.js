@@ -354,7 +354,7 @@
           PreviousEndtime = parseInt(hhmmss);  
          // Calculate the sum based on the filterd array 
          steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
-         xhr_log_filter = xhr_log_filter( e => e.CellArraySize !== undefined)
+         xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
          steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
         }
         //create a local copy for download which is not soo detailed          
