@@ -62,10 +62,15 @@
                      {
                        var tbt = 0;
                      }  
+                         var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                         var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                         var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                         var hhmmss = parseInt(hours+minutes+seconds);
 
                         window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                         xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+                        xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                        Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
                         readstate : xhr_queue[o].xhr.readyState                        
                        }) ; 
                        xhr_queue[o].processed = 'x';
@@ -190,11 +195,17 @@
                        var tbt = 0;
                      }  
                     
-                      window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                        xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData , TBT : tbt,
-                      readstate : xhr_queue[o].xhr.readyState
-                       }) ; 
+                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                     var hhmmss = parseInt(hours+minutes+seconds);
+
+                    window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                    xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                    xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                    Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+                    readstate : xhr_queue[o].xhr.readyState                        
+                   });
                        xhr_queue[o].processed = 'x';
                       } 
                     }
@@ -273,11 +284,17 @@
                  var tbt = 0;
                }    
               
-                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                  xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                  xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData , TBT : tbt ,
-                readstate : xhr_queue[o].xhr.readyState 
-                 }) ; 
+               var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+               var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+               var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+               var hhmmss = parseInt(hours+minutes+seconds);
+
+              window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+              xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+              xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+              Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+              readstate : xhr_queue[o].xhr.readyState                        
+             }) ; 
                  xhr_queue[o].processed = 'x';
                 } 
               }
@@ -488,21 +505,26 @@
                 {
                   var tbt = 0;
                 }
-             
-                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-                xhr._timestamp , UserfriendlyInfo: xhr._userFriendlyPerfData , TBT : tbt,
+
+                var hours = xhr._timestamp.getHours().toString().padStart(2, '0');
+                var minutes = xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                var seconds = xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                var hhmmss = parseInt(hours+minutes+seconds);
+                
+                window.xhr_log.push({ CellArraySize : CellArraySize , 
+                NetworkInfo :  xhr._networkInfo , 
+                Step2CallMap : 0 , 
+                Timestamp : xhr._timestamp , 
+                StartTime : hhmmss,
+                UserfriendlyInfo: xhr._userFriendlyPerfData , 
+                TBT : tbt,
                 readstate : xhr.readyState                 
-                 }) ; }
+                 }) ; 
+                }
             else
             {
               trimresponsewithdelay(xhr);
-            }
-             /*var hours = timestamp.getHours().toString().padStart(2, '0');
-              var minutes = timestamp.getMinutes().toString().padStart(2, '0');
-              var seconds = timestamp.getSeconds().toString().padStart(2, '0');
-              var ns = timestamp.getMilliseconds().toString().padStart(2,0) ;let hhmmss = hours + minutes + seconds + ns ;*/
-              
+            }              
             },2000)
             await 1;
         }
@@ -532,11 +554,21 @@
                {
                  var tbt = 0;
                }            
+               var hours = xhr._timestamp.getHours().toString().padStart(2, '0');
+               var minutes = xhr._timestamp.getMinutes().toString().padStart(2, '0');
+               var seconds = xhr._timestamp.getSeconds().toString().padStart(2, '0');
+               var hhmmss = parseInt(hours+minutes+seconds);
+               
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-               xhr._networkInfo , Step2CallMap : 0 , Timestamp :
-               xhr._timestamp , UserfriendlyInfo: xhr._userFriendlyPerfData , TBT : tbt,
+               xhr._networkInfo , 
+               Step2CallMap : 0 , 
+               Timestamp : xhr._timestamp , 
+               StartTime : hhmmss,
+               UserfriendlyInfo: xhr._userFriendlyPerfData , 
+               TBT : tbt,
                readstate : xhr.readyState                 
-              }) ; }
+                }) ;
+               }
             else {
               var timestamp = new Date();  
               window.xhr_queue.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status , processed : ''});
