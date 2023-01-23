@@ -303,8 +303,8 @@
       //Logic for widget derivation
       var local_log = [];
       var timeOrigin = performance.timeOrigin;
-      var CurrentEndtime = 000000;
-      var PreviousEndtime = 000000;
+      var CurrentEndtime = 0;
+      var PreviousEndtime = 0;
 
       for(var i = 0 ; i< steplog.length ; i++)
       {   
@@ -340,18 +340,18 @@
           //Create a mapping to the network calls ->        
           var timeArr = steplog[i].StepEndTime.split(':');
           var hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
-          CurrentEndtime = hhmmss ;
-          if( PreviousEndtime === 000000 && i!== 0)
+          CurrentEndtime = parseInt(hhmmss) ;
+          if( PreviousEndtime === 0 && i!== 0)
           {
             timeArr = steplog[i-1].StepEndTime.split(':');
              hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
-            PreviousEndtime = hhmmss;
+            PreviousEndtime = parseInt(hhmmss);
           }
           var xhr_log_filter = xhr_log.filter( e => e.StartTime > CurrentEndtime &&   e.StartTime <= PreviousEndtime );
           xhr_log_filter .forEach(function(filteredElement, index) {
             xhr_log[xhr_log.indexOf(filteredElement)].stepid = steplog[i].StepNo;
         });
-          PreviousEndtime = hhmmss          
+          PreviousEndtime = parseInt(hhmmss);          
         }
         
 
