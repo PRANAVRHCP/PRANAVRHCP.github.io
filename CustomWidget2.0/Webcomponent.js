@@ -68,7 +68,7 @@
                          var hhmmss = parseInt(hours+minutes+seconds);
 
                         window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                        xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                        xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
                         xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                         Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
                         readstate : xhr_queue[o].xhr.readyState                        
@@ -201,7 +201,7 @@
                      var hhmmss = parseInt(hours+minutes+seconds);
 
                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                    xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                    xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
                     readstate : xhr_queue[o].xhr.readyState                        
@@ -290,7 +290,7 @@
                var hhmmss = parseInt(hours+minutes+seconds);
 
               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-              xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+              xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
               xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
               Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
               readstate : xhr_queue[o].xhr.readyState                        
@@ -349,15 +349,17 @@
           }
           var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
           xhr_log_filter .forEach(function(filteredElement, index) {
-            xhr_log[xhr_log.indexOf(filteredElement)].stepid = steplog[i].StepNo;
+            xhr_log[xhr_log.indexOf(filteredElement)].StepMapping = steplog[i].StepNo;
         });
-          PreviousEndtime = parseInt(hhmmss);          
+          PreviousEndtime = parseInt(hhmmss);  
+         // Calculate the sum based on the filterd array 
+         steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
+         xhr_log_filter = xhr_log_filter( e => e.CellArraySize !== undefined)
+         steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
         }
-        
-
         //create a local copy for download which is not soo detailed          
-         local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepDuration : parseInt(steplog[i].StepDuration) , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
-      
+         local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
+
         }         
          //Download the Network log
         // local_this.downloadlog(xhr_log , 'NetworkCalls');
@@ -450,7 +452,7 @@
       JSON2CSV(objArray) {
        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         // Set the column headers
-       var str = 'StepNo,StepStartDate,StepStartTime,StepDuration,TotalBackendCalls,TotalWidgetAffected\r\n';    
+       var str = 'StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,TotalCellArrayCount,TotalBytes,TotalINAcalls,TotalWidgetAffected\r\n';    
       for (var i = 0; i < array.length; i++) {
         var line = '';
         for (var index in array[i]) {
@@ -530,7 +532,7 @@
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , 
                 NetworkInfo :  xhr._networkInfo , 
-                Step2CallMap : 0 , 
+                StepMapping : 0 , 
                 Timestamp : xhr._timestamp , 
                 StartTime : hhmmss,
                 UserfriendlyInfo: xhr._userFriendlyPerfData , 
@@ -578,7 +580,7 @@
                
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                xhr._networkInfo , 
-               Step2CallMap : 0 , 
+               StepMapping : 0 , 
                Timestamp : xhr._timestamp , 
                StartTime : hhmmss,
                UserfriendlyInfo: xhr._userFriendlyPerfData , 
