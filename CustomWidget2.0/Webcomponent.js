@@ -303,6 +303,8 @@
       //Logic for widget derivation
       var local_log = [];
       var timeOrigin = performance.timeOrigin;
+      var CurrentEndtime = 000000;
+      var PreviousEndtime = 000000;
 
       for(var i = 0 ; i< steplog.length ; i++)
       {   
@@ -335,8 +337,21 @@
           steplog[i].StepEndTime = local_this.processendtime(stepstarttime,timeOrigin,maxstepduration);
           steplog[i].StepStartDate = local_this.setDate(timeOrigin);
           steplog[i].processed = 'X';
-          //Create a mapping to the network calls ->
-          
+          //Create a mapping to the network calls ->        
+          var timeArr = steplog[i].StepEndTime.split(':');
+          var hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
+          CurrentEndtime = hhmmss ;
+          if( PreviousEndtime === 000000 && i!== 0)
+          {
+            timeArr = steplog[i-1].StepEndTime.split(':');
+             hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
+            PreviousEndtime = hhmmss;
+          }
+          var xhr_log_filter = xhr_log.filter( e => e.StartTime > CurrentEndtime &&   e.StartTime <= PreviousEndtime );
+          xhr_log_filter .forEach(function(filteredElement, index) {
+            xhr_log[xhr_log.indexOf(filteredElement)].stepid = steplog[i].StepNo;
+        });
+          PreviousEndtime = hhmmss          
         }
         
 
@@ -352,6 +367,8 @@
          //local_this.downloadstepbreakdown(local_this , local_log);
       }, 10000);
     }
+
+    
 
     conver2hms_xhr(tstamp)
     {
