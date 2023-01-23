@@ -56,7 +56,8 @@
                       window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                         xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
                         xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                      readstate : xhr_queue[o].xhr.readyState
+                        readstate : xhr_queue[o].xhr.readyState , 
+                        xhr : xhr
                        }) ; 
                        xhr_queue[o].processed = 'x';
                     } 
@@ -173,7 +174,8 @@
                       window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                         xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
                         xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                      readstate : xhr_queue[o].xhr.readyState
+                      readstate : xhr_queue[o].xhr.readyState,
+                      xhr : xhr
                        }) ; 
                        xhr_queue[o].processed = 'x';
                       } 
@@ -246,7 +248,8 @@
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                   xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
                   xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                readstate : xhr_queue[o].xhr.readyState
+                readstate : xhr_queue[o].xhr.readyState ,
+                xhr : xhr 
                  }) ; 
                  xhr_queue[o].processed = 'x';
                 } 
@@ -288,11 +291,11 @@
          local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepDuration : parseInt(steplog[i].StepDuration) , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
       }         
          //Download the Network log
-         local_this.downloadlog(xhr_log , 'NetworkCalls');
+        // local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
-         local_this.downloadlog(steplog , 'StepLog');
+         //local_this.downloadlog(steplog , 'StepLog');
          //Download Local Log 
-         local_this.downloadstepbreakdown(local_this , local_log);
+         //local_this.downloadstepbreakdown(local_this , local_log);
       }, 10000);
     }
 
@@ -441,7 +444,8 @@
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
                 xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData ,
-                readstate : xhr.readyState
+                readstate : xhr.readyState , 
+                xhr : xhr
                  }) ; }
             else
             {
@@ -474,7 +478,8 @@
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                 xhr._networkInfo , Step2CallMap : 0 , Timestamp :
                 xhr._timestamp , Userfriendly : xhr._userFriendlyPerfData ,
-                readstate : xhr.readyState
+                readstate : xhr.readyState ,
+                xhr : xhr
                  }) ; }
             else {
               var timestamp = new Date();  
