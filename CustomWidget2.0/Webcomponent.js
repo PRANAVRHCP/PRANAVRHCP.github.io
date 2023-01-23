@@ -370,7 +370,7 @@
           setTimeout(function()
           {   
             var timestamp = new Date();   
-            if(xhr.status == 200)          
+            if(xhr.status == 200 && xhr.readyState === 4)          
             
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
@@ -404,7 +404,7 @@
           setTimeout(function()
           {   
             //add another delay of 2 seconds             
-            if(xhr.status == 200)          
+            if(xhr.status == 200  && xhr.readyState === 4 )          
             
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
