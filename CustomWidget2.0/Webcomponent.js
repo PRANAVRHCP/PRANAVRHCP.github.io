@@ -35,7 +35,7 @@
               if(psNo!==reslen)
               {
               //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
@@ -98,7 +98,7 @@
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -143,7 +143,7 @@
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen)  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -227,7 +227,7 @@
          if(psNo!==reslen)
          {
          //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
-         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) })
+         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
          psNo = reslen ;
          sNo = sNo + 1; } 
 
@@ -262,7 +262,10 @@
 
       for(var i = 0 ; i< steplog.length ; i++)
       {   
-          //Create list of Ina Calls  
+         //Perform this step only when the mapping is missing 
+          if(steplog[i].processed !== 'X')          
+          {
+           //Create list of Ina Calls  
           steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
           //Create list of Render widget based on identifiers
           let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
@@ -287,9 +290,16 @@
           steplog[i].StepStartTime = local_this.processstarttime(stepstarttime,timeOrigin);
           steplog[i].StepEndTime = local_this.processendtime(stepstarttime,timeOrigin,maxstepduration);
           steplog[i].StepStartDate = local_this.setDate(timeOrigin);
-         //create a local copy for download which is not soo detailed          
+          steplog[i].processed = 'X';
+          //Create a mapping to the network calls ->
+          
+        }
+        
+
+        //create a local copy for download which is not soo detailed          
          local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepDuration : parseInt(steplog[i].StepDuration) , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
-      }         
+      
+        }         
          //Download the Network log
         // local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
