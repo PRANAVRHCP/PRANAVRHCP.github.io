@@ -9,7 +9,7 @@
           // declare global variables to be used across the whole scope of this code
           window.steplog = [];      
           window.xhr_log = [];
-          window.xhr_np = [];
+          window.xhr_queue = [];
           window.result_xhr = [];
           window.sNo = 1;
           window.psNo = 0;        
@@ -121,7 +121,32 @@
                     steplog[sNo-2].StepEndId = reslen-1 ;
                      psNo = reslen ;
                   }                        
-                  } }
+                  } 
+                //process the unprocessed records
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                    if(response.grid !== undefined && response.grid !== null)
+                      {
+                          var CellArraySize = response.grid[0].CellArraySizes[0] * response.grid[0].CellArraySizes[1];
+                      }
+                    }                
+                      window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                        xhr_queue[o].xhr._networkInfo , Step2CallMap : 0 , Timestamp :
+                        xhr_queue[o].xhr._timestamp , Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                      readstate : xhr_queue[o].xhr.readyState
+                       }) ; 
+                       xhr_queue[o].processed = 'x';
+                      }
+
+                }
+
+                }                
              }, 10000);            
              await 1;
          }); });
@@ -136,6 +161,8 @@
           });           
       }
 
+      
+      
       fireChanged() 
     {
       // Add the last step 
@@ -351,7 +378,7 @@
               {  
               if(response.grid !== undefined && response.grid !== null)
                 {
-                    var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
+                    var CellArraySize = response.grid[0].CellArraySizes[0] * response.grid[0].CellArraySizes[1];
                 }
               }
                 
@@ -385,7 +412,7 @@
               {  
               if(response.grid !== undefined && response.grid !== null)
                 {
-                    var CellArraySize = grid[0].CellArraySizes[0] * grid[0].CellArraySizes[1];
+                    var CellArraySize = response.grid[0].CellArraySizes[0] * response.grid[0].CellArraySizes[1];
                 }
               }                
                 window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
@@ -395,7 +422,7 @@
                  }) ; }
             else {
               var timestamp = new Date();  
-              window.xhr_np.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status });
+              window.xhr_queue.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status , processed : ''});
             }
             },2000)
             await 1;
