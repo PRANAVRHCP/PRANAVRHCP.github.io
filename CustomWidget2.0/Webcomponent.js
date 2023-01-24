@@ -10,10 +10,8 @@
           window.steplog = [];      
           window.xhr_log = [];
           window.xhr_queue = [];
-          window.result_xhr = [];
           window.sNo = 1;
           window.psNo = 0;        
-          //window.x = [];         
           this.init();           
       }
 
@@ -492,7 +490,7 @@
         addXMLRequestCallback( xhr => {
             if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
              { 
-              window.result_xhr.push(xhr);
+             // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
            });     
