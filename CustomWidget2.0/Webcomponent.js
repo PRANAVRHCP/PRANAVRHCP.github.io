@@ -593,5 +593,10 @@
             },2000)
             await 1;
         }
+  
+  self.addEventListener('fetch', event => {
+    console.log('Intercepted');
+ // event.respondWith(new Response('Hello World!'));
+});
 
 })();
