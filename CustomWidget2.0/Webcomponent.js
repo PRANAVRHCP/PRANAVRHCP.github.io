@@ -595,9 +595,25 @@
             await 1;
         }
       
-var worker = new Worker('workerProxy/workerProxy.js?https://assets.sapanalytics.cloud/production/uiAssets-2022.21.17/uiAssets/app.chunk.126.ad94ee4ae9041222c8fd.js');
-worker.addEventListener('message', function(event) {
-  var response = event.data.response;
-  console.log(response);
-});
+(function() {
+  var xhr = XMLHttpRequest.prototype;
+  var originalOpen = xhr.open;
+  var originalSend = xhr.send;
+
+  xhr.open = function(method, url) {
+    this._method = method;
+    this._url = url;
+    return originalOpen.apply(this, arguments);
+  };
+
+  xhr.send = function(data) {
+    this.addEventListener("load", function() {
+      console.log("Intercepted response from " + this._method + " request to " + this._url);
+      console.log("Response: " + this.responseText);
+    });
+
+    return originalSend.apply(this, arguments);
+  };
+})();
+  
 })();
