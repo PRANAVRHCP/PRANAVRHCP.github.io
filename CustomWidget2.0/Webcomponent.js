@@ -595,17 +595,14 @@
             await 1;
         }
   
-  (function(open) {
-  XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
-    this.addEventListener("readystatechange", function() {
-      if (url === "https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse") {
-        // process the response here
-        var response = this.responseXML;
-        console.log(response);
-      }
-    });
-    open.call(this, method, url, async, user, pass);
-  };
-})(XMLHttpRequest.prototype.open);
+var worker = new Worker('app.chunk.126.ad94ee4ae9041222c8fd.js');
+worker.addEventListener('message', function(event) {
+  if (event.data.type === 'response') {
+    // process the response here
+    var response = event.data.response;
+    console.log(response);
+  }
+});
+worker.postMessage({ type: 'makeRequest', url: 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse' });
 
 })();
