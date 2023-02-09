@@ -477,12 +477,13 @@
       // store the native send()
       oldSend = XMLHttpRequest.prototype.send;
       // override the native send()
-      XMLHttpRequest.prototype.send = function(){         
+      XMLHttpRequest.prototype.send = function(body){         
           for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
               XMLHttpRequest.callbacks[i]( this );
           }
           // call the native send()
-          oldSend.apply(this, arguments);
+          //oldSend.apply(this, arguments);
+          oldSend.call(this, body);
       }
   }
 }      
