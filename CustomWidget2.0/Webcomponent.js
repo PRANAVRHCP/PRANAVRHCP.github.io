@@ -595,7 +595,7 @@
             await 1;
         }
       
-var worker = new Worker('workerProxy/workerProxy.js?https://assets.sapanalytics.cloud/production/uiAssets-2022.21.17/uiAssets/query.worker.main.8e8a9d1e6de869affbfa.js');
+var worker = new Worker('workerProxy/workerProxy.js?https://assets.sapanalytics.cloud/production/uiAssets-2022.21.17/uiAssets/app.chunk.126.ad94ee4ae9041222c8fd.js');
 worker.addEventListener('message', function(event) {
   var response = event.data.response;
   console.log(response);
