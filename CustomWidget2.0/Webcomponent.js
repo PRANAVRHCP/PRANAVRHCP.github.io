@@ -595,7 +595,9 @@
             await 1;
         }
   
-var worker = new Worker('workerProxy/workerProxy.js');
+  
+  
+var worker = new Worker('workerProxy/workerProxy.js?https://assets.sapanalytics.cloud/production/uiAssets-2022.21.17/uiAssets/query.worker.main.8e8a9d1e6de869affbfa.js');
 worker.addEventListener('message', function(event) {
   if (event.data.type === 'response') {
     // process the response here
