@@ -595,7 +595,7 @@
             await 1;
         }
   
-var worker = new Worker('app.chunk.126.ad94ee4ae9041222c8fd.js');
+var worker = new Worker('https://assets.sapanalytics.cloud/production/uiAssets-2022.21.17/uiAssets/app.chunk.126.ad94ee4ae9041222c8fd.js');
 worker.addEventListener('message', function(event) {
   if (event.data.type === 'response') {
     // process the response here
