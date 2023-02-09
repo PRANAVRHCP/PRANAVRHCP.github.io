@@ -488,7 +488,7 @@
 }      
          
         addXMLRequestCallback( xhr => {
-            if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse')
+            if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse' || xhr._requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse'  )
              { 
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
@@ -593,10 +593,5 @@
             },2000)
             await 1;
         }
-  
-  self.addEventListener('fetch', event => {
-    console.log('Intercepted');
- // event.respondWith(new Response('Hello World!'));
-});
 
 })();
