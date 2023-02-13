@@ -543,7 +543,7 @@
             {
               trimresponsewithdelay(xhr);
             }              
-            },2000)
+            },200)
             await 1;
         }
 
@@ -591,7 +591,7 @@
               var timestamp = new Date();  
               window.xhr_queue.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status , processed : ''});
             }
-            },2000)
+            },200)
             await 1;
         }
       
