@@ -595,7 +595,7 @@
             await 1;
         }
       
-(function() {
+/*(function() {
   var xhr = XMLHttpRequest.prototype;
   var originalOpen = xhr.open;
   var originalSend = xhr.send;
@@ -614,6 +614,6 @@
 
     return originalSend.apply(this, arguments);
   };
-})();
+})();*/
   
 })();
