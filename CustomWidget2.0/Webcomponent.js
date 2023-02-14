@@ -116,6 +116,8 @@
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
                   //Previous step Start + End time 
                   
+                  if(psNo!==reslen)
+                  {
                   var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
                  
                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
@@ -135,7 +137,7 @@
                    // steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
                      psNo = reslen ;
-                  }   
+                  } }  
                     }, 10000);                   
                             
                   } 
