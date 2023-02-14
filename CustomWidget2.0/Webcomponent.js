@@ -616,6 +616,9 @@
 
         async function processStepLog()
         {
+          setTimeout(function()
+          {   
+          
           let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
       lv_result = lv_result.sort(function(a, b){
              if(a.startTime < b.startTime) { return -1; }
@@ -669,8 +672,7 @@
               else
                {
                  var tbt = 0;
-               }              
-
+               } 
                var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
                var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
                var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
@@ -685,8 +687,9 @@
                  xhr_queue[o].processed = 'x';
                 } 
             }
-            xhr_queue =  xhr_queue.filter( e => e.processed == '');
-          await 1;
+            xhr_queue =  xhr_queue.filter( e => e.processed == '');        
+        },5000)
+        await 1;
         }
   
 })();
