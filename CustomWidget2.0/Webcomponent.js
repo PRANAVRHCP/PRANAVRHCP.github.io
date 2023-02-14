@@ -509,7 +509,7 @@
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
-             elseif(xhr.requestUrl.includes('UserFriendly') === true || xhr._requestUrl.includes('UserFriendly') === true )
+             else if(xhr.requestUrl.includes('UserFriendly') === true || xhr._requestUrl.includes('UserFriendly') === true )
              {
               processStepLog();
              }
