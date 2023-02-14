@@ -688,7 +688,7 @@
                 } 
             }
             xhr_queue =  xhr_queue.filter( e => e.processed == '');        
-        },5000)
+        },400)
         await 1;
         }
   
