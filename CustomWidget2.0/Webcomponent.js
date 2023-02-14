@@ -509,7 +509,7 @@
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
-             else if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/fpa/services/rest/userFriendlyPerfLog?type=record&tenant=2' || xhr._requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/fpa/services/rest/userFriendlyPerfLog?type=record&tenant=2'  )
+             else if( (xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/fpa/services/rest/userFriendlyPerfLog?type=record&tenant=2' || xhr._requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/fpa/services/rest/userFriendlyPerfLog?type=record&tenant=2') && sNo > 1 )
              {
               processStepLog();
              }
