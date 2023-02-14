@@ -210,7 +210,7 @@
                       xhr_queue =  xhr_queue.filter( e => e.processed == '');
 
                 }                
-             }, 10000);            
+             }, 1000);            
              await 1;
          }); });
            
@@ -382,7 +382,7 @@
          local_this.downloadlog(steplog , 'StepLog');
          //Download Local Log 
         local_this.downloadstepbreakdown(local_this , local_log);
-      }, 10000);
+      }, 5000);
     }    
 
     conver2hms_xhr(tstamp)
