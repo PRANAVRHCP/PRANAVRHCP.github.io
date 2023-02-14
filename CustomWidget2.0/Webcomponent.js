@@ -509,10 +509,10 @@
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
-             else if(xhr.requestUrl.includes('UserFriendly') === true || xhr._requestUrl.includes('UserFriendly') === true )
+            /* else if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse' || xhr._requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse'  )
              {
               processStepLog();
-             }
+             }*/
            });     
            
         async function processXhrResults(xhr)
