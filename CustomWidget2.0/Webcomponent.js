@@ -253,10 +253,27 @@
        let reslen = lv_result.length ;
          if(psNo!==reslen)
          {
-         //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result})
-         steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
-         psNo = reslen ;
-         sNo = sNo + 1; } 
+            // If new entries are present , compare the last entry of the previous step in step log
+                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
+                  //Previous step Start + End time 
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 var diff_time = lv_result[psNo].startTime - pstep_time
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  {
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;       
+                  }
+                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
+
+                  {
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
+                    //steplog[sNo-2].RaptrSnapshot = lv_result;
+                    steplog[sNo-2].StepEndId = reslen-1 ;
+                     psNo = reslen ;
+                  }  } 
 
           //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
           for(var o = 0 ; o < xhr_queue.length ; o++) 
@@ -295,70 +312,70 @@
              }) ; 
                  xhr_queue[o].processed = 'x';
                 } 
-              }
-             xhr_queue =  xhr_queue.filter( e => e.processed == '');
-      
-      //Logic for widget derivation
-      var local_log = [];
-      var timeOrigin = performance.timeOrigin;
-      var CurrentEndtime = 0;
-      var PreviousEndtime = 0;
-
-      for(var i = 0 ; i< steplog.length ; i++)
-      {   
-         //Perform this step only when the mapping is missing 
-          if(steplog[i].processed !== 'X')          
-          {
-           //Create list of Ina Calls  
-          steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
-          //Create list of Render widget based on identifiers
-          let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
-          st = st.filter(e => e.identifier.includes("render")); 
-          //Append list of Render widget based on identifiers 
-          steplog[i].Widgetinfo = st;
-          // Max Runtime derivation logic
-          var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
-          var maxstepduration = 0;
-          for(var y = 0 ; y < steplog[i].StepSnapshot.length ; y++)     
-          {
-
-            var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration - stepstarttime ;
-            if(stepduration > maxstepduration ) 
-            {
-              maxstepduration = stepduration ;
-              var maxstepid = y + 1;
             }
-          }
-          steplog[i].StepDuration =  maxstepduration;
-          steplog[i].StepSIDWithMaxDuration =  maxstepid;
-          steplog[i].StepStartTime = local_this.processstarttime(stepstarttime,timeOrigin);
-          steplog[i].StepEndTime = local_this.processendtime(stepstarttime,timeOrigin,maxstepduration);
-          steplog[i].StepStartDate = local_this.setDate(timeOrigin);
-          steplog[i].processed = 'X';
-          //Create a mapping to the network calls ->        
-          var timeArr = steplog[i].StepEndTime.split(':');
-          var hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
-          CurrentEndtime = parseInt(hhmmss) ;
-          if( PreviousEndtime === 0 && i!== 0)
-          {
-            timeArr = steplog[i-1].StepEndTime.split(':');
-             hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
-            PreviousEndtime = parseInt(hhmmss);
-          }
-          var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
-          xhr_log_filter .forEach(function(filteredElement, index) {
-            xhr_log[xhr_log.indexOf(filteredElement)].StepMapping = steplog[i].StepNo;
-        });
-          PreviousEndtime = parseInt(hhmmss);  
-         // Calculate the sum based on the filterd array 
-         steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
-         xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
-         steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
-        }
-        //create a local copy for download which is not soo detailed          
-         local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
+            xhr_queue =  xhr_queue.filter( e => e.processed == '');    
+        
+             //Logic for widget derivation
+            var local_log = [];
+            var timeOrigin = performance.timeOrigin;
+            var CurrentEndtime = 0;
+            var PreviousEndtime = 0;
 
-        }         
+            for(var i = 0 ; i< steplog.length ; i++)
+            {   
+              //Perform this step only when the mapping is missing 
+                if(steplog[i].processed !== 'X')          
+                {
+                //Create list of Ina Calls  
+                steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
+                //Create list of Render widget based on identifiers
+                let st = steplog[i].StepSnapshot.filter(e => e.identifier != null && e.identifier !== '');
+                st = st.filter(e => e.identifier.includes("render")); 
+                //Append list of Render widget based on identifiers 
+                steplog[i].Widgetinfo = st;
+                // Max Runtime derivation logic
+                var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
+                var maxstepduration = 0;
+                for(var y = 0 ; y < steplog[i].StepSnapshot.length ; y++)     
+                {
+
+                  var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration - stepstarttime ;
+                  if(stepduration > maxstepduration ) 
+                  {
+                    maxstepduration = stepduration ;
+                    var maxstepid = y + 1;
+                  }
+                }
+                steplog[i].StepDuration =  maxstepduration;
+                steplog[i].StepSIDWithMaxDuration =  maxstepid;
+                steplog[i].StepStartTime = local_this.processstarttime(stepstarttime,timeOrigin);
+                steplog[i].StepEndTime = local_this.processendtime(stepstarttime,timeOrigin,maxstepduration);
+                steplog[i].StepStartDate = local_this.setDate(timeOrigin);
+                steplog[i].processed = 'X';
+                //Create a mapping to the network calls ->        
+                var timeArr = steplog[i].StepEndTime.split(':');
+                var hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
+                CurrentEndtime = parseInt(hhmmss) ;
+                if( PreviousEndtime === 0 && i!== 0)
+                {
+                  timeArr = steplog[i-1].StepEndTime.split(':');
+                  hhmmss = timeArr[0]+timeArr[1]+timeArr[2];
+                  PreviousEndtime = parseInt(hhmmss);
+                }
+                var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
+                xhr_log_filter .forEach(function(filteredElement, index) {
+                  xhr_log[xhr_log.indexOf(filteredElement)].StepMapping = steplog[i].StepNo;
+              });
+                PreviousEndtime = parseInt(hhmmss);  
+              // Calculate the sum based on the filterd array 
+              steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
+              xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
+              steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
+              }
+              //create a local copy for download which is not soo detailed          
+              local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
+
+              }         
          //Download the Network log
          local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
@@ -366,9 +383,7 @@
          //Download Local Log 
         local_this.downloadstepbreakdown(local_this , local_log);
       }, 10000);
-    }
-
-    
+    }    
 
     conver2hms_xhr(tstamp)
     {
@@ -494,6 +509,10 @@
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
+             elseif(xhr.requestUrl.includes('UserFriendly') === true || xhr._requestUrl.includes('UserFriendly') === true )
+             {
+              processStepLog();
+             }
            });     
            
         async function processXhrResults(xhr)
@@ -594,26 +613,80 @@
             },200)
             await 1;
         }
+
+        async function processStepLog()
+        {
+          let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
+      lv_result = lv_result.sort(function(a, b){
+             if(a.startTime < b.startTime) { return -1; }
+             if(a.startTime > b.startTime) { return 1; }
+             return 0;
+         });
+       let reslen = lv_result.length ;
+         if(psNo!==reslen)
+         {
+            // If new entries are present , compare the last entry of the previous step in step log
+                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
+                  //Previous step Start + End time 
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 var diff_time = lv_result[psNo].startTime - pstep_time
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  {
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;       
+                  }
+                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
+
+                  {
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
+                    //steplog[sNo-2].RaptrSnapshot = lv_result;
+                    steplog[sNo-2].StepEndId = reslen-1 ;
+                     psNo = reslen ;
+                  }  } 
+
+          //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
+          for(var o = 0 ; o < xhr_queue.length ; o++) 
+          {
+
+            if(xhr_queue[o].xhr.status == 200)          
       
-/*(function() {
-  var xhr = XMLHttpRequest.prototype;
-  var originalOpen = xhr.open;
-  var originalSend = xhr.send;
+            {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+              if(response !==null)
+              {  
+                if(response.Grids!== undefined && response.Grids !== null)
+                {
+                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                }
+              }                
+                 
+              if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+              {
+               var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+              }              
+              else
+               {
+                 var tbt = 0;
+               }              
 
-  xhr.open = function(method, url) {
-    this._method = method;
-    this._url = url;
-    return originalOpen.apply(this, arguments);
-  };
+               var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+               var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+               var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+               var hhmmss = parseInt(hours+minutes+seconds);
 
-  xhr.send = function(data) {
-    this.addEventListener("load", function() {
-      console.log("Intercepted response from " + this._method + " request to " + this._url);
-      console.log("Response: " + this.responseText);
-    });
-
-    return originalSend.apply(this, arguments);
-  };
-})();*/
+              window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+              xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+              xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+              Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+              readstate : xhr_queue[o].xhr.readyState                        
+             }) ; 
+                 xhr_queue[o].processed = 'x';
+                } 
+            }
+            xhr_queue =  xhr_queue.filter( e => e.processed == '');
+          await 1;
+        }
   
 })();
