@@ -509,10 +509,10 @@
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
-            /* else if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse' || xhr._requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/bc/ina/service/v2/GetResponse'  )
+             else if(xhr.requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/fpa/services/rest/userFriendlyPerfLog?type=record&tenant=2' || xhr._requestUrl === 'https://bmw-dev.eu11.sapanalytics.cloud/sap/fpa/services/rest/userFriendlyPerfLog?type=record&tenant=2'  )
              {
               processStepLog();
-             }*/
+             }
            });     
            
         async function processXhrResults(xhr)
