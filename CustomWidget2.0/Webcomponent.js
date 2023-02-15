@@ -485,7 +485,7 @@
              // window.result_xhr.push(xhr);
               processXhrResults(xhr);        
              }
-             else if( xhr._requestUrl.includes('userFriendly'))
+             else if( xhr._requestUrl.includes('userFriendly') && sNo > 1)
              {
               processStepLog(xhr);
              }
