@@ -10,6 +10,7 @@
           window.steplog = [];      
           window.xhr_log = [];
           window.xhr_queue = [];
+          window.userF_log = [];
           window.sNo = 1;
           window.psNo = 0;        
           this.init();           
@@ -593,7 +594,7 @@
         {
           // store the steplog 
 
-          window.userFriendly_log.push(xhr);
+          userF_log.push(xhr);
           
           let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
            lv_result = lv_result.sort(function(a, b){
