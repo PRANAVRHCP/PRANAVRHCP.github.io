@@ -101,24 +101,7 @@
                   let reslen = lv_result.length ;
                   //If there are new entries -> the below logic will be entered
                   if(psNo!==reslen)
-                  {
-                     //Await for another 15 secs for the processing of all the records       
-                    setTimeout(function() 
-                    { 
-                      lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
-                       lv_result = lv_result.sort(function(a, b){
-                      if(a.startTime < b.startTime) { return -1; }
-                      if(a.startTime > b.startTime) { return 1; }
-                      return 0;
-                         });
-                      let reslen = lv_result.length ;
-                  
-                  // If new entries are present , compare the last entry of the previous step in step log
-                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
-                  //Previous step Start + End time 
-                  
-                  if(psNo!==reslen)
-                  {
+                  {   
                   var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
                  
                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
@@ -138,8 +121,7 @@
                    // steplog[sNo-2].RaptrSnapshot = lv_result;
                     steplog[sNo-2].StepEndId = reslen-1 ;
                      psNo = reslen ;
-                  } }  
-                    }, 10000);                   
+                  }               
                             
                   } 
 
@@ -184,7 +166,7 @@
                       xhr_queue =  xhr_queue.filter( e => e.processed == '');
 
                 }                
-             }, 500);
+             }, 300);
             
                 }              
              await 1;
@@ -353,11 +335,11 @@
 
               }         
          //Download the Network log
-         local_this.downloadlog(xhr_log , 'NetworkCalls');
+        // local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
-         local_this.downloadlog(steplog , 'StepLog');
+        // local_this.downloadlog(steplog , 'StepLog');
          //Download Local Log 
-        local_this.downloadstepbreakdown(local_this , local_log);
+        //local_this.downloadstepbreakdown(local_this , local_log);
       }, 5000);
     }    
 
