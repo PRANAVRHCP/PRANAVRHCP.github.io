@@ -335,11 +335,11 @@
 
               }         
          //Download the Network log
-        // local_this.downloadlog(xhr_log , 'NetworkCalls');
+         local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
-        // local_this.downloadlog(steplog , 'StepLog');
+         local_this.downloadlog(steplog , 'StepLog');
          //Download Local Log 
-        //local_this.downloadstepbreakdown(local_this , local_log);
+        local_this.downloadstepbreakdown(local_this , local_log);
       }, 5000);
     }    
 
