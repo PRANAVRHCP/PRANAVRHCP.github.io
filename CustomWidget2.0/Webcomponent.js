@@ -186,7 +186,7 @@
                                         if( ref_tstamp !== response['fact'][t].actionTstamp )
                                         {                                          
                                           ref_tstamp = response['fact'][t].actionTstamp  ;
-                                          utc = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
                                           const date = new Date(utc); // create a date object from the UTC timestamp
                                           const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
                                           var hours =  localTime.getHours().toString().padStart(2, '0');
@@ -333,7 +333,7 @@
                                         if( ref_tstamp !== response['fact'][t].actionTstamp )
                                         {                                          
                                           ref_tstamp = response['fact'][t].actionTstamp  ;
-                                          utc = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
                                           const date = new Date(utc); // create a date object from the UTC timestamp
                                           const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
                                           var hours =  localTime.getHours().toString().padStart(2, '0');
