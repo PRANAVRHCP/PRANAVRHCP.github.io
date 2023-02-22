@@ -172,24 +172,21 @@
 
                 for(o = 0 ; o < userF_queue.length ; o++) 
                 {
-
                   if(userF_queue[o].xhr.status == 200)         
                  {   
                     var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
                     if(response !==null && response['fact'] !==undefined )
                     {   
                       if(response['fact'].length > 0 )
-                      {   
-                        for (var p = 0 ; p < userF_queue.length ; p++)
-                          {   var ref_tstamp = 0;
-                              for (var t = 0 ; t < userF_queue[p].Facts.length ; t++)
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
                                   {
-                                      if(userF_queue[p].Facts[t].actionTstamp !== undefined)
-                                      {
-                                        var utc = response['fact'][0].actionTstamp;
-                                        if( ref_tstamp !== utc)
-                                        {
-                                          ref_tstamp = utc ;
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          utc = response['fact'][t].actionTstamp  ;
                                           const date = new Date(utc); // create a date object from the UTC timestamp
                                           const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
                                           var hours =  localTime.getHours().toString().padStart(2, '0');
@@ -197,12 +194,11 @@
                                           var seconds =  localTime.getSeconds().toString().padStart(2, '0');
                                           var hhmmss = parseInt(hours+minutes+seconds);
                                           window.userF_log.push({  ActionStartTime : hhmmss ,
-                                          UserAction :  response['fact'][0].userAction ,
+                                          UserAction :  response['fact'][t].userAction ,
                                           Facts : response['fact']                        
                                           });
                                         }  
-                                      }
-                                  }
+                                      }                                  
                                 }
                           }  
                       }                    
@@ -319,47 +315,44 @@
             xhr_queue =  xhr_queue.filter( e => e.processed == '');  
                      
            // Process the UserFriendly Queue
+                // Process the UserFriendly Queue
 
-           for(o = 0 ; o < userF_queue.length ; o++) 
-           {
-
-             if(userF_queue[o].xhr.status == 200)         
-            {   
-               var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
-               if(response !==null && response['fact'] !==undefined )
-               {   
-                 if(response['fact'].length > 0 )
+                for(o = 0 ; o < userF_queue.length ; o++) 
+                {
+                  if(userF_queue[o].xhr.status == 200)         
                  {   
-                   for (var p = 0 ; p < userF_queue.length ; p++)
-                     {   var ref_tstamp = 0;
-                         for ( var t = 0 ; t < userF_queue[p].Facts.length ; t++)
-                             {
-                                 if(userF_queue[p].Facts[t].actionTstamp !== undefined)
-                                 {
-                                   var utc = response['fact'][0].actionTstamp;
-                                   if( ref_tstamp !== utc)
-                                   {
-                                     ref_tstamp = utc ;
-                                     const date = new Date(utc); // create a date object from the UTC timestamp
-                                     const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
-                                     var hours =  localTime.getHours().toString().padStart(2, '0');
-                                     var minutes =  localTime.getMinutes().toString().padStart(2, '0');
-                                     var seconds =  localTime.getSeconds().toString().padStart(2, '0');
-                                     var hhmmss = parseInt(hours+minutes+seconds);
-                                     window.userF_log.push({  ActionStartTime : hhmmss ,
-                                     UserAction :  response['fact'][0].userAction ,
-                                     Facts : response['fact']                        
-                                     });
-                                   }  
-                                 }
-                             }
-                           }
-                     }  
-                 }                    
-                  userF_queue[o].processed = 'x';                   
-             } 
-           }
-           userF_queue =  userF_queue.filter( e => e.processed == '');      
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
+                                  {
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          utc = response['fact'][t].actionTstamp  ;
+                                          const date = new Date(utc); // create a date object from the UTC timestamp
+                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                          var hours =  localTime.getHours().toString().padStart(2, '0');
+                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                          var hhmmss = parseInt(hours+minutes+seconds);
+                                          window.userF_log.push({  ActionStartTime : hhmmss ,
+                                          UserAction :  response['fact'][t].userAction ,
+                                          Facts : response['fact']                        
+                                          });
+                                        }  
+                                      }                                  
+                                }
+                          }  
+                      }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                }
+                userF_queue =  userF_queue.filter( e => e.processed == '');          
         
              //Logic for widget derivation
             var local_log = [];
