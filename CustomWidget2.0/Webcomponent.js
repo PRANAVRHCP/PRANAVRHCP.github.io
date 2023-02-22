@@ -180,11 +180,11 @@
                     {   
                       if(response['fact'].length > 0 )
                       {   
-                        for (var p = 0 ; p < userF_log.length ; p++)
+                        for (var p = 0 ; p < userF_queue.length ; p++)
                           {   var ref_tstamp = 0;
-                              for ( t = 0 ; t < userF_log[p].Facts.length ; t++)
+                              for ( t = 0 ; t < userF_queue[p].Facts.length ; t++)
                                   {
-                                      if(userF_log[p].Facts[t].actionTstamp !== undefined)
+                                      if(userF_queue[p].Facts[t].actionTstamp !== undefined)
                                       {
                                         var utc = response['fact'][0].actionTstamp;
                                         if( ref_tstamp !== utc)
@@ -330,11 +330,11 @@
                {   
                  if(response['fact'].length > 0 )
                  {   
-                   for (var p = 0 ; p < userF_log.length ; p++)
+                   for (var p = 0 ; p < userF_queue.length ; p++)
                      {   var ref_tstamp = 0;
-                         for ( t = 0 ; t < userF_log[p].Facts.length ; t++)
+                         for ( t = 0 ; t < userF_queue[p].Facts.length ; t++)
                              {
-                                 if(userF_log[p].Facts[t].actionTstamp !== undefined)
+                                 if(userF_queue[p].Facts[t].actionTstamp !== undefined)
                                  {
                                    var utc = response['fact'][0].actionTstamp;
                                    if( ref_tstamp !== utc)
