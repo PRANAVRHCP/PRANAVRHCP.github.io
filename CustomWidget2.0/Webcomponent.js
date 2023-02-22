@@ -178,7 +178,9 @@
                   {   
                     var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
                     if(response !==null && response['fact'] !==undefined )
-                    {                        
+                    {   
+                      if(response['fact'].length > 0 )
+                      {                     
                       var utc = response['fact'][0].actionTstamp;
                       const date = new Date(utc); // create a date object from the UTC timestamp
                       const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
@@ -190,9 +192,8 @@
                       UserAction :  response['fact'][0].userAction ,
                       Facts : response['fact']                        
                        });
-                    }                      
-                       userF_queue[o].processed = 'x';
-                   
+                    }  }                    
+                       userF_queue[o].processed = 'x';                   
                   } 
                     }
                     userF_queue =  userF_queue.filter( e => e.processed == '');
