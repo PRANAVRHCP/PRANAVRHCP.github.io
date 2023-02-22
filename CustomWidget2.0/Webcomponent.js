@@ -426,6 +426,27 @@
                 {
                   steplog[i].UserAction = UF_log_filter[0].UserAction
                 }
+                else
+                {
+                  // No entry was found , so check if there exists an entry with + or - 1 second
+                  CurrentEndtime = CurrentEndtime + 1 ;
+                  var UF_log_filter = userF_log.filter( e => e.ActionStartTime >= CurrentStarttime  && e.ActionStartTime <= CurrentEndtime);
+                  if(UF_log_filter.length === 0 )
+                  {
+                    // Find an action in the last 2 seconds
+                    CurrentEndtime = CurrentEndtime + 2;
+                    var UF_log_filter = userF_log.filter( e => e.ActionStartTime >= CurrentStarttime  && e.ActionStartTime <= CurrentEndtime);
+                    
+                  }
+                  if(UF_log_filter.length > 0 )
+                {
+                  steplog[i].UserAction = UF_log_filter[0].UserAction
+                }
+                else
+                {
+                  steplog[i].UserAction = '';
+                }
+                }
               }   
               }
             //create a local copy for download which is not soo detailed       
