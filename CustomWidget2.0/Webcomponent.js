@@ -401,7 +401,7 @@
               else
               {
                 // Map the step from the 
-                timeArr = steplog[i].StepEndTime.split(':');
+                timeArr = steplog[i].StepStartTime.split(':');
                 var hhmmss_t = timeArr[0]+timeArr[1]+timeArr[2];
                 var CurrentStarttime = parseInt(hhmmss_t) ;
                 var UF_log_filter = userF_log.filter( e => e.ActionStartTime >= CurrentStarttime  && e.ActionStartTime <= CurrentEndtime);
