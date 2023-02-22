@@ -182,7 +182,7 @@
                       {   
                         for (var p = 0 ; p < userF_queue.length ; p++)
                           {   var ref_tstamp = 0;
-                              for ( t = 0 ; t < userF_queue[p].Facts.length ; t++)
+                              for (var t = 0 ; t < userF_queue[p].Facts.length ; t++)
                                   {
                                       if(userF_queue[p].Facts[t].actionTstamp !== undefined)
                                       {
@@ -332,7 +332,7 @@
                  {   
                    for (var p = 0 ; p < userF_queue.length ; p++)
                      {   var ref_tstamp = 0;
-                         for ( t = 0 ; t < userF_queue[p].Facts.length ; t++)
+                         for ( var t = 0 ; t < userF_queue[p].Facts.length ; t++)
                              {
                                  if(userF_queue[p].Facts[t].actionTstamp !== undefined)
                                  {
