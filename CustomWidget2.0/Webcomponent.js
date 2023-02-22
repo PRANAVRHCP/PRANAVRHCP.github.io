@@ -164,7 +164,9 @@
                        xhr_queue[o].processed = 'x';
                       } 
                     }
-                      xhr_queue =  xhr_queue.filter( e => e.processed == '');
+                  
+                  //Clear the queue
+                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
                 
                 // Process the UserFriendly Queue
 
@@ -184,15 +186,16 @@
                       var minutes =  localTime.getMinutes().toString().padStart(2, '0');
                       var seconds =  localTime.getSeconds().toString().padStart(2, '0');
                       var hhmmss = parseInt(hours+minutes+seconds);
-                        window.userF_log.push({  ActionStartTime : hhmmss ,
-                        UserAction :  response['fact'][0].userAction ,
-                        Facts : response['fact']                        
+                      window.userF_log.push({  ActionStartTime : hhmmss ,
+                      UserAction :  response['fact'][0].userAction ,
+                      Facts : response['fact']                        
                        });
                     }                      
                        userF_queue[o].processed = 'x';
                    
                   } 
                     }
+                    userF_queue =  userF_queue.filter( e => e.processed == '');
 
                 }                
              }, 300);
