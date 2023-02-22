@@ -410,10 +410,7 @@
               steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
               xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
               steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
-              }
-
-              // Create a mapping of the zser action to step 
-              //create a local copy for download which is not soo detailed 
+               // Create a mapping of the zser action to step              
               if(i === 0)
               {
                 steplog[i].UserAction = 'Page Initialization';                
@@ -429,7 +426,9 @@
                 {
                   steplog[i].UserAction = UF_log_filter[0].UserAction
                 }
-              }         
+              }   
+              }
+            //create a local copy for download which is not soo detailed       
               local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
 
               }         
