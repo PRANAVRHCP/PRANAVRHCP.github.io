@@ -304,7 +304,35 @@
                  xhr_queue[o].processed = 'x';
                 } 
             }
-            xhr_queue =  xhr_queue.filter( e => e.processed == '');    
+            xhr_queue =  xhr_queue.filter( e => e.processed == '');  
+            
+                // Process the UserFriendly Queue
+
+            for(o = 0 ; o < userF_queue.length ; o++) 
+              {
+                  if(userF_queue[o].xhr.status == 200)          
+                  {   
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {                     
+                      var utc = response['fact'][0].actionTstamp;
+                      const date = new Date(utc); // create a date object from the UTC timestamp
+                      const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                      var hours =  localTime.getHours().toString().padStart(2, '0');
+                      var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                      var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                      var hhmmss = parseInt(hours+minutes+seconds);
+                      window.userF_log.push({  ActionStartTime : hhmmss ,
+                      UserAction :  response['fact'][0].userAction ,
+                      Facts : response['fact']                        
+                       });
+                    }  }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                    }
+            userF_queue =  userF_queue.filter( e => e.processed == '');            
         
              //Logic for widget derivation
             var local_log = [];
@@ -363,7 +391,25 @@
               xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
               steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
               }
-              //create a local copy for download which is not soo detailed          
+
+              // Create a mapping of the zser action to step 
+              //create a local copy for download which is not soo detailed 
+              if(i === 0)
+              {
+                steplog[i].UserAction = 'Page Initialization';                
+              }
+              else
+              {
+                // Map the step from the 
+                timeArr = steplog[i].StepEndTime.split(':');
+                var hhmmss_t = timeArr[0]+timeArr[1]+timeArr[2];
+                var CurrentStarttime = parseInt(hhmmss_t) ;
+                var UF_log_filter = userF_log.filter( e => e.ActionStartTime >= CurrentStarttime  && e.ActionStartTime <= CurrentEndtime);
+                if(UF_log_filter.length > 0 )
+                {
+                  console.log(UF_log_filter);
+                }
+              }         
               local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
 
               }         
