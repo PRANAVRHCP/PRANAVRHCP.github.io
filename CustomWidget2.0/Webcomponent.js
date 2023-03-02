@@ -90,7 +90,7 @@
               setTimeout(function() 
               {              
                  // It will not be triggered when the user clicks the Performance Helper Button
-                  if(event.target.tagName !== 'PKA-BUTTON02')
+                  if(event.target.tagName !== 'bmw-perfhelper')
                   {              
                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
                     lv_result = lv_result.sort(function(a, b){
@@ -555,7 +555,7 @@
     }   
   }
     
-  customElements.define('pka-button02', PerformanceHelper);
+  customElements.define('bmw-perfhelper', PerformanceHelper);
   
   function addXMLRequestCallback(callback){
   let oldSend;
