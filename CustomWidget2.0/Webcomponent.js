@@ -52,6 +52,14 @@
                       {
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       }
+                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                      {
+                          var PerfAnalysis = response.PerformanceAnalysis;
+                      }
+                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                      {
+                          var PerfData = response.PerformanceData;
+                      }
                     }                
                       
                     if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
@@ -67,12 +75,16 @@
                          var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
                          var hhmmss = parseInt(hours+minutes+seconds);
 
-                        window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                        xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
-                        xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                        Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
-                        readstate : xhr_queue[o].xhr.readyState                        
-                       }) ; 
+                         window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                          xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                          xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                          Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                          PerformanceAnalysis :PerfAnalysis,
+                          PerformanceData :PerfData,
+                          TBT : tbt,
+                          readstate : xhr_queue[o].xhr.readyState                        
+                         }) ; 
+
                        xhr_queue[o].processed = 'x';
                     } 
 
@@ -139,6 +151,15 @@
                       {
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       }
+                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                      {
+                          var PerfAnalysis = response.PerformanceAnalysis;
+                      }
+                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                      {
+                          var PerfData = response.PerformanceData;
+                      }
+
                     }     
                        
                     if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
@@ -155,13 +176,17 @@
                      var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
                      var hhmmss = parseInt(hours+minutes+seconds);
 
-                    window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                    xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
-                    xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                    Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
-                    readstate : xhr_queue[o].xhr.readyState                        
-                   });
-                       xhr_queue[o].processed = 'x';
+
+                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                     xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                     PerformanceAnalysis :PerfAnalysis,
+                     PerformanceData :PerfAnalysis,
+                     TBT : tbt,
+                     readstate : xhr_queue[o].xhr.readyState                        
+                     }) ; 
+                     xhr_queue[o].processed = 'x';
                       } 
                     }
                   
@@ -287,6 +312,15 @@
                 {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
+                if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                {
+                    var PerfAnalysis = response.PerformanceAnalysis;
+                }
+                if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                {
+                    var PerfData = response.PerformanceData;
+                }
+
               }                
                  
               if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
@@ -303,12 +337,16 @@
                var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
                var hhmmss = parseInt(hours+minutes+seconds);
 
-              window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-              xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
-              xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-              Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
-              readstate : xhr_queue[o].xhr.readyState                        
-             }) ; 
+
+               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                PerformanceAnalysis : PerfAnalysis,
+                PerformanceData : PerfData,
+                TBT : tbt,
+                readstate : xhr_queue[o].xhr.readyState                        
+               }) ; 
                  xhr_queue[o].processed = 'x';
                 } 
             }
@@ -607,6 +645,14 @@
                 {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
+                if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                {
+                    var PerfAnalysis = response.PerformanceAnalysis;
+                }
+                if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                {
+                    var PerfData = response.PerformanceData;
+                }
               }
 
               if(xhr._networkInfo !== null && xhr._networkInfo !== undefined )
@@ -631,6 +677,8 @@
                 Timestamp : xhr._timestamp , 
                 StartTime : hhmmss,
                 UserfriendlyInfo: xhr._userFriendlyPerfData , 
+                PerformanceAnalysis :PerfAnalysis,
+                PerformanceData :PerfData,
                 TBT : tbt,
                 readstate : xhr.readyState                 
                  }) ; 
@@ -657,6 +705,15 @@
                 {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
+                if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                {
+                    var PerfAnalysis = response.PerformanceAnalysis;
+                }
+                if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                {
+                    var PerfData = response.PerformanceData;
+                }
+
               }   
 
               if(xhr._networkInfo !== null && xhr._networkInfo !== undefined )
@@ -678,7 +735,9 @@
                StepMapping : 0 , 
                Timestamp : xhr._timestamp , 
                StartTime : hhmmss,
-               UserfriendlyInfo: xhr._userFriendlyPerfData , 
+               UserfriendlyInfo: xhr._userFriendlyPerfData ,
+               PerformanceAnalysis :PerfAnalysis,
+               PerformanceData :PerfData, 
                TBT : tbt,
                readstate : xhr.readyState                 
                 }) ;
@@ -741,6 +800,15 @@
                 {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                 }
+                if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                {
+                    var PerfAnalysis = response.PerformanceAnalysis;
+                }
+                if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                {
+                    var PerfData = response.PerformanceData;
+                }
+
               }                
                  
               if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
@@ -756,12 +824,15 @@
                var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
                var hhmmss = parseInt(hours+minutes+seconds);
 
-              window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-              xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
-              xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-              Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
-              readstate : xhr_queue[o].xhr.readyState                        
-             }) ; 
+               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                PerformanceAnalysis : PerfAnalysis,
+                PerformanceData : PerfData,
+                TBT : tbt,
+                readstate : xhr_queue[o].xhr.readyState                        
+               }) ; 
                  xhr_queue[o].processed = 'x';
                 } 
             }
