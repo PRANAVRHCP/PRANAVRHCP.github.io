@@ -22,7 +22,7 @@
 	      
 	   $(document).ready(function(){          
           $('html').click(async function(event){
-	  if(event.target.tagName !== 'custom-dropdown')
+	  if(event.target.tagName !== 'custom-dropdown' || event.target.tagName !== 'CUSTOM-DROPDOWN' )
 	 {
 		console.log('Onclick Intercepted');
 	 }
