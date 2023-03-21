@@ -13,7 +13,7 @@
     tmpl_b.innerHTML = 
    `<button type="button" id="newBTN" > Download Log</button>` ;  
     tmpl_b.style.border = "1px";
-    tmpl.style.display = "inline-block";
+    tmpl_b.style.display = "inline-block";
    
     class PerformanceHelp extends HTMLElement {
         constructor() {
