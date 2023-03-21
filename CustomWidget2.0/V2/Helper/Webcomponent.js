@@ -46,7 +46,18 @@
               if(psNo!==reslen)
               {
               //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+              //Split the steps into 2 substeps
+              for(var x = 0 ; x < lv_result.length ; x++)
+              {
+                  if(lv_result[x].name === "sap.fpa.ui.story.story:onInit")
+                  {
+                     var split_index = x;
+                      x =  lv_result.length + 1;
+                  }
+               }
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: split_index , StepSnapshot:lv_result.slice(psNo,split_index) , processed : ''  })
+              sNo = sNo + 1; 
+              steplog.push({StepNo:sNo , StepStartId: psNo+1 ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
@@ -622,7 +633,11 @@
                // Create a mapping of the zser action to step              
               if(i === 0)
               {
-                steplog[i].UserAction = 'Page Initialization';                
+                steplog[i].UserAction = 'Pre Init';                
+              }
+              else if(i == 1)
+              {
+                steplog[i].UserAction = 'Initialization';    
               }
               else
               {
