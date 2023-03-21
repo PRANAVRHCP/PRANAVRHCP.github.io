@@ -38,12 +38,24 @@
           this.fireDDStateChange();           
           this.dispatchEvent(event);
           });         
-	        
-          button_ref.addEventListener("click", event => {
+	  
+	  // When the widget mode is 1 or 3
+          if(widgetmode === 1 || widgetmode ===3)
+	  { 
+	  button_ref.addEventListener("click", event => {
           var event = new Event("onClick");
-          this.fireButtonClick();           
+          this.fireDownloadLogHandler();           
           this.dispatchEvent(event);
-          });          
+          });    
+	  }
+	  else
+	  {
+	  button_ref.addEventListener("click", event => {
+          var event = new Event("onClick");
+          this.fireStepLogger();           
+          this.dispatchEvent(event);
+          });    	  
+	  }
       }
 
       fireDDStateChange() 
@@ -62,10 +74,16 @@
         }
        }
       
-       fireButtonClick()
+       fireDownloadLogHandler()
        {
-        console.log('Button Clicked');
+        console.log('Download Log Handler Clicked');
        }      
+	
+	fireStepLogger()
+	   {
+	  console.log('Step Logger Called');
+	   }
+	   
   }
 
   customElements.define('custom-dropdown', PerformanceHelp);
