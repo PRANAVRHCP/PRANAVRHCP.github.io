@@ -18,7 +18,15 @@
       }
 
       init() {            
-          window.widgetmode = 1;  
+          window.widgetmode = 1; 
+	      
+	   $(document).ready(function(){          
+          $('html').click(async function(event){
+	  if(event.target.tagName !== 'custom-dropdown')
+	 {
+		console.log('Onclick Intercepted');
+	 }
+	  })});
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
           shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
