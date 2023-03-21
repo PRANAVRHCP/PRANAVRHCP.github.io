@@ -1,7 +1,7 @@
 (function () {
  
   // Create definitions for Custom Element Templates
-  let tmpl = document.createElement('template_dd');
+  let tmpl = document.createElement('template');
   tmpl.innerHTML = 
   `<select id = "myList">
     <option value="1"> Auto Log Mode </option>  
@@ -9,7 +9,7 @@
     <option value="3"> Download Logs </option>   
    </select>` ;   
   
-  let tmpl_b = document.createElement('template_btn');
+  let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
  `<button type="button" id="newBTN" > Download Logs</button>` ;  
  
