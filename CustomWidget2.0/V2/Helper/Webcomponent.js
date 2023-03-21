@@ -1,9 +1,7 @@
 (function () {
     let tmpl = document.createElement('template');
     tmpl.innerHTML = 
-    `<select id = "myList" style = "width:120px;
-    height:120px;
-    border: 1px;" >
+    `<select id = "myList">
       <option value="1"> Auto Mode </option>  
       <option value="2"> Manual Mode </option>  
       <option value="3"> Download Log </option>   
@@ -11,9 +9,7 @@
     
     let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
-  `<button type="button" id="newBTN" style = "width:120px;
-    height:120px;
-    border: 1px;> Download Log</button>` ;   
+  `<button type="button" id="newBTN" > Download Log</button>` ;   
    
     class PerformanceHelp extends HTMLElement {
         constructor() {
