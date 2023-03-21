@@ -6,6 +6,10 @@
       <option value="2"> Manual Mode </option>  
       <option value="3"> Download Log </option>   
       </select>` ;   
+    
+    let tmpl_b = document.createElement('template');
+  tmpl_b.innerHTML = 
+  `<button type="button" id="newBTN"> Performance Stats </button>` ;   
    
     class PerformanceHelp extends HTMLElement {
         constructor() {
@@ -17,6 +21,7 @@
               
             let shadowRoot = this.attachShadow({mode: "open"});
             shadowRoot.appendChild(tmpl.content.cloneNode(true));
+            shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
             this.addEventListener("click", event => {
             var event = new Event("onClick");
             this.fireChanged();           
