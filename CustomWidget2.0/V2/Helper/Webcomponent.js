@@ -41,20 +41,20 @@
 
 	        button_ref.addEventListener("click", event => {
           var event = new Event("onClick");
-          this.firehandler();           
+          this.firehandler(this);           
           this.dispatchEvent(event);
           });   
       }
 
-      firehandler()
+      firehandler(loc_this)
       {
         if(widgetmode === 1 || widgetmode ===3)
         { 
-          fireDownloadLogHandler();          
+          loc_this.fireDownloadLogHandler();          
         }
         else
         {
-          fireStepLogger();
+          loc_this.fireStepLogger();
         }
       }
       fireDDStateChange() 
