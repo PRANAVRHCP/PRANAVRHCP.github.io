@@ -110,7 +110,7 @@
             }
             else{
               // It will not be triggered when the user clicks the Performance Helper Button   
-              if(event.target.tagName !== 'custom-dropdown' || event.target.tagName !== 'CUSTOM-DROPDOWN' && widgetmode === 1 )
+              if(widgetmode === 1 && (event.target.tagName !== 'custom-dropdown' || event.target.tagName !== 'CUSTOM-DROPDOWN' ) )
               {
               setTimeout(function() 
               {              
