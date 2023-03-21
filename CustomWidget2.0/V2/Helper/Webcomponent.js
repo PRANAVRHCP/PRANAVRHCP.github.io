@@ -9,7 +9,7 @@
     
     let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
-  `<button type="button" id="newBTN"> Performance Stats </button>` ;   
+  `<button type="button" id="myBTN"> Performance Stats </button>` ;   
    
     class PerformanceHelp extends HTMLElement {
         constructor() {
