@@ -110,7 +110,7 @@
             }
             else{
               // It will not be triggered when the user clicks the Performance Helper Button   
-              if(widgetmode === 1 &&  event.target.tagName !== 'CUSTOM-DROPDOWN' )
+              if(widgetmode === 1 &&  event.target.tagName !== 'custom-dropdown' )
               {
               setTimeout(function() 
               {              
@@ -274,7 +274,7 @@
       
       fireDDStateChange()
       {
-        var divs = document.getElementsByTagName('CUSTOM-DROPDOWN');
+        var divs = document.getElementsByTagName('custom-dropdown');
         var dropdown_val = divs[0].shadowRoot.getElementById('myList');
         window.widgetmode = parseInt(dropdown_val.value);
         if(window.widgetmode === 2)
@@ -764,7 +764,7 @@
     }   
   }
     
-  customElements.define('CUSTOM-DROPDOWN', PerformanceHelper);
+  customElements.define('custom-dropdown', PerformanceHelper);
   
   function addXMLRequestCallback(callback){
   let oldSend;
