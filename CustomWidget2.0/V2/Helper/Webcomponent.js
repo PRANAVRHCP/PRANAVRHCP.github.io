@@ -6,29 +6,22 @@
       <option value="2"> Manual Mode </option>  
       <option value="3"> Download Log </option>   
      </select>` ;   
-    tmpl.style.border = "1px";
-    tmpl.style.display = "inline-block";
     
     let tmpl_b = document.createElement('template');
     tmpl_b.innerHTML = 
    `<button type="button" id="newBTN" > Download Log</button>` ;  
-    tmpl_b.style.border = "1px";
-    tmpl_b.style.display = "inline-block"; 
-    tmpl_b.style.paddingLeft = "5px";
-   
-    class PerformanceHelp extends HTMLElement {
+
+     class PerformanceHelp extends HTMLElement {
         constructor() {
             super();
             this.init();           
         }
 
         init() {            
-              
+            window.widgetmode = 1;  
             let shadowRoot = this.attachShadow({mode: "open"});
-            shadowRoot.appendChild(tmpl.cloneNode(true));
-            shadowRoot.appendChild(tmpl_b.cloneNode(true));
-           // shadowRoot.appendChild(tmpl.content.cloneNode(true));
-           // shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
+            shadowRoot.appendChild(tmpl.content.cloneNode(true));
+            shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
             this.addEventListener("click", event => {
             var event = new Event("onClick");
             this.fireChanged();           
@@ -36,10 +29,16 @@
             });           
         }
 
-        fireChanged() {
-            console.log("OnClick Triggered");     
-            
-        }        
+        fireChanged() 
+         {
+          var divs = document.getElementsByTagName('custom-dropdown');
+          var val = divs[0].shadowRoot.getElementById('myList');
+          window.widgetmode = val.value 
+          if(window.widgetmode === 2)
+          {
+              console.log('Docmode');
+          }
+         }        
         
     }
 
