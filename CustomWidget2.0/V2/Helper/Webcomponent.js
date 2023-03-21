@@ -1,7 +1,7 @@
 (function () {
     let tmpl = document.createElement('template');
     tmpl.innerHTML = 
-    `<select id = "myList" style >
+    `<select id = "myList">
       <option value="1"> Auto Mode </option>  
       <option value="2"> Manual Mode </option>  
       <option value="3"> Download Log </option>   
@@ -25,8 +25,10 @@
         init() {            
               
             let shadowRoot = this.attachShadow({mode: "open"});
-            shadowRoot.appendChild(tmpl.content.cloneNode(true));
-            shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
+            shadowRoot.appendChild(tmpl.cloneNode(true));
+            shadowRoot.appendChild(tmpl_b.cloneNode(true));
+           // shadowRoot.appendChild(tmpl.content.cloneNode(true));
+           // shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
             this.addEventListener("click", event => {
             var event = new Event("onClick");
             this.fireChanged();           
