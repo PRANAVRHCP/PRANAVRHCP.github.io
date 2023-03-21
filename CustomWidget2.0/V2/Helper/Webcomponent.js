@@ -37,27 +37,26 @@
           var event = new Event("onClick");
           this.fireDDStateChange();           
           this.dispatchEvent(event);
-          });         
-	  
-	  // When the widget mode is 1 or 3
-          if(widgetmode === 1 || widgetmode ===3)
-	  { 
-	  button_ref.addEventListener("click", event => {
+          });      
+
+	        button_ref.addEventListener("click", event => {
           var event = new Event("onClick");
-          this.fireDownloadLogHandler();           
+          this.firehandler();           
           this.dispatchEvent(event);
-          });    
-	  }
-	  else
-	  {
-	  button_ref.addEventListener("click", event => {
-          var event = new Event("onClick");
-          this.fireStepLogger();           
-          this.dispatchEvent(event);
-          });    	  
-	  }
+          });   
       }
 
+      firehandler()
+      {
+        if(widgetmode === 1 || widgetmode ===3)
+        { 
+          fireDownloadLogHandler();          
+        }
+        else
+        {
+          fireStepLogger();
+        }
+      }
       fireDDStateChange() 
        {
         var divs = document.getElementsByTagName('custom-dropdown');
