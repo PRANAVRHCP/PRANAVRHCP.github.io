@@ -2,14 +2,14 @@
   let tmpl = document.createElement('template');
   tmpl.innerHTML = 
   `<select id = "myList">
-    <option value="1"> Auto Mode </option>  
+    <option value="1"> Auto Log Mode </option>  
     <option value="2"> Manual Mode </option>  
-    <option value="3"> Download Log </option>   
+    <option value="3"> Download Logs </option>   
    </select>` ;   
   
   let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
- `<button type="button" id="newBTN" > Download Log</button>` ;  
+ `<button type="button" id="newBTN" > Download Logs</button>` ;  
 
    class PerformanceHelp extends HTMLElement {
       constructor() {
@@ -41,7 +41,7 @@
         }
         else
         {
-          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Log';
+          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';
         }
        }        
       
