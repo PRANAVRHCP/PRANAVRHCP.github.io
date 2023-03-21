@@ -55,9 +55,9 @@
                       x =  lv_result.length + 1;
                   }
                }
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: split_index , StepSnapshot:lv_result.slice(psNo,split_index) , processed : ''  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , processed : ''  })
               sNo = sNo + 1; 
-              steplog.push({StepNo:sNo , StepStartId: psNo+1 ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , processed : ''  })
+              steplog.push({StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
