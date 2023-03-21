@@ -243,7 +243,7 @@
                 }
                 userF_queue =  userF_queue.filter( e => e.processed == '');
                                
-             }, 300);
+             }, 700);
             }
             
                 }              
