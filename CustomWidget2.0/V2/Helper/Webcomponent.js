@@ -285,8 +285,9 @@
         // Create an Event Handler for Combination of Keyboard click and Manual Mode , call the step logger
 
         window.document.addEventListener('keydown', function(event) {
-          if (event.ctrlKey && event.key === 'z' && event.altKey && window.widgetmode === 2) {
-              fireStepLogger();
+          if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) {
+              this.firehandler(this);           
+              this.dispatchEvent(event);
           }
         });
 
