@@ -286,8 +286,123 @@
 
         window.document.addEventListener('keydown', function(event) {
           if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) {
-              this.firehandler(this);           
-              this.dispatchEvent(event);
+            // Log a new step            
+            setTimeout(function() 
+            {              
+                                         
+                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
+                  lv_result = lv_result.sort(function(a, b){
+                    if(a.startTime < b.startTime) { return -1; }
+                    if(a.startTime > b.startTime) { return 1; }
+                    return 0;
+                });
+                
+                let reslen = lv_result.length ;
+                //If there are new entries -> a new step will be created corresponding to them
+                if(psNo!==reslen)
+                { 
+                  //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
+                  psNo = reslen ;
+                  sNo = sNo + 1;                            
+                } 
+
+              //process the unprocessed records in the XHR log Queue
+              for(var o = 0 ; o < xhr_queue.length ; o++) 
+              {
+
+                if(xhr_queue[o].xhr.status == 200)          
+          
+                {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                  if(response !==null)
+                  {  
+                    if(response.Grids!== undefined && response.Grids !== null)
+                    {
+                        var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                    }
+                    if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                    {
+                        var PerfAnalysis = response.PerformanceAnalysis;
+                    }
+                    if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                    {
+                        var PerfData = response.PerformanceData;
+                    }
+
+                  }     
+                     
+                  if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                  {
+                   var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                  }              
+                  else
+                   {
+                     var tbt = 0;
+                   }  
+                  
+                   var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                   var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                   var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                   var hhmmss = parseInt(hours+minutes+seconds);
+
+
+                   window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                   xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                   xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                   Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                   PerformanceAnalysis :PerfAnalysis,
+                   PerformanceData :PerfAnalysis,
+                   TBT : tbt,
+                   readstate : xhr_queue[o].xhr.readyState                        
+                   }) ; 
+                   xhr_queue[o].processed = 'x';
+                    } 
+                  }
+                
+                //Clear the queue
+                  xhr_queue =  xhr_queue.filter( e => e.processed == '');
+              
+              // Process the UserFriendly Queue
+
+              for(o = 0 ; o < userF_queue.length ; o++) 
+              {
+                if(userF_queue[o].xhr.status == 200)         
+               {   
+                  var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                  if(response !==null && response['fact'] !==undefined )
+                  {   
+                    if(response['fact'].length > 0 )
+                    {   var ref_tstamp = 0;
+                            for (var t = 0 ; t < response['fact'].length ; t++)
+                                {
+                                    if(response['fact'][t].actionTstamp !== undefined)
+                                    {                                       
+                                      if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                      {                                          
+                                        ref_tstamp = response['fact'][t].actionTstamp  ;
+                                        var utc = response['fact'][t].actionTstamp  ;
+                                        const date = new Date(utc); // create a date object from the UTC timestamp
+                                        const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                        var hours =  localTime.getHours().toString().padStart(2, '0');
+                                        var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                        var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                        var hhmmss = parseInt(hours+minutes+seconds);
+                                        window.userF_log.push({  ActionStartTime : hhmmss ,
+                                        UserAction :  response['fact'][t].userAction ,
+                                        Facts : response['fact']                        
+                                        });
+                                      }  
+                                    }                                  
+                              }
+                        }  
+                    }                    
+                     userF_queue[o].processed = 'x';                   
+                } 
+              }
+              userF_queue =  userF_queue.filter( e => e.processed == '');
+                             
+           }, 700);
+
           }
         });
 
