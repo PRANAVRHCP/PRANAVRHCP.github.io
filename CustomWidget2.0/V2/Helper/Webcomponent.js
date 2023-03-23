@@ -599,20 +599,38 @@
                 st = st.filter(e => e.identifier.includes("render")); 
                 //Append list of Render widget based on identifiers 
                 steplog[i].Widgetinfo = st;
-                // Max Runtime derivation logic
+
+                // Max Runtime derivation logic                
+
+                var lag = 0;
                 var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
                 var maxstepduration = 0;
+                var maxendtime  = 0;
+
                 for(var y = 0 ; y < steplog[i].StepSnapshot.length ; y++)     
                 {
 
-                  var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration - stepstarttime ;
+                  var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration  ;
+                  if(steplog[i].StepSnapshot[y].startTime  - maxendtime  > 1000 && maxendtime  > 0 )
+                  {
+                      lag = lag + steplog[i].StepSnapshot[y].startTime  - maxendtime; 
+                  }
                   if(stepduration > maxstepduration ) 
                   {
-                    maxstepduration = stepduration ;
+                    maxendtime = stepduration ;
+              	    maxstepduration =  maxendtime - stepstarttime
                     var maxstepid = y + 1;
                   }
                 }
-                steplog[i].StepDuration =  maxstepduration;
+                //steplog[i].StepDuration =  maxstepduration;
+                if(steplog[i].LogMode === 'Manual')
+                {
+                  steplog[i].StepDuration =  maxstepduration - lag;
+                }
+                else
+                {
+                  steplog[i].StepDuration =  maxstepduration;
+                }
                 steplog[i].StepSIDWithMaxDuration =  maxstepid;
                 steplog[i].StepStartTime = local_this.processstarttime(stepstarttime,timeOrigin);
                 steplog[i].StepEndTime = local_this.processendtime(stepstarttime,timeOrigin,maxstepduration);
