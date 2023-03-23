@@ -684,6 +684,31 @@
               local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
 
               }         
+
+            // Step Log Byte change and Stepwise BreakDown Change for Step 1 and Step 2 if Step 2 is splitted correctly
+
+            if(steplog[1].StepSnapshot[0].name === 'sap.fpa.ui.story.story:onInit')
+            {
+                steplog[1].TotalBytes = steplog[1].TotalBytes + steplog[0].TotalBytes;
+                steplog[1].TotalCellArrayCount = steplog[1].TotalCellArrayCount + steplog[0].TotalCellArrayCount; 
+                local_log[1].TotalBytes = local_log[1].TotalBytes + local_log[0].TotalBytes;
+                local_log[1].TotalCellArrayCount = local_log[1].TotalCellArrayCount + local_log[0].TotalCellArrayCount; 
+                steplog[0].TotalBytes = 0 ;	
+                steplog[0].TotalCellArrayCount = 0 ;
+                local_log[0].TotalBytes = 0 ;	
+                local_log[0].TotalCellArrayCount = 0 ;
+             
+             // Network Log File Mapping Change for Step 1 and Step 2
+
+            for(var y = 0 ; y < xhr_log.length ; y++)
+                {
+                    if(xhr_log[y].StepMapping === 1 )
+                    {
+                      xhr_log[y].StepMapping = 2;
+                    }
+                } 
+            } 
+             
          //Download the Network log
          local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
