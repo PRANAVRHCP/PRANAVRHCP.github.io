@@ -87,9 +87,9 @@
                         }
                         else 
                         {
-                          for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
                                   cac_set = true;
                               }
                         }
@@ -210,9 +210,9 @@
                         }
                         else 
                         {
-                          for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
                                   cac_set = true;
                               }
                         }
@@ -381,11 +381,11 @@
                       }
                       else 
                       {
-                        for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
-                            {
-                                cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
-                                cac_set = true;
-                            }
+                        for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
                       }
                       if(cac_set === false)
                       {cac = 0;
@@ -557,9 +557,9 @@
                         }
                         else 
                         {
-                          for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
                                   cac_set = true;
                               }
                         }
@@ -735,11 +735,11 @@
                   }
                   else 
                   {
-                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
-                        {
-                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
-                            cac_set = true;
-                        }
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
                   }
                   if(cac_set === false)
                   {cac = 0;
@@ -1139,11 +1139,11 @@
                   }
                   else 
                   {
-                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
-                        {
-                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
-                            cac_set = true;
-                        }
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
                   }
                   if(cac_set === false)
                   {cac = 0;
@@ -1223,11 +1223,11 @@
                   }
                   else 
                   {
-                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
-                        {
-                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
-                            cac_set = true;
-                        }
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
                   }
                   if(cac_set === false)
                   {cac = 0;
@@ -1344,11 +1344,11 @@
                   }
                   else 
                   {
-                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
-                        {
-                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
-                            cac_set = true;
-                        }
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
                   }
                   if(cac_set === false)
                   {cac = 0;
