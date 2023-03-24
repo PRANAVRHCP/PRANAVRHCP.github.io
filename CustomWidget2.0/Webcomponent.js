@@ -1,12 +1,23 @@
 (function () {
+ 
+  // Create definitions for Custom Element Templates
   let tmpl = document.createElement('template');
   tmpl.innerHTML = 
-  `<button type="button" id="newBTN"> Performance Stats </button>` ;   
+  `<select id = "myList">
+    <option value="1"> Auto Log Mode </option>  
+    <option value="2"> Manual Mode </option>  
+    <option value="3"> Download Logs </option>   
+   </select>` ;   
+  
+  let tmpl_b = document.createElement('template');
+  tmpl_b.innerHTML = 
+ `<button type="button" id="newBTN" > Download Logs</button>` ;  
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
           super();
           // declare global variables to be used across the whole scope of this code
+          window.widgetmode = 1; 
           window.steplog = [];      
           window.xhr_log = [];
           window.xhr_queue = [];
@@ -35,7 +46,18 @@
               if(psNo!==reslen)
               {
               //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+              //Split the steps into 2 substeps
+              for(var x = 0 ; x < lv_result.length ; x++)
+              {
+                  if(lv_result[x].name === "sap.fpa.ui.story.story:onInit")
+                  {
+                     var split_index = x;
+                      x =  lv_result.length + 1;
+                  }
+               }
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
+              sNo = sNo + 1; 
+              steplog.push({StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
@@ -48,9 +70,33 @@
                   {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                     if(response !==null)
                     {  
-                      if(response.Grids!== undefined && response.Grids !== null)
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                       {
-                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                        {
+                          if(response.Grids[0].CellArraySizes.length > 1)
+                          {
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
+                          }
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
+                          }
+                        }
+                        else 
+                        {
+                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
                       }
                       if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                       {
@@ -98,12 +144,12 @@
               
             }
             else{
-
+              // It will not be triggered when the user clicks the Performance Helper Button   
+              if(widgetmode === 1 &&  event.target.tagName !== 'custom-dropdown' )
+              {
               setTimeout(function() 
               {              
-                 // It will not be triggered when the user clicks the Performance Helper Button
-                  if(event.target.tagName !== 'bmw-perfhelper')
-                  {              
+                                           
                     let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
                     lv_result = lv_result.sort(function(a, b){
                       if(a.startTime < b.startTime) { return -1; }
@@ -124,7 +170,7 @@
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -147,9 +193,33 @@
                   {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                     if(response !==null)
                     {  
-                      if(response.Grids!== undefined && response.Grids !== null)
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                       {
-                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                        {
+                          if(response.Grids[0].CellArraySizes.length > 1)
+                          {
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
+                          }
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
+                          }
+                        }
+                        else 
+                        {
+                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
                       }
                       if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                       {
@@ -231,8 +301,9 @@
                   } 
                 }
                 userF_queue =  userF_queue.filter( e => e.processed == '');
-                }                
-             }, 300);
+                               
+             }, 700);
+            }
             
                 }              
              await 1;
@@ -240,17 +311,349 @@
            
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
+          shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
+
+         // Create Reference to Dropdown and Button Elements from the Shadow Root
+          let dropdown_ref = shadowRoot.getElementById('myList');
+      	  let button_ref = shadowRoot.getElementById('newBTN');
           
-          this.addEventListener("click", event => {
-          var event = new Event("onClick");
-          this.fireChanged();           
-          this.dispatchEvent(event);
-          });           
+          // Create Event Handler for DropDown Click
+          dropdown_ref.addEventListener("click", event => {
+            var event = new Event("onClick");
+            this.fireDDStateChange();           
+            this.dispatchEvent(event);
+            });         
+          // Create Event Handler for Button Click based on the DropDownState  
+            button_ref.addEventListener("click", event => {
+            var event = new Event("onClick");
+            this.firehandler(this);           
+            this.dispatchEvent(event);
+            });    
+            
+        // Create an Event Handler for Combination of Keyboard click and Manual Mode , call the step logger
+
+        window.document.addEventListener('keydown', function(event) {
+          if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) {
+            // Log a new step            
+            setTimeout(function() 
+            {              
+                                         
+                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
+                  lv_result = lv_result.sort(function(a, b){
+                    if(a.startTime < b.startTime) { return -1; }
+                    if(a.startTime > b.startTime) { return 1; }
+                    return 0;
+                });
+                
+                let reslen = lv_result.length ;
+                //If there are new entries -> a new step will be created corresponding to them
+                if(psNo!==reslen)
+                { 
+                  //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
+                  psNo = reslen ;
+                  sNo = sNo + 1;                            
+                } 
+
+              //process the unprocessed records in the XHR log Queue
+              for(var o = 0 ; o < xhr_queue.length ; o++) 
+              {
+
+                if(xhr_queue[o].xhr.status == 200)          
+          
+                {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                  if(response !==null)
+                  {  
+                    if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                    {
+                      var cac = 1;
+                      var cac_set = false;
+                      if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                      {
+                        if(response.Grids[0].CellArraySizes.length > 1)
+                        {
+                          cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                          cac_set = true;
+                        }
+                        else { 
+                          cac = response.Grids[0].CellArraySizes[0]; 
+                        }
+                      }
+                      else 
+                      {
+                        for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                      }
+                      if(cac_set === false)
+                      {cac = 0;
+                      }
+                      var CellArraySize = cac ;
+                    }
+                    if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                    {
+                        var PerfAnalysis = response.PerformanceAnalysis;
+                    }
+                    if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                    {
+                        var PerfData = response.PerformanceData;
+                    }
+
+                  }     
+                     
+                  if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                  {
+                   var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                  }              
+                  else
+                   {
+                     var tbt = 0;
+                   }  
+                  
+                   var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                   var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                   var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                   var hhmmss = parseInt(hours+minutes+seconds);
+
+
+                   window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                   xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                   xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                   Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                   PerformanceAnalysis :PerfAnalysis,
+                   PerformanceData :PerfAnalysis,
+                   TBT : tbt,
+                   readstate : xhr_queue[o].xhr.readyState                        
+                   }) ; 
+                   xhr_queue[o].processed = 'x';
+                    } 
+                  }
+                
+                //Clear the queue
+                  xhr_queue =  xhr_queue.filter( e => e.processed == '');
+              
+              // Process the UserFriendly Queue
+
+              for(o = 0 ; o < userF_queue.length ; o++) 
+              {
+                if(userF_queue[o].xhr.status == 200)         
+               {   
+                  var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                  if(response !==null && response['fact'] !==undefined )
+                  {   
+                    if(response['fact'].length > 0 )
+                    {   var ref_tstamp = 0;
+                            for (var t = 0 ; t < response['fact'].length ; t++)
+                                {
+                                    if(response['fact'][t].actionTstamp !== undefined)
+                                    {                                       
+                                      if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                      {                                          
+                                        ref_tstamp = response['fact'][t].actionTstamp  ;
+                                        var utc = response['fact'][t].actionTstamp  ;
+                                        const date = new Date(utc); // create a date object from the UTC timestamp
+                                        const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                        var hours =  localTime.getHours().toString().padStart(2, '0');
+                                        var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                        var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                        var hhmmss = parseInt(hours+minutes+seconds);
+                                        window.userF_log.push({  ActionStartTime : hhmmss ,
+                                        UserAction :  response['fact'][t].userAction ,
+                                        Facts : response['fact']                        
+                                        });
+                                      }  
+                                    }                                  
+                              }
+                        }  
+                    }                    
+                     userF_queue[o].processed = 'x';                   
+                } 
+              }
+              userF_queue =  userF_queue.filter( e => e.processed == '');
+                             
+           }, 700);
+
+          }
+        });
+
+      }
+      
+      fireDDStateChange()
+      {
+        var divs = document.getElementsByTagName('custom-dropdown');
+        var dropdown_val = divs[0].shadowRoot.getElementById('myList');
+        window.widgetmode = parseInt(dropdown_val.value);
+        if(window.widgetmode === 2)
+        {
+        var button_text = divs[0].shadowRoot.getElementById('newBTN');
+        button_text.textContent = 'Log new Step';
+        }
+        else
+        {
+          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';
+        }
+      }
+      
+      firehandler(loc_this)
+      {
+        if(widgetmode === 1 || widgetmode ===3)
+        { 
+          loc_this.fireDownloadLogHandler();          
+        }
+        else
+        {
+          loc_this.fireStepLogger();
+        }
+      }
+      
+      // When the mode is to create a Manual Step
+      fireStepLogger()
+      {
+        setTimeout(function() 
+              {              
+                                           
+                    let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
+                    lv_result = lv_result.sort(function(a, b){
+                      if(a.startTime < b.startTime) { return -1; }
+                      if(a.startTime > b.startTime) { return 1; }
+                      return 0;
+                  });
+                  
+                  let reslen = lv_result.length ;
+                  //If there are new entries -> a new step will be created corresponding to them
+                  if(psNo!==reslen)
+                  { 
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;                            
+                  } 
+
+                //process the unprocessed records in the XHR log Queue
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                      {
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                        {
+                          if(response.Grids[0].CellArraySizes.length > 1)
+                          {
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
+                          }
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
+                          }
+                        }
+                        else 
+                        {
+                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
+                      }
+                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                      {
+                          var PerfAnalysis = response.PerformanceAnalysis;
+                      }
+                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                      {
+                          var PerfData = response.PerformanceData;
+                      }
+
+                    }     
+                       
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                    
+                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                     var hhmmss = parseInt(hours+minutes+seconds);
+
+
+                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                     xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                     PerformanceAnalysis :PerfAnalysis,
+                     PerformanceData :PerfAnalysis,
+                     TBT : tbt,
+                     readstate : xhr_queue[o].xhr.readyState                        
+                     }) ; 
+                     xhr_queue[o].processed = 'x';
+                      } 
+                    }
+                  
+                  //Clear the queue
+                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
+                
+                // Process the UserFriendly Queue
+
+                for(o = 0 ; o < userF_queue.length ; o++) 
+                {
+                  if(userF_queue[o].xhr.status == 200)         
+                 {   
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
+                                  {
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
+                                          const date = new Date(utc); // create a date object from the UTC timestamp
+                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                          var hours =  localTime.getHours().toString().padStart(2, '0');
+                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                          var hhmmss = parseInt(hours+minutes+seconds);
+                                          window.userF_log.push({  ActionStartTime : hhmmss ,
+                                          UserAction :  response['fact'][t].userAction ,
+                                          Facts : response['fact']                        
+                                          });
+                                        }  
+                                      }                                  
+                                }
+                          }  
+                      }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                }
+                userF_queue =  userF_queue.filter( e => e.processed == '');
+                               
+             }, 700);
       }
 
-      
-      
-      fireChanged() 
+      // when the mode is to Download the Logs  
+      fireDownloadLogHandler() 
     {
       // Add the last step 
       //define a local this which can be used to call other methods later
@@ -286,7 +689,14 @@
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                   if( widgetmode === 1 )
+                   {
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
+                   }
+                    else 
+                    {
+                      steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
+                    }
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -308,9 +718,33 @@
             {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
               if(response !==null)
               {  
-                if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                  {
+                    if(response.Grids[0].CellArraySizes.length > 1)
+                    {
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
+                    }
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
+                    }
+                  }
+                  else 
+                  {
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -410,20 +844,38 @@
                 st = st.filter(e => e.identifier.includes("render")); 
                 //Append list of Render widget based on identifiers 
                 steplog[i].Widgetinfo = st;
-                // Max Runtime derivation logic
+
+                // Max Runtime derivation logic                
+
+                var lag = 0;
                 var stepstarttime = steplog[i].StepSnapshot[0].startTime ;
                 var maxstepduration = 0;
+                var maxendtime  = 0;
+
                 for(var y = 0 ; y < steplog[i].StepSnapshot.length ; y++)     
                 {
 
-                  var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration - stepstarttime ;
+                  var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration  ;
+                  if(steplog[i].StepSnapshot[y].startTime  - maxendtime  > 1000 && maxendtime  > 0 )
+                  {
+                      lag = lag + steplog[i].StepSnapshot[y].startTime  - maxendtime; 
+                  }
                   if(stepduration > maxstepduration ) 
                   {
-                    maxstepduration = stepduration ;
+                    maxendtime = stepduration ;
+              	    maxstepduration =  maxendtime - stepstarttime
                     var maxstepid = y + 1;
                   }
                 }
-                steplog[i].StepDuration =  maxstepduration;
+                //steplog[i].StepDuration =  maxstepduration;
+                if(steplog[i].LogMode === 'Manual')
+                {
+                  steplog[i].StepDuration =  maxstepduration - lag;
+                }
+                else
+                {
+                  steplog[i].StepDuration =  maxstepduration;
+                }
                 steplog[i].StepSIDWithMaxDuration =  maxstepid;
                 steplog[i].StepStartTime = local_this.processstarttime(stepstarttime,timeOrigin);
                 steplog[i].StepEndTime = local_this.processendtime(stepstarttime,timeOrigin,maxstepduration);
@@ -451,7 +903,11 @@
                // Create a mapping of the zser action to step              
               if(i === 0)
               {
-                steplog[i].UserAction = 'Page Initialization';                
+                steplog[i].UserAction = 'Pre Init';                
+              }
+              else if(i == 1)
+              {
+                steplog[i].UserAction = 'Initialization';    
               }
               else
               {
@@ -491,6 +947,31 @@
               local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
 
               }         
+
+            // Step Log Byte change and Stepwise BreakDown Change for Step 1 and Step 2 if Step 2 is splitted correctly
+
+            if(steplog[1].StepSnapshot[0].name === 'sap.fpa.ui.story.story:onInit')
+            {
+                steplog[1].TotalBytes = steplog[1].TotalBytes + steplog[0].TotalBytes;
+                steplog[1].TotalCellArrayCount = steplog[1].TotalCellArrayCount + steplog[0].TotalCellArrayCount; 
+                local_log[1].TotalBytes = local_log[1].TotalBytes + local_log[0].TotalBytes;
+                local_log[1].TotalCellArrayCount = local_log[1].TotalCellArrayCount + local_log[0].TotalCellArrayCount; 
+                steplog[0].TotalBytes = 0 ;	
+                steplog[0].TotalCellArrayCount = 0 ;
+                local_log[0].TotalBytes = 0 ;	
+                local_log[0].TotalCellArrayCount = 0 ;
+             
+             // Network Log File Mapping Change for Step 1 and Step 2
+
+            for(var y = 0 ; y < xhr_log.length ; y++)
+                {
+                    if(xhr_log[y].StepMapping === 1 )
+                    {
+                      xhr_log[y].StepMapping = 2;
+                    }
+                } 
+            } 
+             
          //Download the Network log
          local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
@@ -593,7 +1074,7 @@
     }   
   }
     
-  customElements.define('bmw-perfhelper', PerformanceHelper);
+  customElements.define('custom-dropdown', PerformanceHelper);
   
   function addXMLRequestCallback(callback){
   let oldSend;
@@ -641,9 +1122,33 @@
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
               {  
-              if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                  {
+                    if(response.Grids[0].CellArraySizes.length > 1)
+                    {
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
+                    }
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
+                    }
+                  }
+                  else 
+                  {
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -701,9 +1206,33 @@
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
               {  
-                if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                  {
+                    if(response.Grids[0].CellArraySizes.length > 1)
+                    {
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
+                    }
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
+                    }
+                  }
+                  else 
+                  {
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -752,10 +1281,12 @@
 
         async function processStepLog(xhr)
         {
-          // store the steplog 
-
+          // store the User friendly Logs 
           userF_queue.push({ xhr :  xhr , processed : ''});
           
+          if(widgetmode === 1 || widgetmode ===3)
+          {
+            // If the mode is automated mode or Download mode then the automated step log will be added
           let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
            lv_result = lv_result.sort(function(a, b){
              if(a.startTime < b.startTime) { return -1; }
@@ -774,7 +1305,7 @@
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -796,9 +1327,33 @@
             {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
               if(response !==null)
               {  
-                if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                  {
+                    if(response.Grids[0].CellArraySizes.length > 1)
+                    {
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
+                    }
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
+                    }
+                  }
+                  else 
+                  {
+                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -837,7 +1392,7 @@
                 } 
             }
             xhr_queue =  xhr_queue.filter( e => e.processed == '');        
-   
+          }
         await 1;
         }
 })();
