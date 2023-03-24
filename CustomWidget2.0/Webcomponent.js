@@ -145,7 +145,7 @@
             }
             else{
               // It will not be triggered when the user clicks the Performance Helper Button   
-              if(widgetmode === 1 &&  event.target.tagName !== 'custom-dropdown' )
+              if(widgetmode === 1 &&  event.target.tagName !== 'bmw-perfhelper' )
               {
               setTimeout(function() 
               {              
@@ -482,7 +482,7 @@
       
       fireDDStateChange()
       {
-        var divs = document.getElementsByTagName('custom-dropdown');
+        var divs = document.getElementsByTagName('bmw-perfhelper');
         var dropdown_val = divs[0].shadowRoot.getElementById('myList');
         window.widgetmode = parseInt(dropdown_val.value);
         if(window.widgetmode === 2)
@@ -1074,7 +1074,7 @@
     }   
   }
     
-  customElements.define('custom-dropdown', PerformanceHelper);
+  customElements.define('bmw-perfhelper', PerformanceHelper);
   
   function addXMLRequestCallback(callback){
   let oldSend;
