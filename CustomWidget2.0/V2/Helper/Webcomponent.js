@@ -72,7 +72,7 @@
                     {  
                       if(response.Grids!== undefined && response.Grids !== null)
                       {
-                        if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                        if(response.Grids.length > 1 )
                         {
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                         }  
@@ -186,7 +186,7 @@
                     {  
                       if(response.Grids!== undefined && response.Grids !== null)
                       {
-                        if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                        if(response.Grids.length > 1 )
                         {
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                         }  
@@ -347,7 +347,7 @@
                   {  
                     if(response.Grids!== undefined && response.Grids !== null)
                     {
-                      if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                      if(response.Grids.length > 1 )
                       {
                         var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       }  
@@ -513,7 +513,7 @@
                     {  
                       if(response.Grids!== undefined && response.Grids !== null)
                       {
-                        if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                        if(response.Grids.length > 1  )
                         {
                           var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                         }  
@@ -681,7 +681,7 @@
               {  
                 if(response.Grids!== undefined && response.Grids !== null)
                 {
-                  if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                  if(response.Grids.length > 1 )
                   {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                   }  
@@ -1075,7 +1075,7 @@
               {  
               if(response.Grids!== undefined && response.Grids !== null)
                 {
-                  if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                  if(response.Grids.length > 1  )
                   {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                   }  
@@ -1149,7 +1149,7 @@
               {  
                 if(response.Grids!== undefined && response.Grids !== null)
                 {
-                  if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                  if(response.Grids.length > 1 )
                   {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                   }  
@@ -1260,7 +1260,7 @@
               {  
                 if(response.Grids!== undefined && response.Grids !== null)
                 {
-                  if(response.Grids[0].CellArraySizes[0] !== undefined && response.Grids[0].CellArraySizes[1] !== undefined && response.Grids[0].CellArraySizes[0] !== null && response.Grids[0].CellArraySizes[1] !== null  )
+                  if(response.Grids.length > 1)
                   {
                     var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                   }  
