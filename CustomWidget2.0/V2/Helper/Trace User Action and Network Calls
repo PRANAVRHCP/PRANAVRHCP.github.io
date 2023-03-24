@@ -1,0 +1,366 @@
+// declare global variables to be used across the whole scope of this code
+
+window.steplog = [];      
+window.xhr_log = [];
+window.xhr_queue = [];
+window.userF_log = [];
+window.userF_queue = [];
+window.sNo = 1;
+window.psNo = 0;   
+
+// Add event handler for onclick funtion which will create the mapping of steps
+
+$('html').click(async function(event){
+   
+     createsteplog();
+ })
+
+// Create a call back function to trace network calls 
+
+function addXMLRequestCallback(callback){
+  let oldSend;
+  let i;
+  if( XMLHttpRequest.callbacks ) {
+      // we've already overridden send() so just add the callback
+      XMLHttpRequest.callbacks.push( callback );
+  } else {
+      // create a callback queue
+      XMLHttpRequest.callbacks = [callback];
+      // store the native send()
+      oldSend = XMLHttpRequest.prototype.send;
+      // override the native send()
+      XMLHttpRequest.prototype.send = function(){         
+          for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
+              XMLHttpRequest.callbacks[i]( this );
+          }
+          // call the native send()
+          oldSend.apply(this, arguments);
+          //oldSend.call(this, body);
+      }
+  }
+}  
+
+ addXMLRequestCallback( xhr => {
+            if(xhr._requestUrl.includes('GetResponse') )
+             { 
+             logxhrcall(xhr);
+              
+             }
+             else if( xhr._requestUrl.includes('userFriendly') && sNo > 1 )
+             {
+              logufcall(xhr);
+             }
+           }); 
+
+
+
+
+function createsteplog()
+ {
+
+             if(sNo == 1)  
+            {
+                  let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering" && e.name !=="(Table) React-table-rendering"  && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
+                      lv_result = lv_result.sort(function(a, b){
+                        if(a.startTime < b.startTime) { return -1; }
+                        if(a.startTime > b.startTime) { return 1; }
+                        return 0;
+              });
+                let reslen = lv_result.length ;
+              if(psNo!==reslen)
+              {
+              //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+              psNo = reslen ;
+              sNo = sNo + 1; 
+               } 
+                //process the unprocessed records in the XHR log Queue
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null)
+                      {
+                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      }
+                    }                
+                      
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                         var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                         var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                         var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                         var hhmmss = parseInt(hours+minutes+seconds);
+
+                        window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                        xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                        xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                        Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+                        readstate : xhr_queue[o].xhr.readyState                        
+                       }) ; 
+                       xhr_queue[o].processed = 'x';
+                    } 
+
+                    else if(xhr_queue[o].xhr.status === 0)
+                    {
+                      xhr_queue[o].processed = 'x';
+                    }
+                    }
+                      xhr_queue =  xhr_queue.filter( e => e.processed == '');            
+
+              
+            }
+            else{
+
+              setTimeout(function() 
+              {  
+                    let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"    && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation"  );
+                    lv_result = lv_result.sort(function(a, b){
+                      if(a.startTime < b.startTime) { return -1; }
+                      if(a.startTime > b.startTime) { return 1; }
+                      return 0;
+                  });
+                  
+                  let reslen = lv_result.length ;
+                  //If there are new entries -> the below logic will be entered
+                  if(psNo!==reslen)
+                  {   
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                 
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 
+                  var diff_time = lv_result[psNo].startTime - pstep_time
+
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  {
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;       
+                  }
+                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
+                  {
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
+                   // steplog[sNo-2].RaptrSnapshot = lv_result;
+                    steplog[sNo-2].StepEndId = reslen-1 ;
+                     psNo = reslen ;
+                  }               
+                            
+                  } 
+
+                //process the unprocessed records in the XHR log Queue
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null)
+                      {
+                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      }
+                    }     
+                       
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                    
+                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                     var hhmmss = parseInt(hours+minutes+seconds);
+
+                    window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                    xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                    xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                    Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+                    readstate : xhr_queue[o].xhr.readyState                        
+                   });
+                       xhr_queue[o].processed = 'x';
+                      } 
+                    }
+                  
+                  //Clear the queue
+                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
+                
+                // Process the UserFriendly Queue
+
+                for(o = 0 ; o < userF_queue.length ; o++) 
+                {
+                  if(userF_queue[o].xhr.status == 200)         
+                 {   
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
+                                  {
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
+                                          const date = new Date(utc); // create a date object from the UTC timestamp
+                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                          var hours =  localTime.getHours().toString().padStart(2, '0');
+                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                          var hhmmss = parseInt(hours+minutes+seconds);
+                                          window.userF_log.push({  ActionStartTime : hhmmss ,
+                                          UserAction :  response['fact'][t].userAction ,
+                                          Facts : response['fact']                        
+                                          });
+                                        }  
+                                      }                                  
+                                }
+                          }  
+                      }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                }
+                userF_queue =  userF_queue.filter( e => e.processed == '');                             
+             }, 300);          
+          
+   }
+ }
+
+function logxhrcall(xhr)
+ {
+            if(xhr.status == 200  && xhr.readyState === 4 )          
+            
+            {   var response = JSON.parse(xhr._responseFormatted)  ;
+              if(response !==null)
+              {  
+                if(response.Grids!== undefined && response.Grids !== null)
+                {
+                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                }
+              }   
+
+              if(xhr._networkInfo !== null && xhr._networkInfo !== undefined )
+              {
+               var tbt = xhr._networkInfo.transferSize;
+               
+              }              
+              else
+               {
+                 var tbt = 0;
+               }            
+               var hours = xhr._timestamp.getHours().toString().padStart(2, '0');
+               var minutes = xhr._timestamp.getMinutes().toString().padStart(2, '0');
+               var seconds = xhr._timestamp.getSeconds().toString().padStart(2, '0');
+               var hhmmss = parseInt(hours+minutes+seconds);
+               
+               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+               xhr._networkInfo , 
+               StepMapping : 0 , 
+               Timestamp : xhr._timestamp , 
+               StartTime : hhmmss,
+               UserfriendlyInfo: xhr._userFriendlyPerfData , 
+               TBT : tbt,
+               readstate : xhr.readyState                 
+                }) ;
+               }
+            else {
+              var timestamp = new Date();  
+              window.xhr_queue.push( { xhr :  xhr , timestamp : timestamp , readstate : xhr.readyState , status:xhr.status , processed : ''});
+            }
+  }
+
+function logufcall(xhr)
+ {
+
+   // store the UF Log 
+
+          userF_queue.push({ xhr :  xhr , processed : ''});
+          
+          let lv_result = window.sap.raptr.getEntries().filter(e => e.entryType === 'measure' && e.name !=="(Table) Rendering"  && e.name !=="(Table) React-table-rendering"   && e.name !=="(Table) onQueryExecuted" && e.name !=="(Table) React-table-data-generation" );
+           lv_result = lv_result.sort(function(a, b){
+             if(a.startTime < b.startTime) { return -1; }
+             if(a.startTime > b.startTime) { return 1; }
+             return 0;
+         });
+       let reslen = lv_result.length ;
+         if(psNo!==reslen)
+         {
+            // If new entries are present , compare the last entry of the previous step in step log
+                  //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
+                  //Previous step Start + End time 
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 var diff_time = lv_result[psNo].startTime - pstep_time
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  {
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , processed : ''  })
+                    psNo = reslen ;
+                    sNo = sNo + 1;       
+                  }
+                  else // This is the case when the step is the same but some entries were added which needs to be incorporated here
+
+                  {
+                    steplog[sNo-2].StepSnapshot = lv_result.slice(steplog[sNo-2].StepStartId,reslen);
+                    //steplog[sNo-2].RaptrSnapshot = lv_result;
+                    steplog[sNo-2].StepEndId = reslen-1 ;
+                     psNo = reslen ;
+                  }  } 
+
+          //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
+          for(var o = 0 ; o < xhr_queue.length ; o++) 
+          {
+
+            if(xhr_queue[o].xhr.status == 200)          
+      
+            {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+              if(response !==null)
+              {  
+                if(response.Grids!== undefined && response.Grids !== null)
+                {
+                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                }
+              }                
+                 
+              if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+              {
+               var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+              }              
+              else
+               {
+                 var tbt = 0;
+               } 
+               var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+               var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+               var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+               var hhmmss = parseInt(hours+minutes+seconds);
+
+              window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+              xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+              xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+              Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,TBT : tbt,
+              readstate : xhr_queue[o].xhr.readyState                        
+             }) ; 
+                 xhr_queue[o].processed = 'x';
+                } 
+            }
+            xhr_queue =  xhr_queue.filter( e => e.processed == '');        
+                            
+ }
