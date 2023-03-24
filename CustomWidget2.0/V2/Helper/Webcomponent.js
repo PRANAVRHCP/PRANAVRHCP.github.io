@@ -70,24 +70,33 @@
                   {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                     if(response !==null)
                     {  
-                      if(response.Grids!== undefined && response.Grids !== null)
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                       {
-                        if(response.Grids.length > 1 )
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                         {
-                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                        }  
-                        else
-                        {
-                          if(response.Grids[0].CellArraySizes[0] !==undefined )
+                          if(response.Grids[0].length > 1)
                           {
-                            var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
                           }
-                          else
-                          {
-                            var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
                           }
                         }
-                       
+                        else 
+                        {
+                          for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
                       }
                       if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                       {
@@ -184,23 +193,33 @@
                   {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                     if(response !==null)
                     {  
-                      if(response.Grids!== undefined && response.Grids !== null)
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                       {
-                        if(response.Grids.length > 1 )
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                         {
-                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                        }  
-                        else
-                        {
-                          if(response.Grids[0].CellArraySizes[0] !==undefined )
+                          if(response.Grids[0].length > 1)
                           {
-                            var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
                           }
-                          else
-                          {
-                            var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
                           }
                         }
+                        else 
+                        {
+                          for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
                       }
                       if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                       {
@@ -345,23 +364,33 @@
                 {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                   if(response !==null)
                   {  
-                    if(response.Grids!== undefined && response.Grids !== null)
+                    if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                     {
-                      if(response.Grids.length > 1 )
+                      var cac = 1;
+                      var cac_set = false;
+                      if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                       {
-                        var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                      }  
-                      else
-                      {
-                        if(response.Grids[0].CellArraySizes[0] !==undefined )
+                        if(response.Grids[0].length > 1)
                         {
-                          var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                          cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                          cac_set = true;
                         }
-                        else
-                        {
-                          var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                        else { 
+                          cac = response.Grids[0].CellArraySizes[0]; 
                         }
                       }
+                      else 
+                      {
+                        for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                            {
+                                cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                cac_set = true;
+                            }
+                      }
+                      if(cac_set === false)
+                      {cac = 0;
+                      }
+                      var CellArraySize = cac ;
                     }
                     if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                     {
@@ -511,23 +540,33 @@
                   {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
                     if(response !==null)
                     {  
-                      if(response.Grids!== undefined && response.Grids !== null)
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                       {
-                        if(response.Grids.length > 1  )
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                         {
-                          var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                        }  
-                        else
-                        {
-                          if(response.Grids[0].CellArraySizes[0] !==undefined )
+                          if(response.Grids[0].length > 1)
                           {
-                            var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
                           }
-                          else
-                          {
-                            var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
                           }
                         }
+                        else 
+                        {
+                          for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
                       }
                       if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                       {
@@ -679,23 +718,33 @@
             {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
               if(response !==null)
               {  
-                if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                  if(response.Grids.length > 1 )
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                  }  
-                  else
-                  {
-                    if(response.Grids[0].CellArraySizes[0] !==undefined )
+                    if(response.Grids[0].length > 1)
                     {
-                      var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
                     }
-                    else
-                    {
-                      var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
                     }
                   }
+                  else 
+                  {
+                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                        {
+                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                            cac_set = true;
+                        }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -1073,23 +1122,33 @@
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
               {  
-              if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                  if(response.Grids.length > 1  )
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                  }  
-                  else
-                  {
-                    if(response.Grids[0].CellArraySizes[0] !==undefined )
+                    if(response.Grids[0].length > 1)
                     {
-                      var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
                     }
-                    else
-                    {
-                      var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
                     }
                   }
+                  else 
+                  {
+                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                        {
+                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                            cac_set = true;
+                        }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -1147,23 +1206,33 @@
             {   var response = JSON.parse(xhr._responseFormatted)  ;
               if(response !==null)
               {  
-                if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                  if(response.Grids.length > 1 )
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                  }  
-                  else
-                  {
-                    if(response.Grids[0].CellArraySizes[0] !==undefined )
+                    if(response.Grids[0].length > 1)
                     {
-                      var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
                     }
-                    else
-                    {
-                      var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
                     }
                   }
+                  else 
+                  {
+                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                        {
+                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                            cac_set = true;
+                        }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
@@ -1258,23 +1327,33 @@
             {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
               if(response !==null)
               {  
-                if(response.Grids!== undefined && response.Grids !== null)
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
                 {
-                  if(response.Grids.length > 1)
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    var CellArraySize = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                  }  
-                  else
-                  {
-                    if(response.Grids[0].CellArraySizes[0] !==undefined )
+                    if(response.Grids[0].length > 1)
                     {
-                      var CellArraySize = response.Grids[0].CellArraySizes[0] ;
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
                     }
-                    else
-                    {
-                      var CellArraySize = response.Grids[0].CellArraySizes[1]   ;
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
                     }
                   }
+                  else 
+                  {
+                    for( i = 0 ; i < response.Grids[0].Axes.length ; i++)
+                        {
+                            cac = cac *  response.Grids[0].Axes[i].TupleCountTotal;
+                            cac_set = true;
+                        }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
                 }
                 if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
                 {
