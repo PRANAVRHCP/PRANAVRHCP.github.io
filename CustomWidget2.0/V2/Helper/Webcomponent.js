@@ -76,7 +76,7 @@
                         var cac_set = false;
                         if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                         {
-                          if(response.Grids[0].length > 1)
+                          if(response.Grids[0].CellArraySizes.length > 1)
                           {
                             cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                             cac_set = true;
@@ -199,7 +199,7 @@
                         var cac_set = false;
                         if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                         {
-                          if(response.Grids[0].length > 1)
+                          if(response.Grids[0].CellArraySizes.length > 1)
                           {
                             cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                             cac_set = true;
@@ -370,7 +370,7 @@
                       var cac_set = false;
                       if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                       {
-                        if(response.Grids[0].length > 1)
+                        if(response.Grids[0].CellArraySizes.length > 1)
                         {
                           cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                           cac_set = true;
@@ -546,7 +546,7 @@
                         var cac_set = false;
                         if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                         {
-                          if(response.Grids[0].length > 1)
+                          if(response.Grids[0].CellArraySizes.length > 1)
                           {
                             cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                             cac_set = true;
@@ -724,7 +724,7 @@
                   var cac_set = false;
                   if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    if(response.Grids[0].length > 1)
+                    if(response.Grids[0].CellArraySizes.length > 1)
                     {
                       cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       cac_set = true;
@@ -1128,7 +1128,7 @@
                   var cac_set = false;
                   if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    if(response.Grids[0].length > 1)
+                    if(response.Grids[0].CellArraySizes.length > 1)
                     {
                       cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       cac_set = true;
@@ -1212,7 +1212,7 @@
                   var cac_set = false;
                   if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    if(response.Grids[0].length > 1)
+                    if(response.Grids[0].CellArraySizes.length > 1)
                     {
                       cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       cac_set = true;
@@ -1333,7 +1333,7 @@
                   var cac_set = false;
                   if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
                   {
-                    if(response.Grids[0].length > 1)
+                    if(response.Grids[0].CellArraySizes.length > 1)
                     {
                       cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
                       cac_set = true;
