@@ -87,9 +87,9 @@
                         }
                         else 
                         {
-                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                          for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                         }
@@ -210,9 +210,9 @@
                         }
                         else 
                         {
-                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                          for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                         }
@@ -381,9 +381,9 @@
                       }
                       else 
                       {
-                        for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                        for( var xo = 0 ; o < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                       }
@@ -557,9 +557,9 @@
                         }
                         else 
                         {
-                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                          for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                         }
@@ -735,9 +735,9 @@
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
@@ -1139,9 +1139,9 @@
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
@@ -1223,9 +1223,9 @@
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
@@ -1344,9 +1344,9 @@
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
