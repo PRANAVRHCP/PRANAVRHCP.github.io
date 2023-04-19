@@ -48,7 +48,7 @@
               //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               //Split the steps into 2 substeps
               //Handle case where the user moves back and forth within the SAC file system and opens the app in the view mode without refreshing the browser
-              lv_result_oninit = lv_result.filter( e => e.name =="sap.fpa.ui.story.story:onInit");                
+              let lv_result_oninit = lv_result.filter( e => e.name =="sap.fpa.ui.story.story:onInit");                
               for(var x = 0 ; x < lv_result.length ; x++)
               {
                   if(lv_result[x].name === "sap.fpa.ui.story.story:onInit" && lv_result[x].startTime == lv_result_oninit[lv_result_oninit.length - 1].startTime )
