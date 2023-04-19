@@ -381,7 +381,7 @@
                       }
                       else 
                       {
-                        for( var xo = 0 ; o < response.Grids[0].Axes.length ; xo++)
+                        for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
                                   cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
