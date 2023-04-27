@@ -858,7 +858,7 @@
                 {
 
                   var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration  ;
-                  if(steplog[i].StepSnapshot[y].startTime  - maxendtime  > 1000 && maxendtime  > 0 )
+                  if(steplog[i].StepSnapshot[y].startTime  - maxendtime  > 300 && maxendtime  > 0 )
                   {
                       lag = lag + steplog[i].StepSnapshot[y].startTime  - maxendtime; 
                   }
