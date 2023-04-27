@@ -862,7 +862,7 @@
                   {
                       lag = lag + steplog[i].StepSnapshot[y].startTime  - maxendtime; 
                   }
-                  if(stepduration > maxstepduration ) 
+                  if(stepduration > maxendtime ) 
                   {
                     maxendtime = stepduration ;
               	    maxstepduration =  maxendtime - stepstarttime
