@@ -13,14 +13,58 @@
   tmpl_b.innerHTML = 
  `<button type="button" id="newBTN" > Download Logs</button>` ;
  
- let tmpl_popup = document.createElement('template');
- tmpl_popup.innerHTML = 
-   `<div id="popup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
-      <h2>Download Logs</h2>
-      <p>Click the button below to download the logs.</p>
-      <button id="downloadButton">Download</button>
-      <button id="cancelButton">Cancel</button>
-    </div>`;
+ tmpl_popup.innerHTML = `
+    <style>
+      #overlay {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1;
+      }
+      #popup {
+        width: 500px;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+      }
+      h3 {
+        margin-top: 0;
+      }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+      #cancelButton {
+        background-color: #f44336;
+      }
+      #cancelButton:hover {
+        background-color: #da190b;
+      }
+    </style>
+    <div id="overlay">
+      <div id="popup">
+        <h3>Download Logs</h3>
+        <p>Are you sure you want to download the logs?</p>
+        <button id="downloadButton">Download</button>
+        <button id="cancelButton">Cancel</button>
+      </div>
+    </div>
+  `;
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
@@ -518,6 +562,11 @@
 
         let popup = tmpl_popup.content.cloneNode(true);
         loc_this.shadowRoot.appendChild(popup);
+
+        // Disable Page Content
+        let pageContent = loc_this.shadowRoot.host.parentNode;
+        pageContent.style.pointerEvents = "none";
+
         let downloadButton = loc_this.shadowRoot.getElementById('downloadButton');
         let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
@@ -525,11 +574,15 @@
           console.log("Logs downloaded");
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
+          // Enable Page Content
+          pageContent.style.pointerEvents = "auto";
         });
 
         cancelButton.addEventListener("click", () => {
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
+          // Enable Page Content
+          pageContent.style.pointerEvents = "auto";
         });
  
       }
