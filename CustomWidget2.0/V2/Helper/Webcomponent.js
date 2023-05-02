@@ -14,13 +14,30 @@
  `<button type="button" id="newBTN" > Download Logs</button>` ;
  
  let tmpl_popup = document.createElement('template');
- tmpl_popup.innerHTML = 
-   `<div id="popup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
+ /*tmpl_popup.innerHTML = 
+   `<div id="popup" 
+    style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
       <h2>Download Logs</h2>
       <p>Click the button below to download the logs.</p>
       <button id="downloadButton">Download</button>
       <button id="cancelButton">Cancel</button>
-    </div>`;
+    </div>`;*/
+    tmpl_popup.innerHTML = `
+    <style>
+      /* add your styles here */
+    </style>
+    <div id="popup">
+      <div id="popup-content">
+        <span>Enter your comment:</span>
+        <textarea id="comment"></textarea>
+        <div id="buttons">
+          <button type="button" id="downloadButton">Download Logs</button>
+          <button type="button" id="cancelButton">Cancel</button>
+        </div>
+      </div>
+    </div>
+    `;
+
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
