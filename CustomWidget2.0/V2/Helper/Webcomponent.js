@@ -37,25 +37,7 @@
       }
       h3 {
         margin-top: 0;
-      }
-      button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-right: 10px;
-      }
-      button:hover {
-        background-color: #3e8e41;
-      }
-      #cancelButton {
-        background-color: #f44336;
-      }
-      #cancelButton:hover {
-        background-color: #da190b;
-      }
+      }      
     </style>
     <div id="overlay">
       <div id="popup">
