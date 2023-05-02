@@ -13,7 +13,7 @@
   tmpl_b.innerHTML = 
  `<button type="button" id="newBTN" > Download Logs</button>` ;
  
- tmpl_popup.innerHTML = `
+  let tmpl_popup.innerHTML = `
     <style>
       #overlay {
         position: fixed;
