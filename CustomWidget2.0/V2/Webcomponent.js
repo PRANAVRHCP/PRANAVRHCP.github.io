@@ -1,5 +1,7 @@
 //Old Code
 
+// This is irrelevant code and marked for deletion later
+
 (function () {
   let tmpl = document.createElement('template');
   tmpl.innerHTML = 
