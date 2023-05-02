@@ -11,7 +11,16 @@
   
   let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
- `<button type="button" id="newBTN" > Download Logs</button>` ;  
+ `<button type="button" id="newBTN" > Download Logs</button>` ;
+ 
+ let tmpl_popup = document.createElement('template');
+ tmpl_popup.innerHTML = 
+   `<div id="popup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
+      <h2>Download Logs</h2>
+      <p>Click the button below to download the logs.</p>
+      <button id="downloadButton">Download</button>
+      <button id="cancelButton">Cancel</button>
+    </div>`;
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
@@ -506,29 +515,21 @@
         {
           loc_this.fireStepLogger();
         }*/
-        // Create the popup container element
-        const popupContainer = document.createElement('div');
-        popupContainer.classList.add('popup-container');
 
-        // Create the popup content
-        const popupContent = document.createElement('div');
-        popupContent.textContent = 'This is a dynamic popup!';
+        let popup = tmpl_popup.content.cloneNode(true);
+        shadowRoot.appendChild(popup);
+        let downloadButton = shadowRoot.getElementById('downloadButton');
+        let cancelButton = shadowRoot.getElementById('cancelButton');
 
-        // Create the close button
-        const closeButton = document.createElement('button');
-        closeButton.textContent = 'Close';
+        downloadButton.addEventListener("click", () => {
+          console.log("Logs downloaded");
+          shadowRoot.removeChild(popup);
+        });
 
-        // Append the popup content and close button to the popup container
-        popupContainer.appendChild(popupContent);
-        popupContainer.appendChild(closeButton);
-
-        // Append the popup container to the body element
-        document.body.appendChild(popupContainer);
-
-        // Add an event listener to the close button to remove the popup
-        closeButton.addEventListener('click', function() {
-          document.body.removeChild(popupContainer);
-  });
+        cancelButton.addEventListener("click", () => {
+          shadowRoot.removeChild(popup);
+        });
+ 
       }
       
       // When the mode is to create a Manual Step
