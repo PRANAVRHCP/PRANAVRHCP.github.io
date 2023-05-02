@@ -498,14 +498,37 @@
       
       firehandler(loc_this)
       {
-        if(widgetmode === 1 || widgetmode ===3)
+        /*if(widgetmode === 1 || widgetmode ===3)
         { 
           loc_this.fireDownloadLogHandler();          
         }
         else
         {
           loc_this.fireStepLogger();
-        }
+        }*/
+        // Create the popup container element
+        const popupContainer = document.createElement('div');
+        popupContainer.classList.add('popup-container');
+
+        // Create the popup content
+        const popupContent = document.createElement('div');
+        popupContent.textContent = 'This is a dynamic popup!';
+
+        // Create the close button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+
+        // Append the popup content and close button to the popup container
+        popupContainer.appendChild(popupContent);
+        popupContainer.appendChild(closeButton);
+
+        // Append the popup container to the body element
+        document.body.appendChild(popupContainer);
+
+        // Add an event listener to the close button to remove the popup
+        closeButton.addEventListener('click', function() {
+          document.body.removeChild(popupContainer);
+  });
       }
       
       // When the mode is to create a Manual Step
