@@ -13,8 +13,9 @@
   tmpl_b.innerHTML = 
  `<button type="button" id="newBTN" > Download Logs</button>` ;
  
-  let tmpl_popup.innerHTML = `
-    <style>
+ let tmpl_popup = document.createElement('template');
+ tmpl_popup.innerHTML = 
+ `<style>
       #overlay {
         position: fixed;
         display: flex;
