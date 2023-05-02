@@ -26,7 +26,7 @@
     <style>
       /* add your styles here */
     </style>
-    <div id="popup">
+    <div id="popup"  style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
       <div id="popup-content">
         <span>Enter your comment:</span>
         <textarea id="comment"></textarea>
