@@ -523,11 +523,13 @@
 
         downloadButton.addEventListener("click", () => {
           console.log("Logs downloaded");
-          loc_this.shadowRoot.removeChild(popup);
+          let lv_popup = loc_this.shadowRoot.getElementById('popup');
+          loc_this.shadowRoot.removeChild(lv_popup);
         });
 
         cancelButton.addEventListener("click", () => {
-          loc_this.shadowRoot.removeChild(popup);
+          let lv_popup = loc_this.shadowRoot.getElementById('popup');
+          loc_this.shadowRoot.removeChild(lv_popup);
         });
  
       }
