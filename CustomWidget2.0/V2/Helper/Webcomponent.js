@@ -517,17 +517,17 @@
         }*/
 
         let popup = tmpl_popup.content.cloneNode(true);
-        shadowRoot.appendChild(popup);
-        let downloadButton = shadowRoot.getElementById('downloadButton');
-        let cancelButton = shadowRoot.getElementById('cancelButton');
+        loc_this.shadowRoot.appendChild(popup);
+        let downloadButton = loc_this.shadowRoot.getElementById('downloadButton');
+        let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
         downloadButton.addEventListener("click", () => {
           console.log("Logs downloaded");
-          shadowRoot.removeChild(popup);
+          loc_this.shadowRoot.removeChild(popup);
         });
 
         cancelButton.addEventListener("click", () => {
-          shadowRoot.removeChild(popup);
+          loc_this.shadowRoot.removeChild(popup);
         });
  
       }
