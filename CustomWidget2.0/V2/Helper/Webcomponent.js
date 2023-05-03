@@ -3,7 +3,7 @@
   // Create definitions for Custom Element Templates
   let tmpl = document.createElement('template');
   tmpl.innerHTML = 
-  `<select id = "myList">
+  `<select id = "myList" style="padding: 10px; border-radius: 5px; background-color: #f2f2f2;"> 
     <option value="1"> Auto Log Mode </option>  
     <option value="2"> Manual Mode </option>  
     <option value="3"> Download Logs </option>   
@@ -11,7 +11,7 @@
   
   let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
- `<button type="button" id="newBTN" > Download Logs</button>` ;
+ `<button type="button" id="newBTN" style="padding: 10px; border-radius: 5px; background-color: #4CAF50; color: white;"> Download Logs</button>` ;
  
  let tmpl_popup = document.createElement('template');
 
@@ -76,7 +76,7 @@
 
   #popup-content textarea {
     width: 100%;
-    height: 100px;
+    height: 50px;
     resize: none;
     padding: 5px;
     font-size: 16px;
@@ -93,10 +93,10 @@
 </style>
 <div id="popup">
   <div id="popup-content">
-    <span>Enter your comment:</span>
+    <span>Enter Step Description:</span>
     <textarea id="comment"></textarea>
     <div id="buttons">
-      <button type="button" id="downloadButton">Download Logs</button>
+      <button type="button" id="downloadButton">Log </button>
       <button type="button" id="cancelButton">Cancel</button>
     </div>
   </div>
