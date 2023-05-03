@@ -2,6 +2,9 @@
  
   // Create definitions for Custom Element Templates
   let tmpl = document.createElement('template');
+  let tmpl_b = document.createElement('template');
+  let tmpl_popup = document.createElement('template');
+  /*
   tmpl.innerHTML = 
   `<select id = "myList" style="padding: 10px; border-radius: 5px; background-color: #f2f2f2;"> 
     <option value="1"> Auto Log Mode </option>  
@@ -9,39 +12,43 @@
     <option value="3"> Download Logs </option>   
    </select>` ;   
   
-  let tmpl_b = document.createElement('template');
+
   tmpl_b.innerHTML = 
  `<button type="button" id="newBTN" 
- style="padding-left: 100px; border-radius: 5px; background-color: #f2f2f2;"> Download Logs</button>` ;
- 
- let tmpl_popup = document.createElement('template');
+ style="padding-left: 100px; border-radius: 5px; background-color: #f2f2f2;"> Download Logs</button>` ;*/
 
- /*tmpl_popup.innerHTML = 
-   `<div id="popup" 
-    style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
-      <h2>Download Logs</h2>
-      <p>Click the button below to download the logs.</p>
-      <button id="downloadButton">Download</button>
-      <button id="cancelButton">Cancel</button>
-    </div>`;
+  tmpl.innerHTML = `
+  <style>
+    #myList {
+      padding: 10px;
+      font-size: 16px;
+      background-color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+  <select id="myList">
+    <option value="1">Auto Log Mode</option>  
+    <option value="2">Manual Mode</option>  
+    <option value="3">Download Logs</option>   
+  </select>
+`;
 
-    tmpl_popup.innerHTML = `
-    <style>
-      /* add your styles here 
-    </style
-    <div id="popup"  style="position: fixed; top: 10%; left: 10%; transform: translate(-10%, -10%); background-color: white; border: 1px solid black; padding: 5px;">
-      <div id="popup-content">
-        <span>Step Description:</span>
-        <textarea id="comment" style="width: 50%; height: 40px;"></textarea>
-        <div id="buttons">
-          <button type="button" id="downloadButton">Download Logs</button>
-          <button type="button" id="cancelButton">Cancel</button>
-        </div>
-      </div>
-    </div>
-    `;
-
-    */
+tmpl_b.innerHTML = `
+<style>
+  #newBTN {
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+<button type="button" id="newBTN">Download Logs</button>
+`;
 
     tmpl_popup.innerHTML = `
 <style>
