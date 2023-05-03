@@ -84,7 +84,7 @@ tmpl_b.innerHTML = `
 
   #popup-content textarea {
     width: 100%;
-    height: 50px;
+    height: 30px;
     resize: none;
     padding: 5px;
     font-size: 16px;
@@ -102,7 +102,6 @@ tmpl_b.innerHTML = `
   #popup-content #dropdown {
     width: 100%;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
   }
 
   #popup-content #dropdown label {
