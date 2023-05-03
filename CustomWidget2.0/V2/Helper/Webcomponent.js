@@ -22,11 +22,11 @@
       <p>Click the button below to download the logs.</p>
       <button id="downloadButton">Download</button>
       <button id="cancelButton">Cancel</button>
-    </div>`;*/
+    </div>`;
 
     tmpl_popup.innerHTML = `
     <style>
-      /* add your styles here */
+      /* add your styles here 
     </style>
     <div id="popup"  style="position: fixed; top: 10%; left: 10%; transform: translate(-10%, -10%); background-color: white; border: 1px solid black; padding: 5px;">
       <div id="popup-content">
@@ -39,6 +39,90 @@
       </div>
     </div>
     `;
+
+    */
+
+    tmpl_popup.innerHTML = `
+<style>
+  /* add your styles here */
+  #popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #popup-content span {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  #popup-content textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+
+  #popup-content #buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #popup-content #downloadButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  #popup-content #cancelButton {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
+<div id="popup">
+  <div id="popup-content">
+    <span>Enter your comment:</span>
+    <textarea id="comment"></textarea>
+    <div id="buttons">
+      <button type="button" id="downloadButton">Download Logs</button>
+      <button type="button" id="cancelButton">Cancel</button>
+    </div>
+  </div>
+</div>
+`;
 
  
   class PerformanceHelper extends HTMLElement {
