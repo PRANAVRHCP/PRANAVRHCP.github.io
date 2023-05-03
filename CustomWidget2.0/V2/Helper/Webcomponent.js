@@ -12,7 +12,7 @@
   let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
  `<button type="button" id="newBTN" 
- style="padding-left: 15px;"> Download Logs</button>` ;
+ style="padding-left: 100px; border-radius: 5px; background-color: #f2f2f2;"> Download Logs</button>` ;
  
  let tmpl_popup = document.createElement('template');
 
