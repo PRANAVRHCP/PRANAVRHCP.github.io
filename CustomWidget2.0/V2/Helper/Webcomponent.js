@@ -98,11 +98,40 @@ tmpl_b.innerHTML = `
     justify-content: space-between;
     width: 100%;
   }
+
+  #popup-content #dropdown {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  #popup-content #dropdown label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  #popup-content #dropdown select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
 </style>
 <div id="popup">
   <div id="popup-content">
     <span>Enter Step Description:</span>
     <textarea id="comment"></textarea>
+    <div id="dropdown">
+      <label for="stepType">Step Type:</label>
+      <select id="stepType">
+        <option value="Technical Step">Technical Step</option>
+        <option value="Business Step">Business Step</option>
+      </select>
+    </div>
     <div id="buttons">
       <button type="button" id="downloadButton">Log New Step</button>
       <button type="button" id="cancelButton">Cancel</button>
@@ -110,7 +139,6 @@ tmpl_b.innerHTML = `
   </div>
 </div>
 `;
-
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
