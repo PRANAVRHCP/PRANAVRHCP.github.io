@@ -90,27 +90,6 @@
     justify-content: space-between;
     width: 100%;
   }
-
-  #popup-content #downloadButton {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-
-  #popup-content #cancelButton {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
 </style>
 <div id="popup">
   <div id="popup-content">
