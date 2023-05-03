@@ -14,6 +14,7 @@
  `<button type="button" id="newBTN" > Download Logs</button>` ;
  
  let tmpl_popup = document.createElement('template');
+
  /*tmpl_popup.innerHTML = 
    `<div id="popup" 
     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px;">
@@ -22,14 +23,15 @@
       <button id="downloadButton">Download</button>
       <button id="cancelButton">Cancel</button>
     </div>`;*/
+
     tmpl_popup.innerHTML = `
     <style>
       /* add your styles here */
     </style>
     <div id="popup"  style="position: fixed; top: 10%; left: 10%; transform: translate(-10%, -10%); background-color: white; border: 1px solid black; padding: 5px;">
       <div id="popup-content">
-        <span>Enter your comment:</span>
-        <textarea id="comment"></textarea>
+        <span>Step Description:</span>
+        <textarea id="comment" style="width: 50%; height: 40px;"></textarea>
         <div id="buttons">
           <button type="button" id="downloadButton">Download Logs</button>
           <button type="button" id="cancelButton">Cancel</button>
