@@ -102,6 +102,7 @@ tmpl_b.innerHTML = `
   #popup-content #dropdown {
     width: 100%;
     margin-bottom: 20px;
+    border: 1px solid #ccc;
   }
 
   #popup-content #dropdown label {
@@ -116,7 +117,7 @@ tmpl_b.innerHTML = `
     padding: 10px;
     font-size: 16px;
     background-color: white;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 5px;
   }
 
