@@ -11,7 +11,8 @@
   
   let tmpl_b = document.createElement('template');
   tmpl_b.innerHTML = 
- `<button type="button" id="newBTN" style="padding: 10px; border-radius: 5px; background-color: #4CAF50; color: white;"> Download Logs</button>` ;
+ `<button type="button" id="newBTN" 
+ style="padding-left: 15px;"> Download Logs</button>` ;
  
  let tmpl_popup = document.createElement('template');
 
@@ -27,7 +28,7 @@
     tmpl_popup.innerHTML = `
     <style>
       /* add your styles here 
-    </style>
+    </style
     <div id="popup"  style="position: fixed; top: 10%; left: 10%; transform: translate(-10%, -10%); background-color: white; border: 1px solid black; padding: 5px;">
       <div id="popup-content">
         <span>Step Description:</span>
@@ -96,7 +97,7 @@
     <span>Enter Step Description:</span>
     <textarea id="comment"></textarea>
     <div id="buttons">
-      <button type="button" id="downloadButton">Log </button>
+      <button type="button" id="downloadButton">Log New Step</button>
       <button type="button" id="cancelButton">Cancel</button>
     </div>
   </div>
