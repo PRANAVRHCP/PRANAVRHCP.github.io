@@ -22,7 +22,6 @@
     #myList {
       padding: 10px;
       font-size: 16px;
-      background-color: white;
       border: none;
       border-radius: 5px;
     }
