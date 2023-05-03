@@ -23,8 +23,9 @@
       padding: 10px;
       font-size: 16px;
       background-color: #f2f2f2;
-      border: none;
+      border: 1px solid black;
       border-radius: 5px;
+      float: right;
     }
   </style>
   <select id="myList">
@@ -45,6 +46,7 @@ tmpl_b.innerHTML = `
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
   }
 </style>
 <button type="button" id="newBTN">Download Logs</button>
