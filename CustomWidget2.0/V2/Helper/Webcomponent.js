@@ -194,7 +194,7 @@ tmpl_popup.innerHTML = `
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
-    text-align: center;
+    text-align: left;
   }
 
   #popup-content textarea {
