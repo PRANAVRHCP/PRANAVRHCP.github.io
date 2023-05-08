@@ -50,7 +50,7 @@ tmpl_b.innerHTML = `
 <button type="button" id="newBTN">Download Logs</button>
 `;
 
-/*tmpl_popup.innerHTML = `
+tmpl_popup.innerHTML = `
 <style>  
   #popup {
     position: fixed;
@@ -162,122 +162,6 @@ tmpl_b.innerHTML = `
   </div>
 </div>
 `; 
-*/
-
-tmpl_popup.innerHTML = `
-<style>
-  /* add your styles here */
-  #popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #popup-content span, #popup-content label {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: left;
-  }
-
-  #popup-content textarea {
-    width: 100%;
-    height: 30px;
-    resize: none;
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-bottom: 20px;
-  }
-
-  #popup-content #buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  #popup-content #dropdown {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  #popup-content #dropdown label {
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  #downloadButton {
-    padding: 10px 20px;
-    margin-right: 10px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  #cancelButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-
-  #popup-content #dropdown select {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-</style>
-<div id="popup">
-  <div id="popup-content">
-    <span>Enter Step Description:</span>
-    <textarea id="comment"></textarea>
-    <div id="dropdown">
-      <label for="stepType">Step Type:</label>
-      <select id="stepType">
-        <option value="Technical Step">Technical Step</option>
-        <option value="Business Step">Business Step</option>
-      </select>
-    </div>
-    <div id="buttons">
-      <button type="button" id="downloadButton">Log New Step</button>
-      <button type="button" id="cancelButton">Cancel</button>
-    </div>
-  </div>
-</div>
-`;
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
