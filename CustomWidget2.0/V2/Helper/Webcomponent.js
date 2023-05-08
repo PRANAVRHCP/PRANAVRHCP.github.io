@@ -671,8 +671,8 @@ tmpl_popup.innerHTML = `
         let downloadButton = loc_this.shadowRoot.getElementById('downloadButton');
         let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
-        const dropdown = document.getElementById('stepType');
-        const businessComment = document.getElementById('business-comment');
+        let dropdown =  loc_this.shadowRoot.getElementById('stepType');
+        let businessComment =  loc_this.shadowRoot.getElementById('business-comment');
 
         dropdown.addEventListener('change', () => {
           if (dropdown.value === 'Business Step') {
