@@ -94,9 +94,13 @@ tmpl_b.innerHTML = `
   }
 
   #popup-content #buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
   #popup-content #dropdown {
@@ -456,7 +460,7 @@ tmpl_b.innerHTML = `
             // Get the parent panel of the button
             const parentPanel = this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
             // Modify the width of the parent panel
-             parentPanel.style.height = '800px';
+             parentPanel.style.height = '400px';
             this.firehandler(this);           
             this.dispatchEvent(event);
             });    
@@ -650,7 +654,7 @@ tmpl_b.innerHTML = `
            // Get the parent panel of the button
            const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
            // Modify the width of the parent panel
-            parentPanel.style.height = '150px';
+            parentPanel.style.height = '100px';
         });
 
         cancelButton.addEventListener("click", () => {
@@ -659,7 +663,7 @@ tmpl_b.innerHTML = `
           // Get the parent panel of the button
           const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
           // Modify the width of the parent panel
-           parentPanel.style.height = '150px';
+           parentPanel.style.height = '100px';
         });
  
       }
