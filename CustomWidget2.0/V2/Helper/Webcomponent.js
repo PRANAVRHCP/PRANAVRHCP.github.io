@@ -453,6 +453,10 @@ tmpl_b.innerHTML = `
           // Create Event Handler for Button Click based on the DropDownState  
             button_ref.addEventListener("click", event => {
             var event = new Event("onClick");
+            // Get the parent panel of the button
+            const parentPanel = this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+            // Modify the width of the parent panel
+             parentPanel.style.width = '800px';
             this.firehandler(this);           
             this.dispatchEvent(event);
             });    
