@@ -477,7 +477,8 @@ tmpl_popup.innerHTML = `
             this.fireDDStateChange();           
             this.dispatchEvent(event);
             });         
-          // Create Event Handler for Button Click based on the DropDownState  
+          
+           // Create Event Handler for Button Click based on the DropDownState  
             button_ref.addEventListener("click", event => {
             var event = new Event("onClick");
             // Get the parent panel of the button
@@ -670,6 +671,17 @@ tmpl_popup.innerHTML = `
         let downloadButton = loc_this.shadowRoot.getElementById('downloadButton');
         let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
+        const dropdown = document.getElementById('stepType');
+        const businessComment = document.getElementById('business-comment');
+
+        dropdown.addEventListener('change', () => {
+          if (dropdown.value === 'Business Step') {
+            businessComment.style.display = 'block';
+          } else {
+            businessComment.style.display = 'none';
+          }
+        });
+              
         downloadButton.addEventListener("click", () => {
           console.log("Logs downloaded");
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
