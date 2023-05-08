@@ -119,6 +119,7 @@ tmpl_b.innerHTML = `
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 10px;
     cursor: pointer;
   }
   
@@ -129,6 +130,7 @@ tmpl_b.innerHTML = `
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 10px;
     cursor: pointer;
   }
   
