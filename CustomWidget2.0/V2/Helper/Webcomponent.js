@@ -456,7 +456,7 @@ tmpl_b.innerHTML = `
             // Get the parent panel of the button
             const parentPanel = this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
             // Modify the width of the parent panel
-             parentPanel.style.height = '400px';
+             parentPanel.style.height = '800px';
             this.firehandler(this);           
             this.dispatchEvent(event);
             });    
