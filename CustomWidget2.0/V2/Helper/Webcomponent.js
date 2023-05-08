@@ -277,7 +277,7 @@ tmpl_popup.innerHTML = `
     </div>
   </div>
 </div>
-
+`;
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
