@@ -110,7 +110,7 @@ tmpl_popup.innerHTML = `
     margin-bottom: 5px;
   }
 
-  #popup-content #business-comment {
+  #popup-content #business-step-commen {
     display: none;
     width: 100%;
     height: 30px;
