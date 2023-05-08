@@ -456,7 +456,7 @@ tmpl_b.innerHTML = `
             // Get the parent panel of the button
             const parentPanel = this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
             // Modify the width of the parent panel
-             parentPanel.style.width = '800px';
+             parentPanel.style.height = '400px';
             this.firehandler(this);           
             this.dispatchEvent(event);
             });    
@@ -647,11 +647,19 @@ tmpl_b.innerHTML = `
           console.log("Logs downloaded");
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
+           // Get the parent panel of the button
+           const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+           // Modify the width of the parent panel
+            parentPanel.style.height = '150px';
         });
 
         cancelButton.addEventListener("click", () => {
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
+          // Get the parent panel of the button
+          const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+          // Modify the width of the parent panel
+           parentPanel.style.height = '150px';
         });
  
       }
