@@ -110,6 +110,18 @@ tmpl_popup.innerHTML = `
     margin-bottom: 5px;
   }
 
+  #popup-content #business-comment {
+    display: none;
+    width: 100%;
+    height: 30px;
+    resize: none;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+
   #downloadButton {
     padding: 10px 20px;
     margin-right: 10px;
@@ -155,6 +167,10 @@ tmpl_popup.innerHTML = `
         <option value="Business Step">Business Step</option>
       </select>
     </div>
+    <div id="business-step-comment">
+      <label for="businessComment">Business Step Comment:</label>
+      <textarea id="comment_bc"></textarea>
+      </div>
     <div id="buttons">
       <button type="button" id="downloadButton">Log New Step</button>
       <button type="button" id="cancelButton">Cancel</button>
