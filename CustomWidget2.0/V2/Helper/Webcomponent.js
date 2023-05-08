@@ -94,13 +94,9 @@ tmpl_b.innerHTML = `
   }
 
   #popup-content #buttons {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
   #popup-content #dropdown {
@@ -114,6 +110,28 @@ tmpl_b.innerHTML = `
     font-weight: bold;
     margin-bottom: 5px;
   }
+
+  #downloadButton {
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-size: 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #cancelButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
 
   #popup-content #dropdown select {
     width: 100%;
