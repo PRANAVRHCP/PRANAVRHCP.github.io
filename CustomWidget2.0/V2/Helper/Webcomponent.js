@@ -146,8 +146,10 @@ tmpl_popup.innerHTML = `
 </style>
 <div id="popup">
   <div id="popup-content">
-    <span>Enter Step Description:</span>
+  <label for="Step Description">Step Description Comment:</label>
     <textarea id="comment"></textarea>
+   // <span>Enter Step Description:</span>
+   // <textarea id="comment"></textarea>
     <div id="business-comment" style="display: none;">
     <label for="businessComment">Business Step Comment:</label>
     <textarea id="businessComment"></textarea>
