@@ -479,20 +479,20 @@ tmpl_popup.innerHTML = `
             this.dispatchEvent(event);
             });    
             
-        // Create an Event Handler for Combination of Keyboard click and Manual Mode , call the step logger
+        // Create an Event Handler for Combination of Keyboard for Alt + Ctrl + L  and Manual Mode , call the step logger
 
         window.document.addEventListener('keydown', function(event) {
           if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) 
           {
 
-             // Get the parent panel of the button
-             const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-              // Modify the width of the parent panel
-              parentPanel.style.height = '400px';
+            // Get the parent panel of the button
+            const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+            // Modify the width of the parent panel
+            parentPanel.style.height = '400px';
             let popup = tmpl_popup.content.cloneNode(true);
             globalThis.shadowRoot.appendChild(popup);
-        let StepLogButton = globalThis.shadowRoot.getElementById('StepLogButton');
-        let cancelButton = globalThis.shadowRoot.getElementById('cancelButton');
+            let StepLogButton = globalThis.shadowRoot.getElementById('StepLogButton');
+            let cancelButton = globalThis.shadowRoot.getElementById('cancelButton');
 
         let dropdown =  globalThis.shadowRoot.getElementById('stepType');
         let businessComment =  globalThis.shadowRoot.getElementById('business-comment');
@@ -506,15 +506,20 @@ tmpl_popup.innerHTML = `
         });
               
         StepLogButton.addEventListener("click", () => {
-          console.log("Logs downloaded");
+          
           let lv_popup = globalThis.shadowRoot.getElementById('popup');
-          globalThis.shadowRoot.removeChild(lv_popup);
+          globalThis.shadowRoot.removeChild(lv_popup);            
+            // Get a reference to the comment textarea element
+            const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
+            // Get the value entered by the user
+            const commentValue = commentTextArea.value;
            // Get the parent panel of the button
            const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
            // Modify the width of the parent panel
             parentPanel.style.height = '100px';
             //Trigger the event to log a step 
-            // Log a new step            
+            // Log a new step
+
             setTimeout(function() 
             {              
                                          
@@ -529,8 +534,8 @@ tmpl_popup.innerHTML = `
                 //If there are new entries -> a new step will be created corresponding to them
                 if(psNo!==reslen)
                 { 
-                  //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
+                  //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
+                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                   psNo = reslen ;
                   sNo = sNo + 1;                            
                 } 
