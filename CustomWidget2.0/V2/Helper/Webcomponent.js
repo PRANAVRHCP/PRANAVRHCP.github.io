@@ -178,7 +178,8 @@ tmpl_popup.innerHTML = `
           window.userF_log = [];
           window.userF_queue = [];
           window.sNo = 1;
-          window.psNo = 0;        
+          window.psNo = 0;    
+          window.globalThis = this;    
           this.init();           
       }
 
@@ -466,6 +467,7 @@ tmpl_popup.innerHTML = `
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
           shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
+          globalThis = this;
 
          // Create Reference to Dropdown and Button Elements from the Shadow Root
           let dropdown_ref = shadowRoot.getElementById('myList');
@@ -496,12 +498,12 @@ tmpl_popup.innerHTML = `
           {
 
             let popup = tmpl_popup.content.cloneNode(true);
-        loc_this.shadowRoot.appendChild(popup);
-        let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
-        let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
+            globalThis.shadowRoot.appendChild(popup);
+        let StepLogButton = globalThis.shadowRoot.getElementById('StepLogButton');
+        let cancelButton = globalThis.shadowRoot.getElementById('cancelButton');
 
-        let dropdown =  loc_this.shadowRoot.getElementById('stepType');
-        let businessComment =  loc_this.shadowRoot.getElementById('business-comment');
+        let dropdown =  globalThis.shadowRoot.getElementById('stepType');
+        let businessComment =  globalThis.shadowRoot.getElementById('business-comment');
 
         dropdown.addEventListener('change', () => {
           if (dropdown.value === 'Business Step') {
@@ -513,10 +515,10 @@ tmpl_popup.innerHTML = `
               
         StepLogButton.addEventListener("click", () => {
           console.log("Logs downloaded");
-          let lv_popup = loc_this.shadowRoot.getElementById('popup');
-          loc_this.shadowRoot.removeChild(lv_popup);
+          let lv_popup = globalThis.shadowRoot.getElementById('popup');
+          globalThis.shadowRoot.removeChild(lv_popup);
            // Get the parent panel of the button
-           const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+           const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
            // Modify the width of the parent panel
             parentPanel.style.height = '100px';
             //Trigger the event to log a step 
@@ -664,10 +666,10 @@ tmpl_popup.innerHTML = `
 	});
 
 	  cancelButton.addEventListener("click", () => {
-          let lv_popup = loc_this.shadowRoot.getElementById('popup');
-          loc_this.shadowRoot.removeChild(lv_popup);
+          let lv_popup = globalThis.shadowRoot.getElementById('popup');
+          globalThis.shadowRoot.removeChild(lv_popup);
           // Get the parent panel of the button
-          const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+          const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
           // Modify the width of the parent panel
            parentPanel.style.height = '100px';
         });
