@@ -498,7 +498,7 @@ tmpl_popup.innerHTML = `
           {
 
              // Get the parent panel of the button
-             const parentPanel = globalthis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+             const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
               // Modify the width of the parent panel
               parentPanel.style.height = '400px';
             let popup = tmpl_popup.content.cloneNode(true);
