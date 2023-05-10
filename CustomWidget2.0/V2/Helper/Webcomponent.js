@@ -497,6 +497,10 @@ tmpl_popup.innerHTML = `
           if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) 
           {
 
+             // Get the parent panel of the button
+             const parentPanel = globalthis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+              // Modify the width of the parent panel
+              parentPanel.style.height = '400px';
             let popup = tmpl_popup.content.cloneNode(true);
             globalThis.shadowRoot.appendChild(popup);
         let StepLogButton = globalThis.shadowRoot.getElementById('StepLogButton');
