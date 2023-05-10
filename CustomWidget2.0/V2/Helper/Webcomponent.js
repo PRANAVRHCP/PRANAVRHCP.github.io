@@ -4,19 +4,7 @@
   let tmpl = document.createElement('template');
   let tmpl_b = document.createElement('template');
   let tmpl_popup = document.createElement('template');
-  /*
-  tmpl.innerHTML = 
-  `<select id = "myList" style="padding: 10px; border-radius: 5px; background-color: #f2f2f2;"> 
-    <option value="1"> Auto Log Mode </option>  
-    <option value="2"> Manual Mode </option>  
-    <option value="3"> Download Logs </option>   
-   </select>` ;   
-  
-
-  tmpl_b.innerHTML = 
- `<button type="button" id="newBTN" 
- style="padding-left: 100px; border-radius: 5px; background-color: #f2f2f2;"> Download Logs</button>` ;*/
-
+ 
   tmpl.innerHTML = `
   <style>
     #myList {
@@ -763,9 +751,14 @@ tmpl_popup.innerHTML = `
                   let reslen = lv_result.length ;
                   //If there are new entries -> a new step will be created corresponding to them
                   if(psNo!==reslen)
-                  { 
+                  {                                         
+                    // Get a reference to the comment textarea element
+                    const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
+
+                    // Get the value entered by the user
+                    const commentValue = commentTextArea.value;
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;                            
                   } 
@@ -1150,6 +1143,8 @@ tmpl_popup.innerHTML = `
               }
               else
               {
+                if(steplog[i].LogMode === 'Auto')
+                {
                 // Map the step from the -- THe logic for derivation needs to be done on the basis of the mode 
                 // if the step logged is in auto mode , then it should be dervied from the UF Log 
                 // if it is manual mode then no need for derivation
@@ -1182,6 +1177,7 @@ tmpl_popup.innerHTML = `
                   steplog[i].UserAction = '';
                 }
                 }
+              }
               }   
               }
             //create a local copy for download which is not soo detailed       
