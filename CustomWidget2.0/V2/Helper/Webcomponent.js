@@ -492,7 +492,34 @@ tmpl_popup.innerHTML = `
         // Create an Event Handler for Combination of Keyboard click and Manual Mode , call the step logger
 
         window.document.addEventListener('keydown', function(event) {
-          if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) {
+          if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) 
+          {
+
+            let popup = tmpl_popup.content.cloneNode(true);
+        loc_this.shadowRoot.appendChild(popup);
+        let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
+        let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
+
+        let dropdown =  loc_this.shadowRoot.getElementById('stepType');
+        let businessComment =  loc_this.shadowRoot.getElementById('business-comment');
+
+        dropdown.addEventListener('change', () => {
+          if (dropdown.value === 'Business Step') {
+            businessComment.style.display = 'block';
+          } else {
+            businessComment.style.display = 'none';
+          }
+        });
+              
+        StepLogButton.addEventListener("click", () => {
+          console.log("Logs downloaded");
+          let lv_popup = loc_this.shadowRoot.getElementById('popup');
+          loc_this.shadowRoot.removeChild(lv_popup);
+           // Get the parent panel of the button
+           const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+           // Modify the width of the parent panel
+            parentPanel.style.height = '100px';
+            //Trigger the event to log a step 
             // Log a new step            
             setTimeout(function() 
             {              
@@ -633,6 +660,17 @@ tmpl_popup.innerHTML = `
               userF_queue =  userF_queue.filter( e => e.processed == '');
                              
            }, 700);
+
+	});
+
+	  cancelButton.addEventListener("click", () => {
+          let lv_popup = loc_this.shadowRoot.getElementById('popup');
+          loc_this.shadowRoot.removeChild(lv_popup);
+          // Get the parent panel of the button
+          const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
+          // Modify the width of the parent panel
+           parentPanel.style.height = '100px';
+        });
 
           }
         });
@@ -1095,7 +1133,7 @@ tmpl_popup.innerHTML = `
               steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
               xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
               steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
-               // Create a mapping of the zser action to step              
+               // Create a mapping of the user action to step              
               if(i === 0)
               {
                 steplog[i].UserAction = 'Pre Init';                
@@ -1106,7 +1144,9 @@ tmpl_popup.innerHTML = `
               }
               else
               {
-                // Map the step from the 
+                // Map the step from the -- THe logic for derivation needs to be done on the basis of the mode 
+                // if the step logged is in auto mode , then it should be dervied from the UF Log 
+                // if it is manual mode then no need for derivation
                 timeArr = steplog[i].StepStartTime.split(':');
                 var hhmmss_t = timeArr[0]+timeArr[1]+timeArr[2];
                 var CurrentStarttime = parseInt(hhmmss_t) ;
