@@ -713,7 +713,10 @@ tmpl_popup.innerHTML = `
         });
               
         StepLogButton.addEventListener("click", () => {
-          console.log("Logs downloaded");
+           // Get a reference to the comment textarea element
+           const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
+           // Get the value entered by the user
+           const commentValue = commentTextArea.value;
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
            // Get the parent panel of the button
@@ -721,7 +724,7 @@ tmpl_popup.innerHTML = `
            // Modify the width of the parent panel
             parentPanel.style.height = '100px';
             //Trigger the event to log a step 
-            loc_this.fireStepLogger();
+            loc_this.fireStepLogger(commentValue);
         });
 
         cancelButton.addEventListener("click", () => {
@@ -736,7 +739,7 @@ tmpl_popup.innerHTML = `
       }
       
       // When the mode is to create a Manual Step
-      fireStepLogger()
+      fireStepLogger(commentValue)
       {
         setTimeout(function() 
               {              
@@ -752,11 +755,7 @@ tmpl_popup.innerHTML = `
                   //If there are new entries -> a new step will be created corresponding to them
                   if(psNo!==reslen)
                   {                                         
-                    // Get a reference to the comment textarea element
-                    const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
-
-                    // Get the value entered by the user
-                    const commentValue = commentTextArea.value;
+                   
                     //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                     steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                     psNo = reslen ;
