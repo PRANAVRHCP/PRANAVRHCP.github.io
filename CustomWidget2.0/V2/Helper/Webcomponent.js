@@ -507,13 +507,13 @@ tmpl_popup.innerHTML = `
               
         StepLogButton.addEventListener("click", () => {
           
+         // Get a reference to the comment textarea element
+         const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
+         // Get the value entered by the user
+         const commentValue = commentTextArea.value;
+        // Get the parent panel of the button
           let lv_popup = globalThis.shadowRoot.getElementById('popup');
-          globalThis.shadowRoot.removeChild(lv_popup);            
-            // Get a reference to the comment textarea element
-            const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
-            // Get the value entered by the user
-            const commentValue = commentTextArea.value;
-           // Get the parent panel of the button
+          globalThis.shadowRoot.removeChild(lv_popup);   
            const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
            // Modify the width of the parent panel
             parentPanel.style.height = '100px';
