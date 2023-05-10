@@ -110,7 +110,7 @@ tmpl_popup.innerHTML = `
     margin-bottom: 5px;
   }
 
-  #downloadButton {
+  #StepLogButton{
     padding: 10px 20px;
     margin-right: 10px;
     font-size: 16px;
@@ -160,7 +160,7 @@ tmpl_popup.innerHTML = `
       </select>
     </div>
     <div id="buttons">
-      <button type="button" id="downloadButton">Log New Step</button>
+      <button type="button" id="StepLogButton">Log New Step</button>
       <button type="button" id="cancelButton">Cancel</button>
     </div>
   </div>
@@ -657,18 +657,16 @@ tmpl_popup.innerHTML = `
       
       firehandler(loc_this)
       {
-        /*if(widgetmode === 1 || widgetmode ===3)
+        if(widgetmode === 1 || widgetmode ===3)
         { 
           loc_this.fireDownloadLogHandler();          
         }
         else
         {
-          loc_this.fireStepLogger();
-        }*/
-
+          
         let popup = tmpl_popup.content.cloneNode(true);
         loc_this.shadowRoot.appendChild(popup);
-        let downloadButton = loc_this.shadowRoot.getElementById('downloadButton');
+        let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
         let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
         let dropdown =  loc_this.shadowRoot.getElementById('stepType');
@@ -682,7 +680,7 @@ tmpl_popup.innerHTML = `
           }
         });
               
-        downloadButton.addEventListener("click", () => {
+        StepLogButton.addEventListener("click", () => {
           console.log("Logs downloaded");
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
@@ -690,6 +688,8 @@ tmpl_popup.innerHTML = `
            const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
            // Modify the width of the parent panel
             parentPanel.style.height = '100px';
+            //Trigger the event to log a step 
+            loc_this.fireStepLogger();
         });
 
         cancelButton.addEventListener("click", () => {
@@ -700,7 +700,7 @@ tmpl_popup.innerHTML = `
           // Modify the width of the parent panel
            parentPanel.style.height = '100px';
         });
- 
+      }
       }
       
       // When the mode is to create a Manual Step
