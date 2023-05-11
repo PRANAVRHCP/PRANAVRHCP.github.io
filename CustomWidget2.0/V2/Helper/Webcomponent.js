@@ -1137,7 +1137,8 @@ tmpl_popup.innerHTML = `
                 var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
                 xhr_log_filter .forEach(function(filteredElement, index) {
                   xhr_log[xhr_log.indexOf(filteredElement)].StepMapping = steplog[i].StepNo;
-                  xhr_log[xhr_log.indexOf(filteredElement)].SequenceMapping = steplog[i].seqNo;
+                  xhr_log[xhr_log.indexOf(filteredElement)].SequenceMapping = steplog[i].SequenceNo;
+                  xhr_log[xhr_log.indexOf(filteredElement)].SequenceDesc = steplog[i].SequenceDesc;
               });
                 PreviousEndtime = parseInt(hhmmss);  
               // Calculate the sum based on the filterd array 
