@@ -199,9 +199,9 @@ tmpl_popup.innerHTML = `
                       x =  lv_result.length + 1;
                   }
                }
-              steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
+              steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
               sNo = sNo + 1; 
-              steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
+              steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
@@ -313,7 +313,7 @@ tmpl_popup.innerHTML = `
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
+                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -534,7 +534,7 @@ tmpl_popup.innerHTML = `
                 //If there are new entries -> a new step will be created corresponding to them
                 if(psNo!==reslen)
                 { 
-                   steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                   steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                   psNo = reslen ;
                   sNo = sNo + 1;                            
                 } 
@@ -770,7 +770,7 @@ tmpl_popup.innerHTML = `
                   //If there are new entries -> a new step will be created corresponding to them
                   if(psNo!==reslen)
                   {                                         
-                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;                            
                   } 
@@ -934,11 +934,11 @@ tmpl_popup.innerHTML = `
                   {
                    if( widgetmode === 1 )
                    {
-                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
+                    steplog.push({SequenceNo : seqNo ,SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
                    }
                     else 
                     {
-                      steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
+                      steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
                     }
                     psNo = reslen ;
                     sNo = sNo + 1;       
@@ -1192,7 +1192,7 @@ tmpl_popup.innerHTML = `
               }   
               }
             //create a local copy for download which is not soo detailed       
-              local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
+              local_log.push({SequenceNo : steplog[i].seqNo ,SequenceDesc : steplog[i].seqDes ,StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
 
               }         
 
@@ -1309,7 +1309,7 @@ tmpl_popup.innerHTML = `
       JSON2CSV(objArray) {
        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         // Set the column headers
-       var str = 'StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,UserAction,TotalCellArrayCount,TotalBytes,NumberOfINAcalls,TotalWidgetAffected\r\n';    
+       var str = 'SequenceNo,SequenceDescription,StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,UserAction,TotalCellArrayCount,TotalBytes,NumberOfINAcalls,TotalWidgetAffected\r\n';    
       for (var i = 0; i < array.length; i++) {
         var line = '';
         for (var index in array[i]) {
@@ -1552,7 +1552,7 @@ tmpl_popup.innerHTML = `
                  var diff_time = lv_result[psNo].startTime - pstep_time
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
+                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
