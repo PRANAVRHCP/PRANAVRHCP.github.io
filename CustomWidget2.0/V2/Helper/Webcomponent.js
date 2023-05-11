@@ -498,7 +498,7 @@ tmpl_popup.innerHTML = `
         let businessComment =  globalThis.shadowRoot.getElementById('business-comment');
 
         dropdown.addEventListener('change', () => {
-          if (dropdown.value === 'Business Step') {
+          if (dropdown.value === 'Sequence') {
             businessComment.style.display = 'block';
           } else {
             businessComment.style.display = 'none';
@@ -710,7 +710,7 @@ tmpl_popup.innerHTML = `
         let businessComment =  loc_this.shadowRoot.getElementById('business-comment');
 
         dropdown.addEventListener('change', () => {
-          if (dropdown.value === 'Business Step') {
+          if (dropdown.value === 'Sequence') {
             businessComment.style.display = 'block';
           } else {
             businessComment.style.display = 'none';
