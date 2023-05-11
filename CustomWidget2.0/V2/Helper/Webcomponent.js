@@ -266,7 +266,7 @@ tmpl_popup.innerHTML = `
                          var hhmmss = parseInt(hours+minutes+seconds);
 
                          window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                          xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                          xhr_queue[o].xhr._networkInfo , SequenceMapping:0 ,StepMapping : 0 , Timestamp :
                           xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                           Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                           PerformanceAnalysis :PerfAnalysis,
@@ -391,7 +391,7 @@ tmpl_popup.innerHTML = `
 
 
                      window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                     xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                     xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
                      xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                      Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                      PerformanceAnalysis :PerfAnalysis,
@@ -603,7 +603,7 @@ tmpl_popup.innerHTML = `
 
 
                    window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                   xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                   xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
                    xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                    Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                    PerformanceAnalysis :PerfAnalysis,
@@ -839,7 +839,7 @@ tmpl_popup.innerHTML = `
 
 
                      window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                     xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                     xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
                      xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                      Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                      PerformanceAnalysis :PerfAnalysis,
@@ -1016,7 +1016,7 @@ tmpl_popup.innerHTML = `
 
 
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
                 xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                 Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                 PerformanceAnalysis : PerfAnalysis,
@@ -1427,6 +1427,7 @@ tmpl_popup.innerHTML = `
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , 
                 NetworkInfo :  xhr._networkInfo , 
+                SequenceMapping:0 ,
                 StepMapping : 0 , 
                 Timestamp : xhr._timestamp , 
                 StartTime : hhmmss,
@@ -1510,6 +1511,7 @@ tmpl_popup.innerHTML = `
                
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                xhr._networkInfo , 
+               SequenceMapping:0 ,
                StepMapping : 0 , 
                Timestamp : xhr._timestamp , 
                StartTime : hhmmss,
@@ -1628,7 +1630,7 @@ tmpl_popup.innerHTML = `
                var hhmmss = parseInt(hours+minutes+seconds);
 
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
                 xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                 Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                 PerformanceAnalysis : PerfAnalysis,
