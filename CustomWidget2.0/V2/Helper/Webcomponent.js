@@ -166,6 +166,8 @@ tmpl_popup.innerHTML = `
           window.userF_log = [];
           window.userF_queue = [];
           window.sNo = 1;
+          window.seqNo = 1;
+          window.seqDes = 'Default';
           window.psNo = 0;    
           window.globalThis = this;    
           this.init();           
@@ -187,8 +189,7 @@ tmpl_popup.innerHTML = `
               });
                 let reslen = lv_result.length ;
               if(psNo!==reslen)
-              {
-              //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+              {             
               //Split the steps into 2 substeps
               for(var x = 0 ; x < lv_result.length ; x++)
               {
@@ -198,9 +199,9 @@ tmpl_popup.innerHTML = `
                       x =  lv_result.length + 1;
                   }
                }
-              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
+              steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
               sNo = sNo + 1; 
-              steplog.push({StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
+              steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
@@ -312,8 +313,7 @@ tmpl_popup.innerHTML = `
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
+                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -534,8 +534,7 @@ tmpl_popup.innerHTML = `
                 //If there are new entries -> a new step will be created corresponding to them
                 if(psNo!==reslen)
                 { 
-                  //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
-                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                   steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                   psNo = reslen ;
                   sNo = sNo + 1;                            
                 } 
@@ -718,10 +717,21 @@ tmpl_popup.innerHTML = `
         });
               
         StepLogButton.addEventListener("click", () => {
-           // Get a reference to the comment textarea element
-           const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
-           // Get the value entered by the user
-           const commentValue = commentTextArea.value;
+          // Get a reference to the comment textarea element
+          const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
+          // Get the value entered by the user
+          const commentValue = commentTextArea.value;
+          // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
+
+          const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
+          if (dropdown.value === 'Sequence') 
+          {
+            const businessComment =  globalThis.shadowRoot.getElementById('business-comment');
+             // Get the value entered by the user
+             seqDes = businessComment.value;
+             seqNo = seqNo + 1 ;
+          }
+
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
            // Get the parent panel of the button
@@ -760,9 +770,7 @@ tmpl_popup.innerHTML = `
                   //If there are new entries -> a new step will be created corresponding to them
                   if(psNo!==reslen)
                   {                                         
-                   
-                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;                            
                   } 
@@ -924,14 +932,13 @@ tmpl_popup.innerHTML = `
                  var diff_time = lv_result[psNo].startTime - pstep_time
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                    if( widgetmode === 1 )
                    {
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
+                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
                    }
                     else 
                     {
-                      steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
+                      steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
                     }
                     psNo = reslen ;
                     sNo = sNo + 1;       
@@ -1537,7 +1544,7 @@ tmpl_popup.innerHTML = `
        let reslen = lv_result.length ;
          if(psNo!==reslen)
          {
-            // If new entries are present , compare the last entry of the previous step in step log
+                  // If new entries are present , compare the last entry of the previous step in step log
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
                   //Previous step Start + End time 
                   var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
@@ -1545,8 +1552,7 @@ tmpl_popup.innerHTML = `
                  var diff_time = lv_result[psNo].startTime - pstep_time
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
-                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
+                    steplog.push({SequenceNo : seqNo , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
