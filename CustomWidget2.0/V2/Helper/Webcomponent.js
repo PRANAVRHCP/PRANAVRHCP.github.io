@@ -1137,6 +1137,7 @@ tmpl_popup.innerHTML = `
                 var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
                 xhr_log_filter .forEach(function(filteredElement, index) {
                   xhr_log[xhr_log.indexOf(filteredElement)].StepMapping = steplog[i].StepNo;
+                  xhr_log[xhr_log.indexOf(filteredElement)].SequenceMapping = steplog[i].seqNo;
               });
                 PreviousEndtime = parseInt(hhmmss);  
               // Calculate the sum based on the filterd array 
