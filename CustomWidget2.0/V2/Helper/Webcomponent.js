@@ -726,7 +726,7 @@ tmpl_popup.innerHTML = `
           const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
           if (dropdown.value === 'Sequence') 
           {
-            const businessComment =  globalThis.shadowRoot.getElementById('business-comment');
+            const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
              // Get the value entered by the user
              seqDes = businessComment.value;
              seqNo = seqNo + 1 ;
