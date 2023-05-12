@@ -519,7 +519,7 @@ tmpl_popup.innerHTML = `
               // Get the value entered by the user
               seqDes = businessComment.value;
               seqNo = seqNo + 1 ;
-            }
+                   }
         // Get the parent panel of the button
           let lv_popup = globalThis.shadowRoot.getElementById('popup');
           globalThis.shadowRoot.removeChild(lv_popup);   
@@ -547,6 +547,13 @@ tmpl_popup.innerHTML = `
                   psNo = reslen ;
                   sNo = sNo + 1;                            
                 } 
+                //Log an empty step with just the user description
+                else
+                {
+                  steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                  sNo = sNo + 1;  
+
+                }
 
               //process the unprocessed records in the XHR log Queue
               for(var o = 0 ; o < xhr_queue.length ; o++) 
