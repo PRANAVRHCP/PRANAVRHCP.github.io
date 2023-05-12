@@ -511,6 +511,15 @@ tmpl_popup.innerHTML = `
          const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
          // Get the value entered by the user
          const commentValue = commentTextArea.value;
+         // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
+         const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
+         if (dropdown.value === 'Sequence') 
+            {
+              const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
+              // Get the value entered by the user
+              seqDes = businessComment.value;
+              seqNo = seqNo + 1 ;
+            }
         // Get the parent panel of the button
           let lv_popup = globalThis.shadowRoot.getElementById('popup');
           globalThis.shadowRoot.removeChild(lv_popup);   
