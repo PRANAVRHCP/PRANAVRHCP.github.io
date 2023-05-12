@@ -550,6 +550,17 @@ tmpl_popup.innerHTML = `
                 //Log an empty step with just the user description
                 else
                 {
+                  const currentDate = new Date();
+                  const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+                  const day = ("0" + currentDate.getDate()).slice(-2);
+                  const year = currentDate.getFullYear();
+                  const formattedDate = day+ "." + month+ "." + year;
+
+                  const now = new Date();
+                  const hours = now.getHours().toString().padStart(2, '0');
+                  const minutes = now.getMinutes().toString().padStart(2, '0');
+                  const seconds = now.getSeconds().toString().padStart(2, '0');
+                  const currentTime = `${hours}:${minutes}:${seconds}`;
                 //  steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                   steplog.push({
                     InaCall : [],
@@ -558,12 +569,13 @@ tmpl_popup.innerHTML = `
                     SequenceNo : seqNo , 
                     StepDuration : 0 ,
                     StepEndId: reslen-1 ,
-                    StepEndTime :0,
+                    StepEndTime : currentTime,
                     StepNo:sNo , 
                     StepSIDWithMaxDuration : 0,
                     StepSnapshot:lv_result.slice(psNo,reslen) ,
+                    StepStartDate : formattedDate ,
                     StepStartId: psNo -1 ,                   
-                    StepStartTime : 0,
+                    StepStartTime : currentTime,
                     TotalBytes : 0,
                     TotalCellArrayCount :0,
                     UserAction : commentValue ,
