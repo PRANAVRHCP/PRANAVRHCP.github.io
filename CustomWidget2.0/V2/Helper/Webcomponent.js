@@ -548,12 +548,12 @@ tmpl_popup.innerHTML = `
                   sNo = sNo + 1;                            
                 } 
                 //Log an empty step with just the user description
-                /*else
+                else
                 {
                   steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                   sNo = sNo + 1;  
 
-                }*/
+                }
 
               //process the unprocessed records in the XHR log Queue
               for(var o = 0 ; o < xhr_queue.length ; o++) 
@@ -1094,7 +1094,7 @@ tmpl_popup.innerHTML = `
             for(var i = 0 ; i< steplog.length ; i++)
             {   
               //Perform this step only when the mapping is missing 
-                if(steplog[i].processed !== 'X')          
+                if(steplog[i].processed !== 'X' && steplog[i].StepSnapshot.length > 0 )          
                 {
                 //Create list of Ina Calls  
                 steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
