@@ -550,7 +550,26 @@ tmpl_popup.innerHTML = `
                 //Log an empty step with just the user description
                 else
                 {
-                  steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                //  steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                  steplog.push({
+                    InaCall : [],
+                    LogMode : 'Manual' ,
+                    SequenceDesc : seqDes , 
+                    SequenceNo : seqNo , 
+                    StepDuration : 0 ,
+                    StepEndId: reslen-1 ,
+                    StepEndTime :0,
+                    StepNo:sNo , 
+                    StepSIDWithMaxDuration : 0,
+                    StepSnapshot:lv_result.slice(psNo,reslen) ,
+                    StepStartId: psNo -1 ,                   
+                    StepStartTime : 0,
+                    TotalBytes : 0,
+                    TotalCellArrayCount :0,
+                    UserAction : commentValue ,
+                    Widgetinfo :[],
+                    processed : 'X'  })
+               
                   sNo = sNo + 1;  
 
                 }
