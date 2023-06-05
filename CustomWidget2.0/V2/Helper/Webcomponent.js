@@ -748,7 +748,7 @@ tmpl_popup.innerHTML = `
         let popup = tmpl_popup.content.cloneNode(true);
         loc_this.shadowRoot.appendChild(popup);
         let lv_popup = globalThis.shadowRoot.getElementById('popup');
-	lv_popup.element.style.zIndex = 999999;
+	lv_popup.style.zIndex = 999999;
 	let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
         let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
