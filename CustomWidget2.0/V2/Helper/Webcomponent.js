@@ -46,7 +46,6 @@ tmpl_popup.innerHTML = `
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 11000;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -58,8 +57,7 @@ tmpl_popup.innerHTML = `
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 11000;
-  //  display: flex;
+   //  display: flex;
   //  flex-direction: column;
     align-items: center;
   }
@@ -67,7 +65,6 @@ tmpl_popup.innerHTML = `
   #popup-content span {
     font-size: 18px;
     font-weight: bold;
-    z-index: 11000;
     margin-bottom: 10px;
   }
 
@@ -77,7 +74,6 @@ tmpl_popup.innerHTML = `
     resize: none;
     padding: 5px;
     font-size: 16px;
-    z-index: 11000;
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-bottom: 20px;
@@ -86,22 +82,19 @@ tmpl_popup.innerHTML = `
   #popup-content #buttons {
     display: flex;
     justify-content: space-between;
-    z-index: 11000;
     width: 100%;
   }
 
   #popup-content #dropdown {
     width: 100%;
     margin-bottom: 20px;
-    z-index: 11000;
-  }
+    }
 
   #popup-content #dropdown label {
     display: block;
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
-    z-index: 11000;
   }
 
   #StepLogButton{
@@ -114,7 +107,6 @@ tmpl_popup.innerHTML = `
     border-radius: 5px;
     margin-top: 10px;
     cursor: pointer;
-    z-index: 11000;
   }
   
   #cancelButton {
@@ -126,7 +118,6 @@ tmpl_popup.innerHTML = `
     border-radius: 5px;
     margin-top: 10px;
     cursor: pointer;
-    z-index: 11000;
   }
   
 
@@ -137,7 +128,6 @@ tmpl_popup.innerHTML = `
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
-    z-index: 11000;
   }
 
 </style>
@@ -755,7 +745,8 @@ tmpl_popup.innerHTML = `
         }
         else
         {
-          
+        let lv_popup = globalThis.shadowRoot.getElementById('popup');
+	lv_popup.element.style.zIndex = 999999;
         let popup = tmpl_popup.content.cloneNode(true);
         loc_this.shadowRoot.appendChild(popup);
         let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
