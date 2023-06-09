@@ -519,7 +519,6 @@ tmpl_popup.innerHTML = `
               // Get the value entered by the user
               seqDes = businessComment.value;
               Seqflag = 'X';
-              //seqNo = seqNo + 1 ;
             }
        
         // Get the parent panel of the button
@@ -759,7 +758,7 @@ tmpl_popup.innerHTML = `
         if(button_text !== 'Log new Step')
         {
         //Increase the Sequence Counter :
-        seqNo = seqNo + 1 ;
+        seqNo = steplog[steplog.length - 1].SequenceNo + 1 ;
         seqDes = '';
         }        
         button_text.textContent = 'Log new Step';
@@ -770,7 +769,7 @@ tmpl_popup.innerHTML = `
           if(button_text !== 'Download Logs')
             {
             //Increase the Sequence Counter :
-            seqNo = seqNo + 1 ;
+            seqNo =  steplog[steplog.length - 1].SequenceNo + 1 ;
             seqDes = 'Default';
             }
           divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';     
@@ -818,7 +817,6 @@ tmpl_popup.innerHTML = `
              // Get the value entered by the user
              seqDes = businessComment.value;
              Seqflag = 'X';
-             //seqNo = seqNo + 1 ;
           }       
 
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
