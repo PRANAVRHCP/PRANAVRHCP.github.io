@@ -165,7 +165,7 @@ tmpl_popup.innerHTML = `
           window.userF_log = [];
           window.userF_queue = [];
           window.sNo = 1;
-          window.seqNo = 1;
+          window.seqNo = 0;
           window.seqDes = 'Default';
           window.psNo = 0;    
           window.globalThis = this;    
@@ -756,17 +756,24 @@ tmpl_popup.innerHTML = `
         if(window.widgetmode === 2)
         {
         var button_text = divs[0].shadowRoot.getElementById('newBTN');
-        button_text.textContent = 'Log new Step';
+        if(button_text !== 'Log new Step')
+        {
         //Increase the Sequence Counter :
         seqNo = seqNo + 1 ;
         seqDes = '';
+        }        
+        button_text.textContent = 'Log new Step';
         }
         else
         {
-          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';
-        //Increase the Sequence Counter and revert to default behaviour :
-        seqNo = seqNo + 1 ;
-        seqDes = 'Default';
+          var button_text = divs[0].shadowRoot.getElementById('newBTN');
+          if(button_text !== 'Download Logs')
+            {
+            //Increase the Sequence Counter :
+            seqNo = seqNo + 1 ;
+            seqDes = 'Default';
+            }
+          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';     
         }
       }
       
