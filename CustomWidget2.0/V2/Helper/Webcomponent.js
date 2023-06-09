@@ -512,19 +512,16 @@ tmpl_popup.innerHTML = `
          const commentValue = commentTextArea.value;
          // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
          const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
+         const Seqflag = '';
          if (dropdown.value === 'Sequence') 
             {
               const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
               // Get the value entered by the user
               seqDes = businessComment.value;
-              const Seqflag = 'X';
+              Seqflag = 'X';
               //seqNo = seqNo + 1 ;
             }
-          else
-            {
-               Seqflag = '';
-            }
-
+       
         // Get the parent panel of the button
           let lv_popup = globalThis.shadowRoot.getElementById('popup');
           globalThis.shadowRoot.removeChild(lv_popup);   
@@ -807,6 +804,7 @@ tmpl_popup.innerHTML = `
           // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
 
           const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
+          const Seqflag = '';
           if (dropdown.value === 'Sequence') 
           {
             const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
@@ -814,11 +812,7 @@ tmpl_popup.innerHTML = `
              seqDes = businessComment.value;
              const Seqflag = 'X';
              //seqNo = seqNo + 1 ;
-          }
-          else
-          {
-             Seqflag = '';
-          }
+          }       
 
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
           loc_this.shadowRoot.removeChild(lv_popup);
