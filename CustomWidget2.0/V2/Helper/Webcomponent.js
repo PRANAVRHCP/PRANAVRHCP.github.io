@@ -730,6 +730,9 @@ tmpl_popup.innerHTML = `
         {
         var button_text = divs[0].shadowRoot.getElementById('newBTN');
         button_text.textContent = 'Log new Step';
+        //Increase the Sequence Counter :
+        seqNo = seqNo + 1 ;
+        seqDes = '';
         }
         else
         {
@@ -776,7 +779,12 @@ tmpl_popup.innerHTML = `
             const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
              // Get the value entered by the user
              seqDes = businessComment.value;
-             seqNo = seqNo + 1 ;
+             const Seqflag = 'X';
+             //seqNo = seqNo + 1 ;
+          }
+          else
+          {
+             Seqflag = '';
           }
 
           let lv_popup = loc_this.shadowRoot.getElementById('popup');
@@ -786,7 +794,7 @@ tmpl_popup.innerHTML = `
            // Modify the width of the parent panel
             parentPanel.style.height = '100px';
             //Trigger the event to log a step 
-            loc_this.fireStepLogger(commentValue);
+            loc_this.fireStepLogger(commentValue , Seqflag);
         });
 
         cancelButton.addEventListener("click", () => {
@@ -801,7 +809,7 @@ tmpl_popup.innerHTML = `
       }
       
       // When the mode is to create a Manual Step
-      fireStepLogger(commentValue)
+      fireStepLogger(commentValue , Seqflag)
       {
         setTimeout(function() 
               {              
@@ -819,7 +827,19 @@ tmpl_popup.innerHTML = `
                   {                                         
                     steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                     psNo = reslen ;
-                    sNo = sNo + 1;                            
+                    sNo = sNo + 1;
+                    
+                    if(Seqflag === 'X')
+                    {
+                      // Update the value of SequenceDesc for matching items
+                      steplog.forEach(item => {
+                        if (item.SequenceDesc === '') {
+                          item.SequenceDesc = seqDes;
+                        }
+                      });
+                      seqNo = seqNo + 1;
+                      seqDes = '';
+                    }                            
                   } 
 
                   //Log an empty step with just the user description
