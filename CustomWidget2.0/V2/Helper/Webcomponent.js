@@ -512,7 +512,7 @@ tmpl_popup.innerHTML = `
          const commentValue = commentTextArea.value;
          // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
          const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
-         const Seqflag = '';
+         var Seqflag = '';
          if (dropdown.value === 'Sequence') 
             {
               const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
@@ -811,7 +811,7 @@ tmpl_popup.innerHTML = `
           // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
 
           const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
-          const Seqflag = '';
+          var Seqflag = '';
           if (dropdown.value === 'Sequence') 
           {
             const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
