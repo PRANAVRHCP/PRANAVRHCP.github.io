@@ -517,8 +517,14 @@ tmpl_popup.innerHTML = `
               const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
               // Get the value entered by the user
               seqDes = businessComment.value;
-              seqNo = seqNo + 1 ;
-                   }
+              const Seqflag = 'X';
+              //seqNo = seqNo + 1 ;
+            }
+          else
+            {
+               Seqflag = '';
+            }
+
         // Get the parent panel of the button
           let lv_popup = globalThis.shadowRoot.getElementById('popup');
           globalThis.shadowRoot.removeChild(lv_popup);   
@@ -544,7 +550,19 @@ tmpl_popup.innerHTML = `
                 { 
                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
                   psNo = reslen ;
-                  sNo = sNo + 1;                            
+                  sNo = sNo + 1;   
+                  if(Seqflag === 'X')
+                  {
+                    // Update the value of SequenceDesc for matching items
+                    steplog.forEach(item => {
+                      if (item.SequenceDesc === '') {
+                        item.SequenceDesc = seqDes;
+                      }
+                    });
+                    seqNo = seqNo + 1;
+                    seqDes = '';
+                  }  
+
                 } 
                 //Log an empty step with just the user description
                 else
@@ -582,6 +600,18 @@ tmpl_popup.innerHTML = `
                     processed : 'X'  })
                
                   sNo = sNo + 1;  
+
+                  if(Seqflag === 'X')
+                  {
+                    // Update the value of SequenceDesc for matching items
+                    steplog.forEach(item => {
+                      if (item.SequenceDesc === '') {
+                        item.SequenceDesc = seqDes;
+                      }
+                    });
+                    seqNo = seqNo + 1;
+                    seqDes = '';
+                  }           
 
                 }
 
@@ -737,6 +767,9 @@ tmpl_popup.innerHTML = `
         else
         {
           divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';
+        //Increase the Sequence Counter and revert to default behaviour :
+        seqNo = seqNo + 1 ;
+        seqDes = 'Default';
         }
       }
       
@@ -751,8 +784,8 @@ tmpl_popup.innerHTML = `
         let popup = tmpl_popup.content.cloneNode(true);
         loc_this.shadowRoot.appendChild(popup);
         let lv_popup = globalThis.shadowRoot.getElementById('popup');
-	lv_popup.style.zIndex = 999999;
-	let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
+        lv_popup.style.zIndex = 999999;
+        let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
         let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
 
         let dropdown =  loc_this.shadowRoot.getElementById('stepType');
@@ -878,6 +911,18 @@ tmpl_popup.innerHTML = `
                     processed : 'X'  })
                
                   sNo = sNo + 1;  
+
+                  if(Seqflag === 'X')
+                  {
+                    // Update the value of SequenceDesc for matching items
+                    steplog.forEach(item => {
+                      if (item.SequenceDesc === '') {
+                        item.SequenceDesc = seqDes;
+                      }
+                    });
+                    seqNo = seqNo + 1;
+                    seqDes = '';
+                  }           
 
                 }
 
