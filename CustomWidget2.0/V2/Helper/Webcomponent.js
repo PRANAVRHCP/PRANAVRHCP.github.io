@@ -817,7 +817,7 @@ tmpl_popup.innerHTML = `
             const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
              // Get the value entered by the user
              seqDes = businessComment.value;
-             const Seqflag = 'X';
+             Seqflag = 'X';
              //seqNo = seqNo + 1 ;
           }       
 
