@@ -758,8 +758,15 @@ tmpl_popup.innerHTML = `
         if(button_text !== 'Log new Step')
         {
         //Increase the Sequence Counter :
+        if(seqNo === 0)
+        {
+          seqNo = seqNo + 1;
+        }
+        else
+        {
         seqNo = steplog[steplog.length - 1].SequenceNo + 1 ;
         seqDes = '';
+        }
         }        
         button_text.textContent = 'Log new Step';
         }
@@ -769,9 +776,16 @@ tmpl_popup.innerHTML = `
           if(button_text !== 'Download Logs')
             {
             //Increase the Sequence Counter :
+            if(seqNo === 0)
+            {
+              seqNo = seqNo + 1;
+            }
+            else
+            {
             seqNo =  steplog[steplog.length - 1].SequenceNo + 1 ;
             seqDes = 'Default';
             }
+          }
           divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';     
         }
       }
