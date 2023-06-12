@@ -304,11 +304,16 @@ tmpl_popup.innerHTML = `
                   //If there are new entries -> the below logic will be entered
                   if(psNo!==reslen)
                   {   
-                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
-                 
-                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
-                 
-                  var diff_time = lv_result[psNo].startTime - pstep_time
+                    if(steplog[steplog.length -1].StepSnapshot.length !== 0 )
+                    {
+                      var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                      var diff_time = lv_result[psNo].startTime - pstep_time
+                    }
+                    else
+                    {
+                      diff_time = 10001;
+                    }
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
@@ -1091,10 +1096,17 @@ tmpl_popup.innerHTML = `
             // If new entries are present , compare the last entry of the previous step in step log
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
                   //Previous step Start + End time 
-                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
-                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
-                 var diff_time = lv_result[psNo].startTime - pstep_time
-                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
+                  if(steplog[steplog.length -1].StepSnapshot.length !== 0 )
+                  {
+                    var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                    // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                  var diff_time = lv_result[psNo].startTime 
+                  }
+                  else
+                  {
+                    diff_time = 10001;
+                  } 
+                 if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                    if( widgetmode === 1 )
                    {
@@ -1714,10 +1726,18 @@ tmpl_popup.innerHTML = `
          {
                   // If new entries are present , compare the last entry of the previous step in step log
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
+                  if(steplog[steplog.length -1].StepSnapshot.length !== 0 )
+                  {
                   //Previous step Start + End time 
                   var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
                  var diff_time = lv_result[psNo].startTime - pstep_time
+                  }
+                  else
+                  {
+                    diff_time = 100001;
+
+                  }
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
                     steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
