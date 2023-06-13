@@ -204,90 +204,12 @@ tmpl_popup.innerHTML = `
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
-                //process the unprocessed records in the XHR log Queue
-                for(var o = 0 ; o < xhr_queue.length ; o++) 
-                {
-
-                  if(xhr_queue[o].xhr.status == 200)          
-            
-                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
-                    if(response !==null)
-                    {  
-                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
-                      {
-                        var cac = 1;
-                        var cac_set = false;
-                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
-                        {
-                          if(response.Grids[0].CellArraySizes.length > 1)
-                          {
-                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                            cac_set = true;
-                          }
-                          else { 
-                            cac = response.Grids[0].CellArraySizes[0]; 
-                          }
-                        }
-                        else 
-                        {
-                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
-                              {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
-                                  cac_set = true;
-                              }
-                        }
-                        if(cac_set === false)
-                        {cac = 0;
-                        }
-                        var CellArraySize = cac ;
-                      }
-                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
-                      {
-                          var PerfAnalysis = response.PerformanceAnalysis;
-                      }
-                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
-                      {
-                          var PerfData = response.PerformanceData;
-                      }
-                    }                
-                      
-                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
-                    {
-                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
-                    }              
-                    else
-                     {
-                       var tbt = 0;
-                     }  
-                         var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
-                         var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
-                         var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
-                         var hhmmss = parseInt(hours+minutes+seconds);
-
-                         window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                          xhr_queue[o].xhr._networkInfo , SequenceMapping:0 ,StepMapping : 0 , Timestamp :
-                          xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                          Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                          PerformanceAnalysis :PerfAnalysis,
-                          PerformanceData :PerfData,
-                          TBT : tbt,
-                          readstate : xhr_queue[o].xhr.readyState                        
-                         }) ; 
-
-                       xhr_queue[o].processed = 'x';
-                    } 
-
-                    else if(xhr_queue[o].xhr.status === 0)
-                    {
-                      xhr_queue[o].processed = 'x';
-                    }
-                    }
-                      xhr_queue =  xhr_queue.filter( e => e.processed == '');            
-
-              
+               
+               //process the unprocessed records in the XHR log Queue -> New Method
+               this.processlogvariable();              
             }
             else{
-              // It will not be triggered when the user clicks the Performance Helper Button   
+              // It will not be triggered when the user clicks the Performance Helper Button to downlaod   
               if(widgetmode === 1 &&  event.target.tagName !== 'custom-dropdown' )
               {
               setTimeout(function() 
@@ -332,129 +254,16 @@ tmpl_popup.innerHTML = `
                   } 
 
                 //process the unprocessed records in the XHR log Queue
-                for(var o = 0 ; o < xhr_queue.length ; o++) 
-                {
-
-                  if(xhr_queue[o].xhr.status == 200)          
-            
-                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
-                    if(response !==null)
-                    {  
-                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
-                      {
-                        var cac = 1;
-                        var cac_set = false;
-                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
-                        {
-                          if(response.Grids[0].CellArraySizes.length > 1)
-                          {
-                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                            cac_set = true;
-                          }
-                          else { 
-                            cac = response.Grids[0].CellArraySizes[0]; 
-                          }
-                        }
-                        else 
-                        {
-                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
-                              {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
-                                  cac_set = true;
-                              }
-                        }
-                        if(cac_set === false)
-                        {cac = 0;
-                        }
-                        var CellArraySize = cac ;
-                      }
-                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
-                      {
-                          var PerfAnalysis = response.PerformanceAnalysis;
-                      }
-                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
-                      {
-                          var PerfData = response.PerformanceData;
-                      }
-
-                    }     
-                       
-                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
-                    {
-                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
-                    }              
-                    else
-                     {
-                       var tbt = 0;
-                     }  
-                    
-                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
-                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
-                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
-                     var hhmmss = parseInt(hours+minutes+seconds);
-
-
-                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                     xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
-                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                     PerformanceAnalysis :PerfAnalysis,
-                     PerformanceData :PerfAnalysis,
-                     TBT : tbt,
-                     readstate : xhr_queue[o].xhr.readyState                        
-                     }) ; 
-                     xhr_queue[o].processed = 'x';
-                      } 
-                    }
-                  
-                  //Clear the queue
-                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
-                
-                // Process the UserFriendly Queue
-
-                for(o = 0 ; o < userF_queue.length ; o++) 
-                {
-                  if(userF_queue[o].xhr.status == 200)         
-                 {   
-                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
-                    if(response !==null && response['fact'] !==undefined )
-                    {   
-                      if(response['fact'].length > 0 )
-                      {   var ref_tstamp = 0;
-                              for (var t = 0 ; t < response['fact'].length ; t++)
-                                  {
-                                      if(response['fact'][t].actionTstamp !== undefined)
-                                      {                                       
-                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
-                                        {                                          
-                                          ref_tstamp = response['fact'][t].actionTstamp  ;
-                                          var utc = response['fact'][t].actionTstamp  ;
-                                          const date = new Date(utc); // create a date object from the UTC timestamp
-                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
-                                          var hours =  localTime.getHours().toString().padStart(2, '0');
-                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
-                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
-                                          var hhmmss = parseInt(hours+minutes+seconds);
-                                          window.userF_log.push({  ActionStartTime : hhmmss ,
-                                          UserAction :  response['fact'][t].userAction ,
-                                          Facts : response['fact']                        
-                                          });
-                                        }  
-                                      }                                  
-                                }
-                          }  
-                      }                    
-                       userF_queue[o].processed = 'x';                   
-                  } 
-                }
-                userF_queue =  userF_queue.filter( e => e.processed == '');
-                               
+                this.processlogvariable();
+                              
              }, 700);
-            }
-            
-                }              
+              }
+           
+             }              
              await 1;
-         }); });
+         }); 
+        }
+        );
            
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
@@ -616,124 +425,8 @@ tmpl_popup.innerHTML = `
 
                 }
 
-              //process the unprocessed records in the XHR log Queue
-              for(var o = 0 ; o < xhr_queue.length ; o++) 
-              {
-
-                if(xhr_queue[o].xhr.status == 200)          
-          
-                {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
-                  if(response !==null)
-                  {  
-                    if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
-                    {
-                      var cac = 1;
-                      var cac_set = false;
-                      if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
-                      {
-                        if(response.Grids[0].CellArraySizes.length > 1)
-                        {
-                          cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                          cac_set = true;
-                        }
-                        else { 
-                          cac = response.Grids[0].CellArraySizes[0]; 
-                        }
-                      }
-                      else 
-                      {
-                        for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
-                              {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
-                                  cac_set = true;
-                              }
-                      }
-                      if(cac_set === false)
-                      {cac = 0;
-                      }
-                      var CellArraySize = cac ;
-                    }
-                    if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
-                    {
-                        var PerfAnalysis = response.PerformanceAnalysis;
-                    }
-                    if(response.PerformanceData!== undefined && response.PerformanceData!== null)
-                    {
-                        var PerfData = response.PerformanceData;
-                    }
-
-                  }     
-                     
-                  if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
-                  {
-                   var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
-                  }              
-                  else
-                   {
-                     var tbt = 0;
-                   }  
-                  
-                   var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
-                   var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
-                   var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
-                   var hhmmss = parseInt(hours+minutes+seconds);
-
-
-                   window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                   xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
-                   xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                   Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                   PerformanceAnalysis :PerfAnalysis,
-                   PerformanceData :PerfAnalysis,
-                   TBT : tbt,
-                   readstate : xhr_queue[o].xhr.readyState                        
-                   }) ; 
-                   xhr_queue[o].processed = 'x';
-                    } 
-                  }
-                
-                //Clear the queue
-                  xhr_queue =  xhr_queue.filter( e => e.processed == '');
-              
-              // Process the UserFriendly Queue
-
-              for(o = 0 ; o < userF_queue.length ; o++) 
-              {
-                if(userF_queue[o].xhr.status == 200)         
-               {   
-                  var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
-                  if(response !==null && response['fact'] !==undefined )
-                  {   
-                    if(response['fact'].length > 0 )
-                    {   var ref_tstamp = 0;
-                            for (var t = 0 ; t < response['fact'].length ; t++)
-                                {
-                                    if(response['fact'][t].actionTstamp !== undefined)
-                                    {                                       
-                                      if( ref_tstamp !== response['fact'][t].actionTstamp )
-                                      {                                          
-                                        ref_tstamp = response['fact'][t].actionTstamp  ;
-                                        var utc = response['fact'][t].actionTstamp  ;
-                                        const date = new Date(utc); // create a date object from the UTC timestamp
-                                        const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
-                                        var hours =  localTime.getHours().toString().padStart(2, '0');
-                                        var minutes =  localTime.getMinutes().toString().padStart(2, '0');
-                                        var seconds =  localTime.getSeconds().toString().padStart(2, '0');
-                                        var hhmmss = parseInt(hours+minutes+seconds);
-                                        window.userF_log.push({  ActionStartTime : hhmmss ,
-                                        UserAction :  response['fact'][t].userAction ,
-                                        Facts : response['fact']                        
-                                        });
-                                      }  
-                                    }                                  
-                              }
-                        }  
-                    }                    
-                     userF_queue[o].processed = 'x';                   
-                } 
-              }
-              userF_queue =  userF_queue.filter( e => e.processed == '');
-                             
+              //process the unprocessed records in the XHR log Queue            
+              this.processlogvariable();
            }, 700);
 
 	});
@@ -752,6 +445,129 @@ tmpl_popup.innerHTML = `
 
       }
       
+      processlogvariable()
+      {
+        //process the unprocessed records in the XHR log Queue
+        for(var o = 0 ; o < xhr_queue.length ; o++) 
+        {
+
+          if(xhr_queue[o].xhr.status == 200)          
+
+          {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+            if(response !==null)
+            {  
+              if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+              {
+                var cac = 1;
+                var cac_set = false;
+                if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                {
+                  if(response.Grids[0].CellArraySizes.length > 1)
+                  {
+                    cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                    cac_set = true;
+                  }
+                  else { 
+                    cac = response.Grids[0].CellArraySizes[0]; 
+                  }
+                }
+                else 
+                {
+                  for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                      {
+                          cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                          cac_set = true;
+                      }
+                }
+                if(cac_set === false)
+                {cac = 0;
+                }
+                var CellArraySize = cac ;
+              }
+              if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+              {
+                  var PerfAnalysis = response.PerformanceAnalysis;
+              }
+              if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+              {
+                  var PerfData = response.PerformanceData;
+              }
+            }                
+              
+            if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+            {
+              var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+            }              
+            else
+              {
+                var tbt = 0;
+              }  
+                  var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                  var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                  var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                  var hhmmss = parseInt(hours+minutes+seconds);
+
+                  window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                  xhr_queue[o].xhr._networkInfo , SequenceMapping:0 ,StepMapping : 0 , Timestamp :
+                  xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                  Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                  PerformanceAnalysis :PerfAnalysis,
+                  PerformanceData :PerfData,
+                  TBT : tbt,
+                  readstate : xhr_queue[o].xhr.readyState                        
+                  }) ; 
+
+                xhr_queue[o].processed = 'x';
+            } 
+
+            else if(xhr_queue[o].xhr.status === 0)
+            {
+              xhr_queue[o].processed = 'x';
+            }
+            }
+              xhr_queue =  xhr_queue.filter( e => e.processed == '');     
+
+
+        // Process the UserFriendly Queue
+
+        for(o = 0 ; o < userF_queue.length ; o++) 
+        {
+          if(userF_queue[o].xhr.status == 200)         
+          {   
+            var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+            if(response !==null && response['fact'] !==undefined )
+            {   
+              if(response['fact'].length > 0 )
+              {   var ref_tstamp = 0;
+                      for (var t = 0 ; t < response['fact'].length ; t++)
+                          {
+                              if(response['fact'][t].actionTstamp !== undefined)
+                              {                                       
+                                if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                {                                          
+                                  ref_tstamp = response['fact'][t].actionTstamp  ;
+                                  var utc = response['fact'][t].actionTstamp  ;
+                                  const date = new Date(utc); // create a date object from the UTC timestamp
+                                  const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                  var hours =  localTime.getHours().toString().padStart(2, '0');
+                                  var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                  var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                  var hhmmss = parseInt(hours+minutes+seconds);
+                                  window.userF_log.push({  ActionStartTime : hhmmss ,
+                                  UserAction :  response['fact'][t].userAction ,
+                                  Facts : response['fact']                        
+                                  });
+                                }  
+                              }                                  
+                        }
+                  }  
+              }                    
+                userF_queue[o].processed = 'x';                   
+          } 
+        }
+        userF_queue =  userF_queue.filter( e => e.processed == ''); 
+      }
+
       fireDDStateChange()
       {
         var divs = document.getElementsByTagName('custom-dropdown');
@@ -943,125 +759,8 @@ tmpl_popup.innerHTML = `
                   }           
 
                 }
-
                 //process the unprocessed records in the XHR log Queue
-                for(var o = 0 ; o < xhr_queue.length ; o++) 
-                {
-
-                  if(xhr_queue[o].xhr.status == 200)          
-            
-                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
-                    if(response !==null)
-                    {  
-                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
-                      {
-                        var cac = 1;
-                        var cac_set = false;
-                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
-                        {
-                          if(response.Grids[0].CellArraySizes.length > 1)
-                          {
-                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                            cac_set = true;
-                          }
-                          else { 
-                            cac = response.Grids[0].CellArraySizes[0]; 
-                          }
-                        }
-                        else 
-                        {
-                          for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
-                              {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
-                                  cac_set = true;
-                              }
-                        }
-                        if(cac_set === false)
-                        {cac = 0;
-                        }
-                        var CellArraySize = cac ;
-                      }
-                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
-                      {
-                          var PerfAnalysis = response.PerformanceAnalysis;
-                      }
-                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
-                      {
-                          var PerfData = response.PerformanceData;
-                      }
-
-                    }     
-                       
-                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
-                    {
-                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
-                    }              
-                    else
-                     {
-                       var tbt = 0;
-                     }  
-                    
-                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
-                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
-                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
-                     var hhmmss = parseInt(hours+minutes+seconds);
-
-
-                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                     xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
-                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                     PerformanceAnalysis :PerfAnalysis,
-                     PerformanceData :PerfAnalysis,
-                     TBT : tbt,
-                     readstate : xhr_queue[o].xhr.readyState                        
-                     }) ; 
-                     xhr_queue[o].processed = 'x';
-                      } 
-                    }
-                  
-                  //Clear the queue
-                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
-                
-                // Process the UserFriendly Queue
-
-                for(o = 0 ; o < userF_queue.length ; o++) 
-                {
-                  if(userF_queue[o].xhr.status == 200)         
-                 {   
-                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
-                    if(response !==null && response['fact'] !==undefined )
-                    {   
-                      if(response['fact'].length > 0 )
-                      {   var ref_tstamp = 0;
-                              for (var t = 0 ; t < response['fact'].length ; t++)
-                                  {
-                                      if(response['fact'][t].actionTstamp !== undefined)
-                                      {                                       
-                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
-                                        {                                          
-                                          ref_tstamp = response['fact'][t].actionTstamp  ;
-                                          var utc = response['fact'][t].actionTstamp  ;
-                                          const date = new Date(utc); // create a date object from the UTC timestamp
-                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
-                                          var hours =  localTime.getHours().toString().padStart(2, '0');
-                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
-                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
-                                          var hhmmss = parseInt(hours+minutes+seconds);
-                                          window.userF_log.push({  ActionStartTime : hhmmss ,
-                                          UserAction :  response['fact'][t].userAction ,
-                                          Facts : response['fact']                        
-                                          });
-                                        }  
-                                      }                                  
-                                }
-                          }  
-                      }                    
-                       userF_queue[o].processed = 'x';                   
-                  } 
-                }
-                userF_queue =  userF_queue.filter( e => e.processed == '');
-                               
+                this.processlogvariable();
              }, 700);
       }
 
@@ -1129,123 +828,8 @@ tmpl_popup.innerHTML = `
                   }  } 
 
           //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
-          for(var o = 0 ; o < xhr_queue.length ; o++) 
-          {
-
-            if(xhr_queue[o].xhr.status == 200)          
-      
-            {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
-              if(response !==null)
-              {  
-                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
-                {
-                  var cac = 1;
-                  var cac_set = false;
-                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
-                  {
-                    if(response.Grids[0].CellArraySizes.length > 1)
-                    {
-                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                      cac_set = true;
-                    }
-                    else { 
-                      cac = response.Grids[0].CellArraySizes[0]; 
-                    }
-                  }
-                  else 
-                  {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
-                              {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
-                                  cac_set = true;
-                              }
-                  }
-                  if(cac_set === false)
-                  {cac = 0;
-                  }
-                  var CellArraySize = cac ;
-                }
-                if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
-                {
-                    var PerfAnalysis = response.PerformanceAnalysis;
-                }
-                if(response.PerformanceData!== undefined && response.PerformanceData!== null)
-                {
-                    var PerfData = response.PerformanceData;
-                }
-
-              }                
-                 
-              if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
-              {
-               var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
-              }              
-              else
-               {
-                 var tbt = 0;
-               }    
-              
-               var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
-               var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
-               var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
-               var hhmmss = parseInt(hours+minutes+seconds);
-
-
-               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
-                xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                PerformanceAnalysis : PerfAnalysis,
-                PerformanceData : PerfData,
-                TBT : tbt,
-                readstate : xhr_queue[o].xhr.readyState                        
-               }) ; 
-                 xhr_queue[o].processed = 'x';
-                } 
-            }
-            xhr_queue =  xhr_queue.filter( e => e.processed == '');  
-                     
-           // Process the UserFriendly Queue
-                // Process the UserFriendly Queue
-
-                for(o = 0 ; o < userF_queue.length ; o++) 
-                {
-                  if(userF_queue[o].xhr.status == 200)         
-                 {   
-                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
-                    if(response !==null && response['fact'] !==undefined )
-                    {   
-                      if(response['fact'].length > 0 )
-                      {   var ref_tstamp = 0;
-                              for (var t = 0 ; t < response['fact'].length ; t++)
-                                  {
-                                      if(response['fact'][t].actionTstamp !== undefined)
-                                      {                                       
-                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
-                                        {                                          
-                                          ref_tstamp = response['fact'][t].actionTstamp  ;
-                                          var utc = response['fact'][t].actionTstamp  ;
-                                          const date = new Date(utc); // create a date object from the UTC timestamp
-                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
-                                          var hours =  localTime.getHours().toString().padStart(2, '0');
-                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
-                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
-                                          var hhmmss = parseInt(hours+minutes+seconds);
-                                          window.userF_log.push({  ActionStartTime : hhmmss ,
-                                          UserAction :  response['fact'][t].userAction ,
-                                          Facts : response['fact']                        
-                                          });
-                                        }  
-                                      }                                  
-                                }
-                          }  
-                      }                    
-                       userF_queue[o].processed = 'x';                   
-                  } 
-                }
-                userF_queue =  userF_queue.filter( e => e.processed == '');          
-        
-             //Logic for widget derivation
+          this.processlogvariable();
+          //Logic for widget derivation
             var local_log = [];
             var timeOrigin = performance.timeOrigin;
             var CurrentEndtime = 0;
