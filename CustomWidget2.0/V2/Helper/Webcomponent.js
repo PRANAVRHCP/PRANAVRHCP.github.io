@@ -206,7 +206,7 @@ tmpl_popup.innerHTML = `
                } 
                
                //process the unprocessed records in the XHR log Queue -> New Method
-               this.processlogvariable();              
+               globalThis.processlogvariable();              
             }
             else{
               // It will not be triggered when the user clicks the Performance Helper Button to downlaod   
@@ -254,7 +254,7 @@ tmpl_popup.innerHTML = `
                   } 
 
                 //process the unprocessed records in the XHR log Queue
-                this.processlogvariable();
+                globalThis.processlogvariable();
                               
              }, 700);
               }
@@ -426,7 +426,7 @@ tmpl_popup.innerHTML = `
                 }
 
               //process the unprocessed records in the XHR log Queue            
-              this.processlogvariable();
+              globalThis.processlogvariable();
            }, 700);
 
 	});
@@ -760,7 +760,7 @@ tmpl_popup.innerHTML = `
 
                 }
                 //process the unprocessed records in the XHR log Queue
-                this.processlogvariable();
+                globalThis.processlogvariable();
              }, 700);
       }
 
@@ -828,7 +828,7 @@ tmpl_popup.innerHTML = `
                   }  } 
 
           //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
-          this.processlogvariable();
+          globalThis.processlogvariable();
           //Logic for widget derivation
             var local_log = [];
             var timeOrigin = performance.timeOrigin;
