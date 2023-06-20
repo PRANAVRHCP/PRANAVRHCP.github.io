@@ -2,157 +2,16 @@
  
   // Create definitions for Custom Element Templates
   let tmpl = document.createElement('template');
+  tmpl.innerHTML = 
+  `<select id = "myList">
+    <option value="1"> Auto Log Mode </option>  
+    <option value="2"> Manual Mode </option>  
+    <option value="3"> Download Logs </option>   
+   </select>` ;   
+  
   let tmpl_b = document.createElement('template');
-  let tmpl_popup = document.createElement('template');
- 
-  tmpl.innerHTML = `
-  <style>
-    #myList {
-      padding: 10px;
-      font-size: 16px;
-      background-color: #f2f2f2;
-      border: 1px solid black;
-      border-radius: 5px;
-    }
-  </style>
-  <select id="myList">
-    <option value="1">Auto Log Mode</option>  
-    <option value="2">Manual Mode</option>  
-    <option value="3">Download Logs</option>   
-  </select>
-`;
-
-tmpl_b.innerHTML = `
-<style>
-  #newBTN {
-    padding: 10px 20px;
-    margin-left: 10px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-</style>
-<button type="button" id="newBTN">Download Logs</button>
-`;
-
-tmpl_popup.innerHTML = `
-<style>  
-  #popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-   //  display: flex;
-  //  flex-direction: column;
-    align-items: center;
-  }
-
-  #popup-content span {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  #popup-content textarea {
-    width: 100%;
-    height: 30px;
-    resize: none;
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-bottom: 20px;
-  }
-
-  #popup-content #buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  #popup-content #dropdown {
-    width: 100%;
-    margin-bottom: 20px;
-    }
-
-  #popup-content #dropdown label {
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  #StepLogButton{
-    padding: 10px 20px;
-    margin-right: 10px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  #cancelButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-
-  #popup-content #dropdown select {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-</style>
-<div id="popup">
-  <div id="popup-content">
-    <span>Step Description :</span>
-    <textarea id="comment"></textarea>
-    <div id="business-comment" style="display: none;">
-    <span>Sequence Description :</span>
-    <textarea id="businessComment"></textarea>
-  </div>
-    <div id="dropdown">
-    <span>Choose Type:</span>  
-     <select id="stepType">
-        <option value="Step">Step</option>
-        <option value="Sequence">Sequence</option>
-      </select>
-    </div>
-    <div id="buttons">
-      <button type="button" id="StepLogButton">Log New Step</button>
-      <button type="button" id="cancelButton">Cancel</button>
-    </div>
-  </div>
-</div>
-`; 
+  tmpl_b.innerHTML = 
+ `<button type="button" id="newBTN" > Download Logs</button>` ;  
  
   class PerformanceHelper extends HTMLElement {
       constructor() {
@@ -165,10 +24,7 @@ tmpl_popup.innerHTML = `
           window.userF_log = [];
           window.userF_queue = [];
           window.sNo = 1;
-          window.seqNo = 0;
-          window.seqDes = 'Default';
-          window.psNo = 0;    
-          window.globalThis = this;    
+          window.psNo = 0;        
           this.init();           
       }
 
@@ -188,28 +44,109 @@ tmpl_popup.innerHTML = `
               });
                 let reslen = lv_result.length ;
               if(psNo!==reslen)
-              {             
+              {
+              //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
               //Split the steps into 2 substeps
+              //Handle case where the user moves back and forth within the SAC file system and opens the app in the view mode without refreshing the browser
+              let lv_result_oninit = lv_result.filter( e => e.name =="sap.fpa.ui.story.story:onInit");                
               for(var x = 0 ; x < lv_result.length ; x++)
               {
-                  if(lv_result[x].name === "sap.fpa.ui.story.story:onInit")
+                  if(lv_result[x].name === "sap.fpa.ui.story.story:onInit" && lv_result[x].startTime == lv_result_oninit[lv_result_oninit.length - 1].startTime )
                   {
                      var split_index = x;
                       x =  lv_result.length + 1;
                   }
                }
-              steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
+              steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: split_index-1 , StepSnapshot:lv_result.slice(psNo,split_index) , LogMode : 'Auto' , processed : ''  })
               sNo = sNo + 1; 
-              steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
+              steplog.push({StepNo:sNo , StepStartId: split_index ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(split_index,reslen) , LogMode : 'Auto' ,  processed : ''  })
               psNo = reslen ;
               sNo = sNo + 1; 
                } 
-               
-               //process the unprocessed records in the XHR log Queue -> New Method
-               globalThis.processlogvariable();              
+                //process the unprocessed records in the XHR log Queue
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                      {
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                        {
+                          if(response.Grids[0].CellArraySizes.length > 1)
+                          {
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
+                          }
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
+                          }
+                        }
+                        else 
+                        {
+                          for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
+                      }
+                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                      {
+                          var PerfAnalysis = response.PerformanceAnalysis;
+                      }
+                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                      {
+                          var PerfData = response.PerformanceData;
+                      }
+                    }                
+                      
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                         var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                         var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                         var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                         var hhmmss = parseInt(hours+minutes+seconds);
+
+                         window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                          xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                          xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                          Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                          PerformanceAnalysis :PerfAnalysis,
+                          PerformanceData :PerfData,
+                          TBT : tbt,
+                          readstate : xhr_queue[o].xhr.readyState                        
+                         }) ; 
+
+                       xhr_queue[o].processed = 'x';
+                    } 
+
+                    else if(xhr_queue[o].xhr.status === 0)
+                    {
+                      xhr_queue[o].processed = 'x';
+                    }
+                    }
+                      xhr_queue =  xhr_queue.filter( e => e.processed == '');            
+
+              
             }
             else{
-              // It will not be triggered when the user clicks the Performance Helper Button to downlaod   
+              // It will not be triggered when the user clicks the Performance Helper Button   
               if(widgetmode === 1 &&  event.target.tagName !== 'bmw-perfhelper' )
               {
               setTimeout(function() 
@@ -226,20 +163,16 @@ tmpl_popup.innerHTML = `
                   //If there are new entries -> the below logic will be entered
                   if(psNo!==reslen)
                   {   
-                    if(steplog[steplog.length -1].StepSnapshot.length !== 0 )
-                    {
-                      var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
-                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
-                      var diff_time = lv_result[psNo].startTime - pstep_time
-                    }
-                    else
-                    {
-                      diff_time = 10001;
-                    }
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                 
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 
+                  var diff_time = lv_result[psNo].startTime - pstep_time
 
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto' , processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -254,21 +187,133 @@ tmpl_popup.innerHTML = `
                   } 
 
                 //process the unprocessed records in the XHR log Queue
-                globalThis.processlogvariable();
-                              
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                      {
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                        {
+                          if(response.Grids[0].CellArraySizes.length > 1)
+                          {
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
+                          }
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
+                          }
+                        }
+                        else 
+                        {
+                          for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
+                      }
+                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                      {
+                          var PerfAnalysis = response.PerformanceAnalysis;
+                      }
+                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                      {
+                          var PerfData = response.PerformanceData;
+                      }
+
+                    }     
+                       
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                    
+                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                     var hhmmss = parseInt(hours+minutes+seconds);
+
+
+                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                     xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                     PerformanceAnalysis :PerfAnalysis,
+                     PerformanceData :PerfAnalysis,
+                     TBT : tbt,
+                     readstate : xhr_queue[o].xhr.readyState                        
+                     }) ; 
+                     xhr_queue[o].processed = 'x';
+                      } 
+                    }
+                  
+                  //Clear the queue
+                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
+                
+                // Process the UserFriendly Queue
+
+                for(o = 0 ; o < userF_queue.length ; o++) 
+                {
+                  if(userF_queue[o].xhr.status == 200)         
+                 {   
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
+                                  {
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
+                                          const date = new Date(utc); // create a date object from the UTC timestamp
+                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                          var hours =  localTime.getHours().toString().padStart(2, '0');
+                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                          var hhmmss = parseInt(hours+minutes+seconds);
+                                          window.userF_log.push({  ActionStartTime : hhmmss ,
+                                          UserAction :  response['fact'][t].userAction ,
+                                          Facts : response['fact']                        
+                                          });
+                                        }  
+                                      }                                  
+                                }
+                          }  
+                      }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                }
+                userF_queue =  userF_queue.filter( e => e.processed == '');
+                               
              }, 700);
-              }
-           
-             }              
+            }
+            
+                }              
              await 1;
-         }); 
-        }
-        );
+         }); });
            
           let shadowRoot = this.attachShadow({mode: "open"});
           shadowRoot.appendChild(tmpl.content.cloneNode(true));
           shadowRoot.appendChild(tmpl_b.content.cloneNode(true));
-          globalThis = this;
 
          // Create Reference to Dropdown and Button Elements from the Shadow Root
           let dropdown_ref = shadowRoot.getElementById('myList');
@@ -280,70 +325,18 @@ tmpl_popup.innerHTML = `
             this.fireDDStateChange();           
             this.dispatchEvent(event);
             });         
-          
-           // Create Event Handler for Button Click based on the DropDownState  
+          // Create Event Handler for Button Click based on the DropDownState  
             button_ref.addEventListener("click", event => {
             var event = new Event("onClick");
-            // Get the parent panel of the button
-            const parentPanel = this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-            // Modify the width of the parent panel
-             parentPanel.style.height = '400px';
             this.firehandler(this);           
             this.dispatchEvent(event);
             });    
             
-        // Create an Event Handler for Combination of Keyboard for Alt + Ctrl + L  and Manual Mode , call the step logger
+        // Create an Event Handler for Combination of Keyboard click and Manual Mode , call the step logger
 
         window.document.addEventListener('keydown', function(event) {
-          if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) 
-          {
-
-            // Get the parent panel of the button
-            const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-            // Modify the width of the parent panel
-            parentPanel.style.height = '400px';
-            let popup = tmpl_popup.content.cloneNode(true);
-            globalThis.shadowRoot.appendChild(popup);
-            let StepLogButton = globalThis.shadowRoot.getElementById('StepLogButton');
-            let cancelButton = globalThis.shadowRoot.getElementById('cancelButton');
-
-        let dropdown =  globalThis.shadowRoot.getElementById('stepType');
-        let businessComment =  globalThis.shadowRoot.getElementById('business-comment');
-
-        dropdown.addEventListener('change', () => {
-          if (dropdown.value === 'Sequence') {
-            businessComment.style.display = 'block';
-          } else {
-            businessComment.style.display = 'none';
-          }
-        });
-              
-        StepLogButton.addEventListener("click", () => {
-          
-         // Get a reference to the comment textarea element
-         const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
-         // Get the value entered by the user
-         const commentValue = commentTextArea.value;
-         // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
-         const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
-         var Seqflag = '';
-         if (dropdown.value === 'Sequence') 
-            {
-              const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
-              // Get the value entered by the user
-              seqDes = businessComment.value;
-              Seqflag = 'X';
-            }
-       
-        // Get the parent panel of the button
-          let lv_popup = globalThis.shadowRoot.getElementById('popup');
-          globalThis.shadowRoot.removeChild(lv_popup);   
-           const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-           // Modify the width of the parent panel
-            parentPanel.style.height = '100px';
-            //Trigger the event to log a step 
-            // Log a new step
-
+          if (event.ctrlKey && event.key === 'l' && event.altKey && window.widgetmode === 2) {
+            // Log a new step            
             setTimeout(function() 
             {              
                                          
@@ -358,216 +351,137 @@ tmpl_popup.innerHTML = `
                 //If there are new entries -> a new step will be created corresponding to them
                 if(psNo!==reslen)
                 { 
-                   steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                  //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                  steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
                   psNo = reslen ;
-                  sNo = sNo + 1;   
-                  if(Seqflag === 'X')
-                  {
-                    // Update the value of SequenceDesc for matching items
-                    steplog.forEach(item => {
-                      if (item.SequenceDesc === '') {
-                        item.SequenceDesc = seqDes;
-                      }
-                    });
-                    seqNo = seqNo + 1;
-                    seqDes = '';
-                  }  
-
+                  sNo = sNo + 1;                            
                 } 
-                //Log an empty step with just the user description
-                else
-                {
-                  const currentDate = new Date();
-                  const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-                  const day = ("0" + currentDate.getDate()).slice(-2);
-                  const year = currentDate.getFullYear();
-                  const formattedDate = day+ "." + month+ "." + year;
 
-                  const now = new Date();
-                  const hours = now.getHours().toString().padStart(2, '0');
-                  const minutes = now.getMinutes().toString().padStart(2, '0');
-                  const seconds = now.getSeconds().toString().padStart(2, '0');
-                  const currentTime = `${hours}:${minutes}:${seconds}`;
-                //  steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
-                  steplog.push({
-                    InaCall : [],
-                    LogMode : 'Manual' ,
-                    SequenceDesc : seqDes , 
-                    SequenceNo : seqNo , 
-                    StepDuration : 0 ,
-                    StepEndId: reslen-1 ,
-                    StepEndTime : currentTime,
-                    StepNo:sNo , 
-                    StepSIDWithMaxDuration : 0,
-                    StepSnapshot:lv_result.slice(psNo,reslen) ,
-                    StepStartDate : formattedDate ,
-                    StepStartId: psNo -1 ,                   
-                    StepStartTime : currentTime,
-                    TotalBytes : 0,
-                    TotalCellArrayCount :0,
-                    UserAction : commentValue ,
-                    Widgetinfo :[],
-                    processed : 'X'  })
-               
-                  sNo = sNo + 1;  
+              //process the unprocessed records in the XHR log Queue
+              for(var o = 0 ; o < xhr_queue.length ; o++) 
+              {
 
-                  if(Seqflag === 'X')
-                  {
-                    // Update the value of SequenceDesc for matching items
-                    steplog.forEach(item => {
-                      if (item.SequenceDesc === '') {
-                        item.SequenceDesc = seqDes;
+                if(xhr_queue[o].xhr.status == 200)          
+          
+                {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                  if(response !==null)
+                  {  
+                    if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                    {
+                      var cac = 1;
+                      var cac_set = false;
+                      if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                      {
+                        if(response.Grids[0].CellArraySizes.length > 1)
+                        {
+                          cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                          cac_set = true;
+                        }
+                        else { 
+                          cac = response.Grids[0].CellArraySizes[0]; 
+                        }
                       }
-                    });
-                    seqNo = seqNo + 1;
-                    seqDes = '';
-                  }           
+                      else 
+                      {
+                        for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                      }
+                      if(cac_set === false)
+                      {cac = 0;
+                      }
+                      var CellArraySize = cac ;
+                    }
+                    if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                    {
+                        var PerfAnalysis = response.PerformanceAnalysis;
+                    }
+                    if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                    {
+                        var PerfData = response.PerformanceData;
+                    }
 
-                }
+                  }     
+                     
+                  if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                  {
+                   var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                  }              
+                  else
+                   {
+                     var tbt = 0;
+                   }  
+                  
+                   var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                   var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                   var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                   var hhmmss = parseInt(hours+minutes+seconds);
 
-              //process the unprocessed records in the XHR log Queue            
-              globalThis.processlogvariable();
+
+                   window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                   xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                   xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                   Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                   PerformanceAnalysis :PerfAnalysis,
+                   PerformanceData :PerfAnalysis,
+                   TBT : tbt,
+                   readstate : xhr_queue[o].xhr.readyState                        
+                   }) ; 
+                   xhr_queue[o].processed = 'x';
+                    } 
+                  }
+                
+                //Clear the queue
+                  xhr_queue =  xhr_queue.filter( e => e.processed == '');
+              
+              // Process the UserFriendly Queue
+
+              for(o = 0 ; o < userF_queue.length ; o++) 
+              {
+                if(userF_queue[o].xhr.status == 200)         
+               {   
+                  var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                  if(response !==null && response['fact'] !==undefined )
+                  {   
+                    if(response['fact'].length > 0 )
+                    {   var ref_tstamp = 0;
+                            for (var t = 0 ; t < response['fact'].length ; t++)
+                                {
+                                    if(response['fact'][t].actionTstamp !== undefined)
+                                    {                                       
+                                      if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                      {                                          
+                                        ref_tstamp = response['fact'][t].actionTstamp  ;
+                                        var utc = response['fact'][t].actionTstamp  ;
+                                        const date = new Date(utc); // create a date object from the UTC timestamp
+                                        const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                        var hours =  localTime.getHours().toString().padStart(2, '0');
+                                        var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                        var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                        var hhmmss = parseInt(hours+minutes+seconds);
+                                        window.userF_log.push({  ActionStartTime : hhmmss ,
+                                        UserAction :  response['fact'][t].userAction ,
+                                        Facts : response['fact']                        
+                                        });
+                                      }  
+                                    }                                  
+                              }
+                        }  
+                    }                    
+                     userF_queue[o].processed = 'x';                   
+                } 
+              }
+              userF_queue =  userF_queue.filter( e => e.processed == '');
+                             
            }, 700);
-
-	});
-
-	  cancelButton.addEventListener("click", () => {
-          let lv_popup = globalThis.shadowRoot.getElementById('popup');
-          globalThis.shadowRoot.removeChild(lv_popup);
-          // Get the parent panel of the button
-          const parentPanel = globalThis.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-          // Modify the width of the parent panel
-           parentPanel.style.height = '100px';
-        });
 
           }
         });
 
       }
       
-      processlogvariable()
-      {
-        //process the unprocessed records in the XHR log Queue
-        for(var o = 0 ; o < xhr_queue.length ; o++) 
-        {
-
-          if(xhr_queue[o].xhr.status == 200)          
-
-          {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
-            if(response !==null)
-            {  
-              if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
-              {
-                var cac = 1;
-                var cac_set = false;
-                if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
-                {
-                  if(response.Grids[0].CellArraySizes.length > 1)
-                  {
-                    cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
-                    cac_set = true;
-                  }
-                  else { 
-                    cac = response.Grids[0].CellArraySizes[0]; 
-                  }
-                }
-                else 
-                {
-                  for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
-                      {
-                          cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
-                          cac_set = true;
-                      }
-                }
-                if(cac_set === false)
-                {cac = 0;
-                }
-                var CellArraySize = cac ;
-              }
-              if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
-              {
-                  var PerfAnalysis = response.PerformanceAnalysis;
-              }
-              if(response.PerformanceData!== undefined && response.PerformanceData!== null)
-              {
-                  var PerfData = response.PerformanceData;
-              }
-            }                
-              
-            if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
-            {
-              var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
-            }              
-            else
-              {
-                var tbt = 0;
-              }  
-                  var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
-                  var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
-                  var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
-                  var hhmmss = parseInt(hours+minutes+seconds);
-
-                  window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                  xhr_queue[o].xhr._networkInfo , SequenceMapping:0 ,StepMapping : 0 , Timestamp :
-                  xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
-                  Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
-                  PerformanceAnalysis :PerfAnalysis,
-                  PerformanceData :PerfData,
-                  TBT : tbt,
-                  readstate : xhr_queue[o].xhr.readyState                        
-                  }) ; 
-
-                xhr_queue[o].processed = 'x';
-            } 
-
-            else if(xhr_queue[o].xhr.status === 0)
-            {
-              xhr_queue[o].processed = 'x';
-            }
-            }
-              xhr_queue =  xhr_queue.filter( e => e.processed == '');     
-
-
-        // Process the UserFriendly Queue
-
-        for(o = 0 ; o < userF_queue.length ; o++) 
-        {
-          if(userF_queue[o].xhr.status == 200)         
-          {   
-            var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
-            if(response !==null && response['fact'] !==undefined )
-            {   
-              if(response['fact'].length > 0 )
-              {   var ref_tstamp = 0;
-                      for (var t = 0 ; t < response['fact'].length ; t++)
-                          {
-                              if(response['fact'][t].actionTstamp !== undefined)
-                              {                                       
-                                if( ref_tstamp !== response['fact'][t].actionTstamp )
-                                {                                          
-                                  ref_tstamp = response['fact'][t].actionTstamp  ;
-                                  var utc = response['fact'][t].actionTstamp  ;
-                                  const date = new Date(utc); // create a date object from the UTC timestamp
-                                  const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
-                                  var hours =  localTime.getHours().toString().padStart(2, '0');
-                                  var minutes =  localTime.getMinutes().toString().padStart(2, '0');
-                                  var seconds =  localTime.getSeconds().toString().padStart(2, '0');
-                                  var hhmmss = parseInt(hours+minutes+seconds);
-                                  window.userF_log.push({  ActionStartTime : hhmmss ,
-                                  UserAction :  response['fact'][t].userAction ,
-                                  Facts : response['fact']                        
-                                  });
-                                }  
-                              }                                  
-                        }
-                  }  
-              }                    
-                userF_queue[o].processed = 'x';                   
-          } 
-        }
-        userF_queue =  userF_queue.filter( e => e.processed == ''); 
-      }
-
       fireDDStateChange()
       {
         var divs = document.getElementsByTagName('bmw-perfhelper');
@@ -576,38 +490,11 @@ tmpl_popup.innerHTML = `
         if(window.widgetmode === 2)
         {
         var button_text = divs[0].shadowRoot.getElementById('newBTN');
-        if(button_text !== 'Log new Step')
-        {
-        //Increase the Sequence Counter :
-        if(seqNo === 0)
-        {
-          seqNo = seqNo + 1;
-        }
-        else
-        {
-        seqNo = steplog[steplog.length - 1].SequenceNo + 1 ;
-        seqDes = '';
-        }
-        }        
         button_text.textContent = 'Log new Step';
         }
         else
         {
-          var button_text = divs[0].shadowRoot.getElementById('newBTN');
-          if(button_text !== 'Download Logs')
-            {
-            //Increase the Sequence Counter :
-            if(seqNo === 0)
-            {
-              seqNo = seqNo + 1;
-            }
-            else
-            {
-            seqNo =  steplog[steplog.length - 1].SequenceNo + 1 ;
-            seqDes = 'Default';
-            }
-          }
-          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';     
+          divs[0].shadowRoot.getElementById('newBTN').textContent = 'Download Logs';
         }
       }
       
@@ -619,64 +506,12 @@ tmpl_popup.innerHTML = `
         }
         else
         {
-        let popup = tmpl_popup.content.cloneNode(true);
-        loc_this.shadowRoot.appendChild(popup);
-        let lv_popup = globalThis.shadowRoot.getElementById('popup');
-        lv_popup.style.zIndex = 999999;
-        let StepLogButton = loc_this.shadowRoot.getElementById('StepLogButton');
-        let cancelButton = loc_this.shadowRoot.getElementById('cancelButton');
-
-        let dropdown =  loc_this.shadowRoot.getElementById('stepType');
-        let businessComment =  loc_this.shadowRoot.getElementById('business-comment');
-
-        dropdown.addEventListener('change', () => {
-          if (dropdown.value === 'Sequence') {
-            businessComment.style.display = 'block';
-          } else {
-            businessComment.style.display = 'none';
-          }
-        });
-              
-        StepLogButton.addEventListener("click", () => {
-          // Get a reference to the comment textarea element
-          const commentTextArea =  globalThis.shadowRoot.getElementById('comment');
-          // Get the value entered by the user
-          const commentValue = commentTextArea.value;
-          // Check the selected value in the Type selection -> If the user has selected Sequence then read the value present in the comment area for business
-
-          const  dropdown =  globalThis.shadowRoot.getElementById('stepType');
-          var Seqflag = '';
-          if (dropdown.value === 'Sequence') 
-          {
-            const businessComment =  globalThis.shadowRoot.getElementById('businessComment');
-             // Get the value entered by the user
-             seqDes = businessComment.value;
-             Seqflag = 'X';
-          }       
-
-          let lv_popup = loc_this.shadowRoot.getElementById('popup');
-          loc_this.shadowRoot.removeChild(lv_popup);
-           // Get the parent panel of the button
-           const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-           // Modify the width of the parent panel
-            parentPanel.style.height = '100px';
-            //Trigger the event to log a step 
-            loc_this.fireStepLogger(commentValue , Seqflag);
-        });
-
-        cancelButton.addEventListener("click", () => {
-          let lv_popup = loc_this.shadowRoot.getElementById('popup');
-          loc_this.shadowRoot.removeChild(lv_popup);
-          // Get the parent panel of the button
-          const parentPanel = loc_this.parentNode.parentNode.parentNode; // adjust the number of parent nodes according to the structure of your HTML
-          // Modify the width of the parent panel
-           parentPanel.style.height = '100px';
-        });
-      }
+          loc_this.fireStepLogger();
+        }
       }
       
       // When the mode is to create a Manual Step
-      fireStepLogger(commentValue , Seqflag)
+      fireStepLogger()
       {
         setTimeout(function() 
               {              
@@ -691,76 +526,131 @@ tmpl_popup.innerHTML = `
                   let reslen = lv_result.length ;
                   //If there are new entries -> a new step will be created corresponding to them
                   if(psNo!==reslen)
-                  {                                         
-                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
+                  { 
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , processed : ''  })
                     psNo = reslen ;
-                    sNo = sNo + 1;
-                    
-                    if(Seqflag === 'X')
-                    {
-                      // Update the value of SequenceDesc for matching items
-                      steplog.forEach(item => {
-                        if (item.SequenceDesc === '') {
-                          item.SequenceDesc = seqDes;
-                        }
-                      });
-                      seqNo = seqNo + 1;
-                      seqDes = '';
-                    }                            
+                    sNo = sNo + 1;                            
                   } 
 
-                  //Log an empty step with just the user description
-                else
-                {
-                  const currentDate = new Date();
-                  const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-                  const day = ("0" + currentDate.getDate()).slice(-2);
-                  const year = currentDate.getFullYear();
-                  const formattedDate = day+ "." + month+ "." + year;
-
-                  const now = new Date();
-                  const hours = now.getHours().toString().padStart(2, '0');
-                  const minutes = now.getMinutes().toString().padStart(2, '0');
-                  const seconds = now.getSeconds().toString().padStart(2, '0');
-                  const currentTime = `${hours}:${minutes}:${seconds}`;
-                //  steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes , StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual' , UserAction : commentValue , processed : ''  })
-                  steplog.push({
-                    InaCall : [],
-                    LogMode : 'Manual' ,
-                    SequenceDesc : seqDes , 
-                    SequenceNo : seqNo , 
-                    StepDuration : 0 ,
-                    StepEndId: reslen-1 ,
-                    StepEndTime : currentTime,
-                    StepNo:sNo , 
-                    StepSIDWithMaxDuration : 0,
-                    StepSnapshot:lv_result.slice(psNo,reslen) ,
-                    StepStartDate : formattedDate ,
-                    StepStartId: psNo -1 ,                   
-                    StepStartTime : currentTime,
-                    TotalBytes : 0,
-                    TotalCellArrayCount :0,
-                    UserAction : commentValue ,
-                    Widgetinfo :[],
-                    processed : 'X'  })
-               
-                  sNo = sNo + 1;  
-
-                  if(Seqflag === 'X')
-                  {
-                    // Update the value of SequenceDesc for matching items
-                    steplog.forEach(item => {
-                      if (item.SequenceDesc === '') {
-                        item.SequenceDesc = seqDes;
-                      }
-                    });
-                    seqNo = seqNo + 1;
-                    seqDes = '';
-                  }           
-
-                }
                 //process the unprocessed records in the XHR log Queue
-                globalThis.processlogvariable();
+                for(var o = 0 ; o < xhr_queue.length ; o++) 
+                {
+
+                  if(xhr_queue[o].xhr.status == 200)          
+            
+                  {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+                    if(response !==null)
+                    {  
+                      if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                      {
+                        var cac = 1;
+                        var cac_set = false;
+                        if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                        {
+                          if(response.Grids[0].CellArraySizes.length > 1)
+                          {
+                            cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                            cac_set = true;
+                          }
+                          else { 
+                            cac = response.Grids[0].CellArraySizes[0]; 
+                          }
+                        }
+                        else 
+                        {
+                          for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                        }
+                        if(cac_set === false)
+                        {cac = 0;
+                        }
+                        var CellArraySize = cac ;
+                      }
+                      if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                      {
+                          var PerfAnalysis = response.PerformanceAnalysis;
+                      }
+                      if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                      {
+                          var PerfData = response.PerformanceData;
+                      }
+
+                    }     
+                       
+                    if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+                    {
+                     var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+                    }              
+                    else
+                     {
+                       var tbt = 0;
+                     }  
+                    
+                     var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+                     var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+                     var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+                     var hhmmss = parseInt(hours+minutes+seconds);
+
+
+                     window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                     xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                     xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                     Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                     PerformanceAnalysis :PerfAnalysis,
+                     PerformanceData :PerfAnalysis,
+                     TBT : tbt,
+                     readstate : xhr_queue[o].xhr.readyState                        
+                     }) ; 
+                     xhr_queue[o].processed = 'x';
+                      } 
+                    }
+                  
+                  //Clear the queue
+                    xhr_queue =  xhr_queue.filter( e => e.processed == '');
+                
+                // Process the UserFriendly Queue
+
+                for(o = 0 ; o < userF_queue.length ; o++) 
+                {
+                  if(userF_queue[o].xhr.status == 200)         
+                 {   
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
+                                  {
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
+                                          const date = new Date(utc); // create a date object from the UTC timestamp
+                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                          var hours =  localTime.getHours().toString().padStart(2, '0');
+                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                          var hhmmss = parseInt(hours+minutes+seconds);
+                                          window.userF_log.push({  ActionStartTime : hhmmss ,
+                                          UserAction :  response['fact'][t].userAction ,
+                                          Facts : response['fact']                        
+                                          });
+                                        }  
+                                      }                                  
+                                }
+                          }  
+                      }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                }
+                userF_queue =  userF_queue.filter( e => e.processed == '');
+                               
              }, 700);
       }
 
@@ -795,25 +685,19 @@ tmpl_popup.innerHTML = `
             // If new entries are present , compare the last entry of the previous step in step log
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
                   //Previous step Start + End time 
-                  if(steplog[steplog.length -1].StepSnapshot.length !== 0 )
+                  var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
+                  // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
+                 var diff_time = lv_result[psNo].startTime - pstep_time
+                  if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
-                    // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
-                  var diff_time = lv_result[psNo].startTime 
-                  }
-                  else
-                  {
-                    diff_time = 10001;
-                  } 
-                 if(diff_time > 1000) // This is a new step since the difference is more than 1 second
-                  {
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
                    if( widgetmode === 1 )
                    {
-                    steplog.push({SequenceNo : seqNo ,SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Auto', processed : ''  })
                    }
                     else 
                     {
-                      steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
+                      steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , LogMode : 'Manual', processed : ''  })
                     }
                     psNo = reslen ;
                     sNo = sNo + 1;       
@@ -828,8 +712,123 @@ tmpl_popup.innerHTML = `
                   }  } 
 
           //process the unprocessed records in the XHR log Queue for a proper mapping of the Network calls - this step would most likely be not called
-          globalThis.processlogvariable();
-          //Logic for widget derivation
+          for(var o = 0 ; o < xhr_queue.length ; o++) 
+          {
+
+            if(xhr_queue[o].xhr.status == 200)          
+      
+            {   var response = JSON.parse(xhr_queue[o].xhr._responseFormatted)  ;
+              if(response !==null)
+              {  
+                if(response.Grids!== undefined && response.Grids !== null && response.Grids.length > 0)
+                {
+                  var cac = 1;
+                  var cac_set = false;
+                  if (response.Grids[0].hasOwnProperty('CellArraySizes') === true)
+                  {
+                    if(response.Grids[0].CellArraySizes.length > 1)
+                    {
+                      cac = response.Grids[0].CellArraySizes[0] * response.Grids[0].CellArraySizes[1];
+                      cac_set = true;
+                    }
+                    else { 
+                      cac = response.Grids[0].CellArraySizes[0]; 
+                    }
+                  }
+                  else 
+                  {
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
+                              {
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
+                                  cac_set = true;
+                              }
+                  }
+                  if(cac_set === false)
+                  {cac = 0;
+                  }
+                  var CellArraySize = cac ;
+                }
+                if(response.PerformanceAnalysis!== undefined && response.PerformanceAnalysis!== null)
+                {
+                    var PerfAnalysis = response.PerformanceAnalysis;
+                }
+                if(response.PerformanceData!== undefined && response.PerformanceData!== null)
+                {
+                    var PerfData = response.PerformanceData;
+                }
+
+              }                
+                 
+              if(xhr_queue[o].xhr._networkInfo !== null &&  xhr_queue[o].xhr._networkInfo !== undefined )
+              {
+               var tbt =  xhr_queue[o].xhr._networkInfo.transferSize;                     
+              }              
+              else
+               {
+                 var tbt = 0;
+               }    
+              
+               var hours =  xhr_queue[o].xhr._timestamp.getHours().toString().padStart(2, '0');
+               var minutes =  xhr_queue[o].xhr._timestamp.getMinutes().toString().padStart(2, '0');
+               var seconds =  xhr_queue[o].xhr._timestamp.getSeconds().toString().padStart(2, '0');
+               var hhmmss = parseInt(hours+minutes+seconds);
+
+
+               window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
+                xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
+                xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
+                Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
+                PerformanceAnalysis : PerfAnalysis,
+                PerformanceData : PerfData,
+                TBT : tbt,
+                readstate : xhr_queue[o].xhr.readyState                        
+               }) ; 
+                 xhr_queue[o].processed = 'x';
+                } 
+            }
+            xhr_queue =  xhr_queue.filter( e => e.processed == '');  
+                     
+           // Process the UserFriendly Queue
+                // Process the UserFriendly Queue
+
+                for(o = 0 ; o < userF_queue.length ; o++) 
+                {
+                  if(userF_queue[o].xhr.status == 200)         
+                 {   
+                    var response = JSON.parse(userF_queue[o].xhr.responseText)  ;
+                    if(response !==null && response['fact'] !==undefined )
+                    {   
+                      if(response['fact'].length > 0 )
+                      {   var ref_tstamp = 0;
+                              for (var t = 0 ; t < response['fact'].length ; t++)
+                                  {
+                                      if(response['fact'][t].actionTstamp !== undefined)
+                                      {                                       
+                                        if( ref_tstamp !== response['fact'][t].actionTstamp )
+                                        {                                          
+                                          ref_tstamp = response['fact'][t].actionTstamp  ;
+                                          var utc = response['fact'][t].actionTstamp  ;
+                                          const date = new Date(utc); // create a date object from the UTC timestamp
+                                          const localTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // convert UTC to local time
+                                          var hours =  localTime.getHours().toString().padStart(2, '0');
+                                          var minutes =  localTime.getMinutes().toString().padStart(2, '0');
+                                          var seconds =  localTime.getSeconds().toString().padStart(2, '0');
+                                          var hhmmss = parseInt(hours+minutes+seconds);
+                                          window.userF_log.push({  ActionStartTime : hhmmss ,
+                                          UserAction :  response['fact'][t].userAction ,
+                                          Facts : response['fact']                        
+                                          });
+                                        }  
+                                      }                                  
+                                }
+                          }  
+                      }                    
+                       userF_queue[o].processed = 'x';                   
+                  } 
+                }
+                userF_queue =  userF_queue.filter( e => e.processed == '');          
+        
+             //Logic for widget derivation
             var local_log = [];
             var timeOrigin = performance.timeOrigin;
             var CurrentEndtime = 0;
@@ -838,7 +837,7 @@ tmpl_popup.innerHTML = `
             for(var i = 0 ; i< steplog.length ; i++)
             {   
               //Perform this step only when the mapping is missing 
-                if(steplog[i].processed !== 'X' && steplog[i].StepSnapshot.length > 0 )          
+                if(steplog[i].processed !== 'X')          
                 {
                 //Create list of Ina Calls  
                 steplog[i].InaCall = steplog[i].StepSnapshot.filter(e => e.source == "external");
@@ -859,11 +858,11 @@ tmpl_popup.innerHTML = `
                 {
 
                   var stepduration = steplog[i].StepSnapshot[y].startTime + steplog[i].StepSnapshot[y].duration  ;
-                  if(steplog[i].StepSnapshot[y].startTime  - maxendtime  > 1000 && maxendtime  > 0 )
+                  if(steplog[i].StepSnapshot[y].startTime  - maxendtime  > 300 && maxendtime  > 0 )
                   {
                       lag = lag + steplog[i].StepSnapshot[y].startTime  - maxendtime; 
                   }
-                  if(stepduration > maxstepduration ) 
+                  if(stepduration > maxendtime ) 
                   {
                     maxendtime = stepduration ;
               	    maxstepduration =  maxendtime - stepstarttime
@@ -897,15 +896,13 @@ tmpl_popup.innerHTML = `
                 var xhr_log_filter = xhr_log.filter( e => e.StartTime > PreviousEndtime  && e.StartTime <= CurrentEndtime  );
                 xhr_log_filter .forEach(function(filteredElement, index) {
                   xhr_log[xhr_log.indexOf(filteredElement)].StepMapping = steplog[i].StepNo;
-                  xhr_log[xhr_log.indexOf(filteredElement)].SequenceMapping = steplog[i].SequenceNo;
-                  xhr_log[xhr_log.indexOf(filteredElement)].SequenceDesc = steplog[i].SequenceDesc;
               });
                 PreviousEndtime = parseInt(hhmmss);  
               // Calculate the sum based on the filterd array 
               steplog[i].TotalBytes = xhr_log_filter.reduce((acc, obj) => acc + obj.TBT, 0);
               xhr_log_filter = xhr_log_filter.filter( e => e.CellArraySize !== undefined)
               steplog[i].TotalCellArrayCount =  xhr_log_filter.reduce((acc, obj) => acc + obj.CellArraySize, 0);
-               // Create a mapping of the user action to step              
+               // Create a mapping of the zser action to step              
               if(i === 0)
               {
                 steplog[i].UserAction = 'Pre Init';                
@@ -916,11 +913,7 @@ tmpl_popup.innerHTML = `
               }
               else
               {
-                if(steplog[i].LogMode === 'Auto')
-                {
-                // Map the step from the -- THe logic for derivation needs to be done on the basis of the mode 
-                // if the step logged is in auto mode , then it should be dervied from the UF Log 
-                // if it is manual mode then no need for derivation
+                // Map the step from the 
                 timeArr = steplog[i].StepStartTime.split(':');
                 var hhmmss_t = timeArr[0]+timeArr[1]+timeArr[2];
                 var CurrentStarttime = parseInt(hhmmss_t) ;
@@ -950,11 +943,10 @@ tmpl_popup.innerHTML = `
                   steplog[i].UserAction = '';
                 }
                 }
-              }
               }   
               }
             //create a local copy for download which is not soo detailed       
-              local_log.push({SequenceNo : steplog[i].SequenceNo  ,SequenceDesc : steplog[i].SequenceDesc ,StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
+              local_log.push({StepNo : steplog[i].StepNo, StepStartDate : steplog[i].StepStartDate ,  StepStartTime : steplog[i].StepStartTime , StepEndTime : steplog[i].StepEndTime , StepDuration : parseInt(steplog[i].StepDuration) , UserAction : steplog[i].UserAction , TotalCellArrayCount: steplog[i].TotalCellArrayCount , TotalBytes : steplog[i].TotalBytes , InaCount : steplog[i].InaCall.length, WidgetCount : steplog[i].Widgetinfo.length }) ;
 
               }         
 
@@ -1071,7 +1063,7 @@ tmpl_popup.innerHTML = `
       JSON2CSV(objArray) {
        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         // Set the column headers
-       var str = 'SequenceNo,SequenceDescription,StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,UserAction,TotalCellArrayCount,TotalBytes,NumberOfINAcalls,TotalWidgetAffected\r\n';    
+       var str = 'StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,UserAction,TotalCellArrayCount,TotalBytes,NumberOfINAcalls,TotalWidgetAffected\r\n';    
       for (var i = 0; i < array.length; i++) {
         var line = '';
         for (var index in array[i]) {
@@ -1149,9 +1141,9 @@ tmpl_popup.innerHTML = `
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
@@ -1188,7 +1180,6 @@ tmpl_popup.innerHTML = `
                 
                 window.xhr_log.push({ CellArraySize : CellArraySize , 
                 NetworkInfo :  xhr._networkInfo , 
-                SequenceMapping:0 ,
                 StepMapping : 0 , 
                 Timestamp : xhr._timestamp , 
                 StartTime : hhmmss,
@@ -1234,9 +1225,9 @@ tmpl_popup.innerHTML = `
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
@@ -1272,7 +1263,6 @@ tmpl_popup.innerHTML = `
                
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
                xhr._networkInfo , 
-               SequenceMapping:0 ,
                StepMapping : 0 , 
                Timestamp : xhr._timestamp , 
                StartTime : hhmmss,
@@ -1308,23 +1298,16 @@ tmpl_popup.innerHTML = `
        let reslen = lv_result.length ;
          if(psNo!==reslen)
          {
-                  // If new entries are present , compare the last entry of the previous step in step log
+            // If new entries are present , compare the last entry of the previous step in step log
                   //Check if the start time + duration is more than one second , incase yes then it is a new step else the same step needs to be updated
-                  if(steplog[steplog.length -1].StepSnapshot.length !== 0 )
-                  {
                   //Previous step Start + End time 
                   var pstep_time =  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].startTime +  steplog[steplog.length-1].StepSnapshot[steplog[steplog.length-1].StepSnapshot.length -1].duration  
                   // This is the start step from the result snapshot  -> Start Time  lv_result[psNo].startTime
                  var diff_time = lv_result[psNo].startTime - pstep_time
-                  }
-                  else
-                  {
-                    diff_time = 100001;
-
-                  }
                   if(diff_time > 1000) // This is a new step since the difference is more than 1 second
                   {
-                    steplog.push({SequenceNo : seqNo , SequenceDesc : seqDes ,  StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
+                    //steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) , RaptrSnapshot:lv_result  })
+                    steplog.push({StepNo:sNo , StepStartId: psNo ,StepEndId: reslen-1 , StepSnapshot:lv_result.slice(psNo,reslen) ,  LogMode : 'Auto', processed : ''  })
                     psNo = reslen ;
                     sNo = sNo + 1;       
                   }
@@ -1363,9 +1346,9 @@ tmpl_popup.innerHTML = `
                   }
                   else 
                   {
-                    for( var o = 0 ; o < response.Grids[0].Axes.length ; o++)
+                    for( var xo = 0 ; xo < response.Grids[0].Axes.length ; xo++)
                               {
-                                  cac = cac *  response.Grids[0].Axes[o].TupleCountTotal;
+                                  cac = cac *  response.Grids[0].Axes[xo].TupleCountTotal;
                                   cac_set = true;
                               }
                   }
@@ -1399,7 +1382,7 @@ tmpl_popup.innerHTML = `
                var hhmmss = parseInt(hours+minutes+seconds);
 
                window.xhr_log.push({ CellArraySize : CellArraySize , NetworkInfo : 
-                xhr_queue[o].xhr._networkInfo , SequenceMapping:0 , StepMapping : 0 , Timestamp :
+                xhr_queue[o].xhr._networkInfo , StepMapping : 0 , Timestamp :
                 xhr_queue[o].xhr._timestamp , StartTime : hhmmss ,
                 Userfriendly : xhr_queue[o].xhr._userFriendlyPerfData ,
                 PerformanceAnalysis : PerfAnalysis,
