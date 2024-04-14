@@ -1021,7 +1021,7 @@ tmpl_popup.innerHTML = `
  addIdToLines(array, parentId = '') {
   array.forEach((item, index) => {
       // Generate a unique ID for each item
-      var id = parentId + index;
+      var id = parentId ;
 
       // Add the ID to the item
       item.id = id;
@@ -1113,7 +1113,7 @@ tmpl_popup.innerHTML = `
       JSON2CSV(objArray) {
        var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
         // Set the column headers
-       var str = 'SequenceNo,SequenceDescription,StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,UserAction,TotalCellArrayCount,TotalBytes,NumberOfINAcalls,TotalWidgetAffected\r\n';    
+       var str = 'SequenceNo,SequenceDescription,StepNo,StepStartDate,StepStartTime,StepEndTime,StepDuration,UserAction,TotalCellArrayCount,TotalBytes,NumberOfINAcalls,TotalWidgetAffected,ID\r\n';    
       for (var i = 0; i < array.length; i++) {
         var line = '';
         for (var index in array[i]) {
