@@ -1004,9 +1004,9 @@ tmpl_popup.innerHTML = `
             console.log("ID not found in the hash.");
         }
 
-      addIdToLines(xhr_log , id);
-      addIdToLines(steplog , id);  
-      addIdToLines(local_this, id);
+      local_this.addIdToLines(xhr_log , id);
+       local_this.addIdToLines(steplog , id);  
+       local_this.addIdToLines(local_this, id);
       
       //Download the Network log
          local_this.downloadlog(xhr_log , 'NetworkCalls');
