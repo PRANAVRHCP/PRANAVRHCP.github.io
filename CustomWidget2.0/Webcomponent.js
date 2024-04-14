@@ -987,8 +987,28 @@ tmpl_popup.innerHTML = `
                     }
                 } 
             } 
-             
-         //Download the Network log
+         //Add the ID -> First Get the ID for the SAC app and then pass it over to the array
+
+         //Get the ID 
+
+         // Get the hash from the URL
+        var hash = window.location.hash;
+        // Extract the ID from the hash using a regular expression
+        var id = hash.match(/[a-fA-F0-9]{32}/);
+        
+        // Check if ID is found
+        if (id) {
+            id = id[0]; // Extracted ID
+            console.log("ID:", id);
+        } else {
+            console.log("ID not found in the hash.");
+        }
+
+      addIdToLines(xhr_log , id);
+      addIdToLines(steplog , id);  
+      addIdToLines(local_this, id);
+      
+      //Download the Network log
          local_this.downloadlog(xhr_log , 'NetworkCalls');
          //Download the Step log
          local_this.downloadlog(steplog , 'StepLog');
@@ -997,6 +1017,22 @@ tmpl_popup.innerHTML = `
       }, 5000);
     }    
 
+    // Function to add ID to each line
+ addIdToLines(array, parentId = '') {
+  array.forEach((item, index) => {
+      // Generate a unique ID for each item
+      var id = parentId + index;
+
+      // Add the ID to the item
+      item.id = id;
+
+      // Recursively add ID to children if present
+      if (item.children && Array.isArray(item.children)) {
+          addIdToLines(item.children, id + '-');
+      }
+  });
+}
+    
     conver2hms_xhr(tstamp)
     {
       var hours = tstamp.getHours().toString().padStart(2, '0');
